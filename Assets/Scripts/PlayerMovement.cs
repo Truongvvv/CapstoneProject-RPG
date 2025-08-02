@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -59,6 +60,20 @@ public class PlayerMovement : MonoBehaviour
 
     private float originalGunDamage; // Ghi nhớ damage gốc
     private float buffTimer = 0f;    // Đếm thời gian buff
+
+    [Header("Buff")]
+    public float buffDamageAmount = 30f;
+    public float buffDuration = 10f;
+    public GameObject buffAuraVFX; // Hiệu ứng buff quanh người
+    private GameObject currentAura;
+
+    private bool isBuffed = false;
+
+    [Header("Combo VFX Buff Mode")]
+    public GameObject[] buffedComboVFX; // Gắn 3 cái tương ứng
+    public float buffVFXProjectileForce = 5f; // Lực bay
+
+    public Transform[] buffedComboVFXDirections; // size 3
 
 
     void Start()
@@ -183,7 +198,14 @@ public class PlayerMovement : MonoBehaviour
                 Debug.Log("[BUFF] Hết thời gian, sát thương trở lại: " + gunDamage);
             }
         }
+
+        //buff F
+        if (Input.GetKeyDown(KeyCode.F) && !isBuffed)
+        {
+            StartCoroutine(BuffRoutine());
+        }
     }  
+
 
     void Shoot()
     {
@@ -293,36 +315,68 @@ public class PlayerMovement : MonoBehaviour
     //effect cho từng combo
     public void SpawnComboVFX()
     {
-        int index = Mathf.Clamp(comboStep - 1, 0, comboVFX.Length - 1);
+        GameObject[] vfxArray = isBuffed ? buffedComboVFX : comboVFX;
+        int index = Mathf.Clamp(comboStep - 1, 0, vfxArray.Length - 1);
 
-        if (comboVFX.Length > index && comboVFX[index] != null)
+        if (vfxArray.Length > index && vfxArray[index] != null)
         {
-            Transform spawnPoint = comboStep == 3 && vfxSpawnPointProjectile != null
+            // Nếu đang buff thì spawn tại projectile point, ngược lại dùng mặc định
+            Transform spawnPoint = isBuffed && vfxSpawnPointProjectile != null
                 ? vfxSpawnPointProjectile
-                : vfxSpawnPoint;
+                : (comboStep == 3 && vfxSpawnPointProjectile != null)
+                    ? vfxSpawnPointProjectile
+                    : vfxSpawnPoint;
 
-            if (spawnPoint != null)
+            GameObject vfx = Instantiate(vfxArray[index], spawnPoint.position, spawnPoint.rotation);
+            Destroy(vfx, 2f);
+
+            Rigidbody rb = vfx.GetComponent<Rigidbody>();
+            if (rb != null)
             {
-                GameObject vfx = Instantiate(comboVFX[index], spawnPoint.position, spawnPoint.rotation);
+                Vector3 direction;
 
-                // Tự hủy sau 2 giây
-                Destroy(vfx, 2f);
-
-                if (comboStep == 3)
+                // DÙNG CHUNG HƯỚNG combo3 (projectile point) nếu đang buff
+                if (isBuffed && vfxSpawnPointProjectile != null)
                 {
-                    Rigidbody rb = vfx.GetComponent<Rigidbody>();
-                    if (rb != null)
-                    {
-                        rb.AddForce(spawnPoint.forward * projectileForce); // Bay ra trước
-                    }
-                    else
-                    {
-                        Debug.LogWarning("VFX combo 3 không có Rigidbody.");
-                    }
+                    direction = vfxSpawnPointProjectile.forward;
+                }
+                else
+                {
+                    direction = spawnPoint.forward;
                 }
 
-                Debug.Log("Spawn VFX Combo " + comboStep);
+                float force = isBuffed ? buffVFXProjectileForce : projectileForce;
+                rb.AddForce(direction * force, ForceMode.Impulse);
             }
+
+            Debug.Log("Spawn VFX Combo " + comboStep);
         }
+    }
+
+    private IEnumerator BuffRoutine()
+    {
+        isBuffed = true;
+
+        // Tạo hiệu ứng quanh người (instantiate prefab)
+        if (buffAuraVFX != null)
+        {
+            currentAura = Instantiate(buffAuraVFX, transform.position, Quaternion.identity, transform);
+        }
+
+        // Tăng damage vũ khí tay
+        PlayerCombat.Instance?.ApplyDamageBuff(buffDamageAmount, buffDuration);
+
+        // Tăng damage súng
+        ApplyDamageBuff(buffDamageAmount, buffDuration);
+
+        Debug.Log("BUFF ACTIVATED!");
+
+        yield return new WaitForSeconds(buffDuration);
+
+        isBuffed = false;
+
+        // Xoá hiệu ứng buff sau khi hết buff
+        if (currentAura != null)
+            Destroy(currentAura);
     }
 }

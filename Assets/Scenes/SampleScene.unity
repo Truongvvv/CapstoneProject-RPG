@@ -1598,6 +1598,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3235965575132470314, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 565326632}
+    - targetCorrespondingSourceObject: {fileID: 3235965575132470314, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 179253299}
+    - targetCorrespondingSourceObject: {fileID: 3235965575132470314, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1063582724}
     - targetCorrespondingSourceObject: {fileID: 3235965575132470170, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1409243536}
@@ -1618,6 +1624,37 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2100194189}
   m_SourcePrefab: {fileID: 100100000, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
+--- !u!1 &179253298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 179253299}
+  m_Layer: 7
+  m_Name: GameObject (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &179253299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179253298}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.16, z: 0.73}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2100194186}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &211870814
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2292,6 +2329,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 9.036236, y: 9.846887, z: 7.0847034}
   m_Center: {x: 0.7618351, y: 4.8588614, z: 3.0423517}
+--- !u!1 &1063582723
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1063582724}
+  m_Layer: 7
+  m_Name: GameObject (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1063582724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063582723}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.11981265, z: -0, w: 0.9927965}
+  m_LocalPosition: {x: 0, y: 1.16, z: 0.73}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2100194186}
+  m_LocalEulerAnglesHint: {x: 0, y: -13.763, z: 0}
 --- !u!1001 &1130035925
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3823,7 +3891,19 @@ MonoBehaviour:
   firePoint: {fileID: 1972104023}
   hitEffectPrefab: {fileID: 0}
   gunAnimator: {fileID: 2100194185}
-  projectileForce: 500
+  projectileForce: 50
+  buffDamageAmount: 30
+  buffDuration: 10
+  buffAuraVFX: {fileID: 4932088507883938021, guid: 0e5709a7ddb77924090c112cf73bb98a, type: 3}
+  buffedComboVFX:
+  - {fileID: 3020920808754819069, guid: d860dbff6d19af4448c7d0e478fa5cef, type: 3}
+  - {fileID: 6882116249847192011, guid: c4b2ddd78a478394da66879a43e7af99, type: 3}
+  - {fileID: 6111486948785554852, guid: f7967f33aeac15f48a3732e3fd3ac36c, type: 3}
+  buffVFXProjectileForce: 2
+  buffedComboVFXDirections:
+  - {fileID: 565326632}
+  - {fileID: 565326632}
+  - {fileID: 565326632}
 --- !u!95 &2100194185 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3235965575142257260, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
@@ -3873,6 +3953,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 20
   weaponCollider: {fileID: 0}
+  animator: {fileID: 0}
+  buffAmount: 30
+  buffDuration: 5
   currentDamageBuff: 0
 --- !u!114 &2100194189
 MonoBehaviour:

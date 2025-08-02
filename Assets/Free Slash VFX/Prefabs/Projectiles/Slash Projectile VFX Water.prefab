@@ -43810,7 +43810,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   destroyAfterSeconds: 2
-  damage: 50
+  damage: 10
   targetTags: []
 --- !u!65 &920116900042460195
 BoxCollider:

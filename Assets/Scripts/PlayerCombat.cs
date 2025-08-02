@@ -6,6 +6,9 @@ public class PlayerCombat : MonoBehaviour
     public int damage = 20;
     public Collider weaponCollider;
     public static PlayerCombat Instance;
+    public Animator animator;
+    public float buffAmount = 30f;
+    public float buffDuration = 5f;
 
     public float currentDamageBuff = 0f; 
 
@@ -17,6 +20,18 @@ public class PlayerCombat : MonoBehaviour
     void Awake()
     {
         Instance = this;
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            // Gọi animation Buff nếu có
+            if (animator != null)
+                animator.SetTrigger("Buff");
+
+            // Kích hoạt buff damage
+            ApplyDamageBuff(buffAmount, buffDuration);
+        }
     }
 
     // Gọi từ animation event để bắt đầu gây damage
@@ -43,9 +58,13 @@ public class PlayerCombat : MonoBehaviour
     private IEnumerator DamageBuffCoroutine(float amount, float duration)
     {
         currentDamageBuff += amount;
+        damage += (int)amount; // ← Cộng vào damage gốc
         Debug.Log("Damage buffed: +" + amount);
+
         yield return new WaitForSeconds(duration);
+
         currentDamageBuff -= amount;
+        damage -= (int)amount; // ← Trừ lại sau khi hết buff
         Debug.Log("Damage buff expired: -" + amount);
     }
 }
