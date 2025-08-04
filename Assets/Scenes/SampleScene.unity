@@ -3887,9 +3887,11 @@ MonoBehaviour:
   - {fileID: 6111486948785554852, guid: f7967f33aeac15f48a3732e3fd3ac36c, type: 3}
   vfxSpawnPointProjectile: {fileID: 565326632}
   vfxSpawnPoint: {fileID: 2015978821}
+  projectileVFXPrefab: {fileID: 5912344974454636654, guid: 8ee144fa352342747b2c2588f0d5df2d, type: 3}
+  projectileVisualSpeed: 130
   sprintBonus: 5
   firePoint: {fileID: 1972104023}
-  hitEffectPrefab: {fileID: 0}
+  hitEffectPrefab: {fileID: 4186470608034871016, guid: 4b780a14d074f2f4cb9b853b6644dce1, type: 3}
   gunAnimator: {fileID: 2100194185}
   projectileForce: 50
   buffDamageAmount: 30

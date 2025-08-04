@@ -39,6 +39,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("VFX")]   
     public Transform vfxSpawnPoint;   // Gắn điểm đầu gậy (vị trí spawn)
 
+    [Header("VFX Đạn Bay")]
+    public GameObject projectileVFXPrefab; // Prefab viên đạn visual bay ra
+    public float projectileVisualSpeed = 50f; // Tốc độ bay (tùy chỉnh)
+
     private CharacterController controller;
     private Animator animator;
 
@@ -204,12 +208,11 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(BuffRoutine());
         }
-    }  
+    }
 
 
     void Shoot()
     {
-        // Kích hoạt animation bắn
         if (gunAnimator != null)
         {
             gunAnimator.SetTrigger("Fire");
@@ -222,8 +225,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Ray ray = new Ray(firePoint.position, firePoint.forward);
+        RaycastHit hit;
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+        GameObject bulletVFX = null;
+        if (projectileVFXPrefab != null)
+        {
+            bulletVFX = Instantiate(projectileVFXPrefab, firePoint.position, firePoint.rotation);
+        }
+
+        if (Physics.Raycast(ray, out hit, 100f))
         {
             Debug.Log($"Raycast hit: {hit.collider.name}");
 
@@ -231,18 +241,36 @@ public class PlayerMovement : MonoBehaviour
             EnemyAI enemy = hit.collider.GetComponent<EnemyAI>();
             if (enemy != null)
             {
-                enemy.TakeDamage(gunDamage); // Gây 10 damage
-                Debug.Log("Enemy bị bắn trúng! Gây 10 damage.");
+                enemy.TakeDamage(gunDamage);
+                Debug.Log("Enemy bị bắn trúng! Gây damage.");
             }
 
-            // Spawn hiệu ứng trúng (nếu có)
+            // Di chuyển hiệu ứng đạn bay tới điểm trúng
+            if (bulletVFX != null)
+                StartCoroutine(MoveBulletVFX(bulletVFX, hit.point));
+
+            // Spawn hiệu ứng trúng
             if (hitEffectPrefab != null)
             {
-                Instantiate(hitEffectPrefab, hit.point, Quaternion.LookRotation(hit.normal));
+                GameObject impactVFX = Instantiate(hitEffectPrefab, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(impactVFX, 1f);
             }
+
         }
         else
         {
+            // Không trúng: đạn bay thẳng
+            if (bulletVFX != null)
+            {
+                Rigidbody rb = bulletVFX.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.linearVelocity = firePoint.forward * projectileVisualSpeed;
+                }
+
+                Destroy(bulletVFX, 2f);
+            }
+
             Debug.Log("Raycast missed");
         }
     }
@@ -378,5 +406,18 @@ public class PlayerMovement : MonoBehaviour
         // Xoá hiệu ứng buff sau khi hết buff
         if (currentAura != null)
             Destroy(currentAura);
+    }
+
+    private IEnumerator MoveBulletVFX(GameObject bullet, Vector3 target)
+    {
+        float speed = projectileVisualSpeed; // giống với tốc độ viên đạn bình thường
+        while (bullet != null && Vector3.Distance(bullet.transform.position, target) > 0.1f)
+        {
+            bullet.transform.position = Vector3.MoveTowards(bullet.transform.position, target, speed * Time.deltaTime);
+            yield return null;
+        }
+
+        if (bullet != null)
+            Destroy(bullet);
     }
 }
