@@ -10,6 +10,9 @@ public class PlayerCombat : MonoBehaviour
     public float buffAmount = 30f;
     public float buffDuration = 5f;
 
+    public int burnBaseDamage = 200; // damage cơ bản của VFX đốt
+
+
     public float currentDamageBuff = 0f; 
 
     void Start()
@@ -58,13 +61,15 @@ public class PlayerCombat : MonoBehaviour
     private IEnumerator DamageBuffCoroutine(float amount, float duration)
     {
         currentDamageBuff += amount;
-        damage += (int)amount; // ← Cộng vào damage gốc
+        damage += (int)amount;          // tăng melee damage
+        burnBaseDamage += (int)amount;  // tăng burn damage
         Debug.Log("Damage buffed: +" + amount);
 
         yield return new WaitForSeconds(duration);
 
         currentDamageBuff -= amount;
-        damage -= (int)amount; // ← Trừ lại sau khi hết buff
+        damage -= (int)amount;          // giảm melee damage
+        burnBaseDamage -= (int)amount;  // giảm burn damage
         Debug.Log("Damage buff expired: -" + amount);
     }
 }

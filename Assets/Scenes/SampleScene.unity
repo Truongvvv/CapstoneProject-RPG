@@ -1102,7 +1102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3235965575132470314, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.1366854
+      value: 0.99
       objectReference: {fileID: 0}
     - target: {fileID: 3235965575132470314, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1604,6 +1604,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3235965575132470314, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1063582724}
+    - targetCorrespondingSourceObject: {fileID: 3235965575132470314, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1369232025}
     - targetCorrespondingSourceObject: {fileID: 3235965575132470170, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1409243536}
@@ -2278,7 +2281,7 @@ MonoBehaviour:
   attackRange: 10
   retreatRange: 5
   retreatThreshold: 50
-  health: 300
+  health: 2000
   roarDuration: 1
   attackRadius: 5
   playerLayer:
@@ -2624,6 +2627,37 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1227026579}
   m_SourcePrefab: {fileID: 100100000, guid: e3b746fef223ad24f83c99406d6087ca, type: 3}
+--- !u!1 &1369232024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1369232025}
+  m_Layer: 7
+  m_Name: SPskillV
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1369232025
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369232024}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.1, z: 2.173}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2100194186}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1406812044
 GameObject:
   m_ObjectHideFlags: 0
@@ -3420,8 +3454,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.8706087, z: 2.2009783}
-  m_Center: {x: 0, y: 0.68598986, z: 0.41350064}
+  m_Size: {x: 1, y: 1.302786, z: 2.2009783}
+  m_Center: {x: 0, y: 0.4699025, z: 0.41350064}
 --- !u!114 &1562840041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3906,6 +3940,10 @@ MonoBehaviour:
   - {fileID: 565326632}
   - {fileID: 565326632}
   - {fileID: 565326632}
+  skillProjectilePrefab: {fileID: 5912344974454636654, guid: a5e8f365e98f6b94c9ee19b1acba5d58, type: 3}
+  skillSpawnPoint: {fileID: 1369232025}
+  skillProjectileSpeed: 20
+  burnEffectPrefab: {fileID: 3377181292992421420, guid: 48c5715f9603c3842a353516a8baefbb, type: 3}
 --- !u!95 &2100194185 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3235965575142257260, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
@@ -3958,6 +3996,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   buffAmount: 30
   buffDuration: 5
+  burnBaseDamage: 200
   currentDamageBuff: 0
 --- !u!114 &2100194189
 MonoBehaviour:

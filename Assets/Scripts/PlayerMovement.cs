@@ -79,6 +79,12 @@ public class PlayerMovement : MonoBehaviour
 
     public Transform[] buffedComboVFXDirections; // size 3
 
+    [Header("Skill V")]
+    public GameObject skillProjectilePrefab; // Prefab đạn kỹ năng
+    public Transform skillSpawnPoint;        // Vị trí xuất phát
+    public float skillProjectileSpeed = 20f; // Tốc độ bay
+    public GameObject burnEffectPrefab;      // Prefab hiệu ứng burn (gây dame theo thời gian)
+
 
     void Start()
     {
@@ -207,6 +213,11 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && !isBuffed)
         {
             StartCoroutine(BuffRoutine());
+        }
+        //buf v
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            ShootSkillV();
         }
     }
 
@@ -419,5 +430,18 @@ public class PlayerMovement : MonoBehaviour
 
         if (bullet != null)
             Destroy(bullet);
+    }
+
+    void ShootSkillV()
+    {
+        GameObject projectile = Instantiate(skillProjectilePrefab, skillSpawnPoint.position, skillSpawnPoint.rotation);
+        Rigidbody rb = projectile.GetComponent<Rigidbody>();
+        rb.linearVelocity = skillSpawnPoint.forward * skillProjectileSpeed;
+
+        SkillProjectile skillScript = projectile.GetComponent<SkillProjectile>();
+        if (skillScript != null)
+        {
+            skillScript.burnEffectPrefab = burnEffectPrefab;
+        }
     }
 }
