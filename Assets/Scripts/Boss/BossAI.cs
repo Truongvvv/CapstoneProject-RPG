@@ -201,6 +201,11 @@ public class BossAI : MonoBehaviour
 
     void Die()
     {
+        if (PlayerQuestManager.Instance != null)
+        {
+            PlayerQuestManager.Instance.AddKill(gameObject.tag);
+        }
+
         agent.isStopped = true;
         animator.SetTrigger("Die");
         this.enabled = false;
