@@ -127,7 +127,15 @@
       "depth": 1,
       "source": "builtin",
       "dependencies": {
-        "com.unity.render-pipelines.core": "17.0.4""com.unity.render-pipelines.core": "17.0.4",
+        "com.unity.render-pipelines.core": "17.0.4"
+      }
+    },
+    "com.unity.render-pipelines.universal": {
+      "version": "17.0.4",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "17.0.4",
         "com.unity.shadergraph": "17.0.4",
         "com.unity.render-pipelines.universal-config": "17.0.3"
       }
@@ -169,7 +177,7 @@
     "com.unity.terrain-tools": {
       "version": "5.2.1",
       "depth": 0,
-      "source": "builtin",
+      "source": "registry",
       "dependencies": {
         "com.unity.modules.terrain": "1.0.0",
         "com.unity.modules.terrainphysics": "1.0.0"
