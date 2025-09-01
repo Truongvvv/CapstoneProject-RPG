@@ -220,9 +220,25 @@ public class SmallEnemyAI : MonoBehaviour
             PlayerQuestManager.Instance.AddKill(gameObject.tag);
         }
 
+        // Bật trigger Die
         animator.SetTrigger("Die");
+
+        // Dừng NavMeshAgent
         agent.isStopped = true;
+
+        // Tắt các trạng thái khác để không bị override anim Die
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isAttacking", false);
+        animator.SetBool("isPatrolling", false);
+
+        // Vô hiệu hóa collider để player không còn va chạm với enemy đã chết
+        Collider col = GetComponent<Collider>();
+        if (col != null) col.enabled = false;
+
+        // Ngừng update logic AI (nhưng KHÔNG tắt script ngay, để animation Die còn chạy)
         this.enabled = false;
+
+        // Hủy object sau 3 giây (tùy thời lượng animation Die của bạn)
         Destroy(gameObject, 2f);
     }
 

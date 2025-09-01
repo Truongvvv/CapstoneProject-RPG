@@ -234,6 +234,9 @@ public class EnemyAI : MonoBehaviour
     {
         animator.SetTrigger("Die");
         agent.isStopped = true;
+        // Vô hiệu hóa collider để player không còn va chạm với enemy đã chết
+        Collider col = GetComponent<Collider>();
+        if (col != null) col.enabled = false;
         this.enabled = false;
         TryDropLoot(); // ← Gọi hàm rớt vật phẩm
         // Xóa enemy sau 2 giây

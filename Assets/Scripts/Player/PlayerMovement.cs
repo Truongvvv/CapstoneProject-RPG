@@ -43,6 +43,10 @@ public class PlayerMovement : MonoBehaviour
     public GameObject projectileVFXPrefab; // Prefab viên đạn visual bay ra
     public float projectileVisualSpeed = 50f; // Tốc độ bay (tùy chỉnh)
 
+    [Header("VFX Buff Shooting")]
+    public GameObject buffedProjectileVFXPrefab; // Prefab đạn khi buff
+    public GameObject buffedHitEffectPrefab;     // Prefab nổ khi buff
+
     private CharacterController controller;
     private Animator animator;
 
@@ -84,6 +88,13 @@ public class PlayerMovement : MonoBehaviour
     public Transform skillSpawnPoint;        // Vị trí xuất phát
     public float skillProjectileSpeed = 20f; // Tốc độ bay
     public GameObject burnEffectPrefab;      // Prefab hiệu ứng burn (gây dame theo thời gian)
+
+    [Header("Skill Cooldowns")]
+    public float buffFCooldown = 10f;   // F hồi chiêu 10s
+    public float skillVCooldown = 40f;   // V hồi chiêu 40s
+
+    private float buffFCooldownTimer = 0f;
+    private float skillVCooldownTimer = 0f;
 
 
     void Start()
@@ -210,15 +221,21 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //buff F
-        if (Input.GetKeyDown(KeyCode.F) && !isBuffed)
+        if (Input.GetKeyDown(KeyCode.F) && !isBuffed && buffFCooldownTimer <= 0f)
         {
             StartCoroutine(BuffRoutine());
+            buffFCooldownTimer = buffFCooldown;
         }
         //buf v
-        if (Input.GetKeyDown(KeyCode.V))
+        if (Input.GetKeyDown(KeyCode.V) && skillVCooldownTimer <= 0f)
         {
             ShootSkillV();
+            skillVCooldownTimer = skillVCooldown;
         }
+        // Giảm cooldown
+        buffFCooldownTimer -= Time.deltaTime;
+        skillVCooldownTimer -= Time.deltaTime;
+
     }
 
 
@@ -238,10 +255,14 @@ public class PlayerMovement : MonoBehaviour
         Ray ray = new Ray(firePoint.position, firePoint.forward);
         RaycastHit hit;
 
+        // --- CHỌN PREFAB THEO TRẠNG THÁI BUFF ---
+        GameObject projectilePrefab = isBuffed ? buffedProjectileVFXPrefab : projectileVFXPrefab;
+        GameObject hitPrefab = isBuffed ? buffedHitEffectPrefab : hitEffectPrefab;
+
         GameObject bulletVFX = null;
-        if (projectileVFXPrefab != null)
+        if (projectilePrefab != null)
         {
-            bulletVFX = Instantiate(projectileVFXPrefab, firePoint.position, firePoint.rotation);
+            bulletVFX = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
         }
 
         if (Physics.Raycast(ray, out hit, 100f))
@@ -261,12 +282,11 @@ public class PlayerMovement : MonoBehaviour
                 StartCoroutine(MoveBulletVFX(bulletVFX, hit.point));
 
             // Spawn hiệu ứng trúng
-            if (hitEffectPrefab != null)
+            if (hitPrefab != null)
             {
-                GameObject impactVFX = Instantiate(hitEffectPrefab, hit.point, Quaternion.LookRotation(hit.normal));
+                GameObject impactVFX = Instantiate(hitPrefab, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(impactVFX, 1f);
             }
-
         }
         else
         {
@@ -274,11 +294,11 @@ public class PlayerMovement : MonoBehaviour
             if (bulletVFX != null)
             {
                 Rigidbody rb = bulletVFX.GetComponent<Rigidbody>();
+                // Trong Shoot() khi bắn đạn thẳng:
                 if (rb != null)
                 {
                     rb.linearVelocity = firePoint.forward * projectileVisualSpeed;
                 }
-
                 Destroy(bulletVFX, 2f);
             }
 

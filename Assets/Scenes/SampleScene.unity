@@ -3753,7 +3753,7 @@ TerrainCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_TerrainData: {fileID: 15600000, guid: f759b51336c0e744e9a13c93b25689ef, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: db6c19c981b28714687abe3ce39ba413, type: 2}
   m_EnableTreeColliders: 1
 --- !u!218 &1206491287
 Terrain:
@@ -3764,7 +3764,7 @@ Terrain:
   m_GameObject: {fileID: 1206491284}
   m_Enabled: 1
   serializedVersion: 6
-  m_TerrainData: {fileID: 15600000, guid: f759b51336c0e744e9a13c93b25689ef, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: db6c19c981b28714687abe3ce39ba413, type: 2}
   m_TreeDistance: 5000
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
@@ -5678,6 +5678,8 @@ MonoBehaviour:
   skillSpawnPoint: {fileID: 1369232025}
   skillProjectileSpeed: 20
   burnEffectPrefab: {fileID: 3377181292992421420, guid: 48c5715f9603c3842a353516a8baefbb, type: 3}
+  buffFCooldown: 20
+  skillVCooldown: 40
 --- !u!95 &2100194185 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3235965575142257260, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
