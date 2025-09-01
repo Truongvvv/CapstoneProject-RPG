@@ -4188,7 +4188,7 @@ Transform:
   m_GameObject: {fileID: 1369232024}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 2.173}
+  m_LocalPosition: {x: 0, y: 1.06, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5388,7 +5388,7 @@ Transform:
   m_GameObject: {fileID: 1972104022}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.008, y: 1.182, z: 0.36}
+  m_LocalPosition: {x: -0.008, y: 1.182, z: 1.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5657,6 +5657,8 @@ MonoBehaviour:
   vfxSpawnPoint: {fileID: 2015978821}
   projectileVFXPrefab: {fileID: 5912344974454636654, guid: 8ee144fa352342747b2c2588f0d5df2d, type: 3}
   projectileVisualSpeed: 130
+  buffedProjectileVFXPrefab: {fileID: 8378503196372639160, guid: 56a31e3fb12a7da4cb69ab4dfcc420ac, type: 3}
+  buffedHitEffectPrefab: {fileID: 8172394614802003838, guid: 083c17ed86759cc4487ffa6ca1c4eb1a, type: 3}
   sprintBonus: 5
   firePoint: {fileID: 1972104023}
   hitEffectPrefab: {fileID: 4186470608034871016, guid: 4b780a14d074f2f4cb9b853b6644dce1, type: 3}
@@ -5664,7 +5666,7 @@ MonoBehaviour:
   projectileForce: 50
   buffDamageAmount: 30
   buffDuration: 10
-  buffAuraVFX: {fileID: 4932088507883938021, guid: 0e5709a7ddb77924090c112cf73bb98a, type: 3}
+  buffAuraVFX: {fileID: 1371584380506648, guid: 13bf577ec3321a741a0ca5ccdee3e9b1, type: 3}
   buffedComboVFX:
   - {fileID: 3020920808754819069, guid: d860dbff6d19af4448c7d0e478fa5cef, type: 3}
   - {fileID: 6882116249847192011, guid: c4b2ddd78a478394da66879a43e7af99, type: 3}
@@ -5677,9 +5679,9 @@ MonoBehaviour:
   skillProjectilePrefab: {fileID: 5912344974454636654, guid: a5e8f365e98f6b94c9ee19b1acba5d58, type: 3}
   skillSpawnPoint: {fileID: 1369232025}
   skillProjectileSpeed: 20
-  burnEffectPrefab: {fileID: 3377181292992421420, guid: 48c5715f9603c3842a353516a8baefbb, type: 3}
+  burnEffectPrefab: {fileID: 1687490866974584, guid: 2eeec577995fc7043a57cbe56af9a29c, type: 3}
   buffFCooldown: 20
-  skillVCooldown: 40
+  skillVCooldown: 10
 --- !u!95 &2100194185 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3235965575142257260, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}

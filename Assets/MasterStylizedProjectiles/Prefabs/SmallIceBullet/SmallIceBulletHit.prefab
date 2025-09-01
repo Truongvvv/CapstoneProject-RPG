@@ -48939,7 +48939,6 @@ GameObject:
   - component: {fileID: 6324283893382468811}
   - component: {fileID: 7917120168021017062}
   - component: {fileID: 6951045033159309328}
-  - component: {fileID: 7723799298117677321}
   m_Layer: 0
   m_Name: SmallIceBulletHit
   m_TagString: Untagged
@@ -53835,21 +53834,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &7723799298117677321
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4186470608034871016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae9ecc2a1b42b0d41bda1cc37b1043c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  burnEffectPrefab: {fileID: 0}
-  lifeTime: 5
-  initialHitDamage: 50
 --- !u!1 &4409701701599460779
 GameObject:
   m_ObjectHideFlags: 0

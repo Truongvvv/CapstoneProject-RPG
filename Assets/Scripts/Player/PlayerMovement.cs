@@ -276,6 +276,13 @@ public class PlayerMovement : MonoBehaviour
                 enemy.TakeDamage(gunDamage);
                 Debug.Log("Enemy bị bắn trúng! Gây damage.");
             }
+            // Gây damage nếu trúng enemy
+            SmallEnemyAI chomper = hit.collider.GetComponent<SmallEnemyAI>();
+            if (chomper != null)
+            {
+                chomper.TakeDamage(gunDamage);
+                Debug.Log("Chomper bị bắn trúng! Gây damage.");
+            }
 
             // Di chuyển hiệu ứng đạn bay tới điểm trúng
             if (bulletVFX != null)
@@ -294,10 +301,9 @@ public class PlayerMovement : MonoBehaviour
             if (bulletVFX != null)
             {
                 Rigidbody rb = bulletVFX.GetComponent<Rigidbody>();
-                // Trong Shoot() khi bắn đạn thẳng:
                 if (rb != null)
                 {
-                    rb.linearVelocity = firePoint.forward * projectileVisualSpeed;
+                    rb.velocity = firePoint.forward * projectileVisualSpeed;
                 }
                 Destroy(bulletVFX, 2f);
             }
@@ -456,7 +462,7 @@ public class PlayerMovement : MonoBehaviour
     {
         GameObject projectile = Instantiate(skillProjectilePrefab, skillSpawnPoint.position, skillSpawnPoint.rotation);
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
-        rb.linearVelocity = skillSpawnPoint.forward * skillProjectileSpeed;
+        rb.velocity = skillSpawnPoint.forward * skillProjectileSpeed;
 
         SkillProjectile skillScript = projectile.GetComponent<SkillProjectile>();
         if (skillScript != null)
