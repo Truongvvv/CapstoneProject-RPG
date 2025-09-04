@@ -16,7 +16,6 @@ Shader "Hovl/Particles/Blend_CenterGlow"
         _Depthpower ("Depth power", Float ) = 1
 		[Enum(Cull Off,0, Cull Front,1, Cull Back,2)] _CullMode("Culling", Float) = 0
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
-		_ExtraTex ("Extra Texture", 2D) = "white" {}
 	}
 
 	Category 
@@ -88,8 +87,6 @@ Shader "Hovl/Particles/Blend_CenterGlow"
 				uniform float _Opacity;
 				uniform fixed _Usedepth;
 				uniform float _Depthpower;
-				uniform sampler2D _ExtraTex;
-				uniform float4 _ExtraTex_ST;
 
 				v2f vert ( appdata_t v  )
 				{
@@ -141,9 +138,6 @@ Shader "Hovl/Particles/Blend_CenterGlow"
 					float4 clampResult38 = tex2DNode33 - temp_cast_0;
 					float4 clampResult40 = clamp( ( tex2DNode33 * clampResult38 ) , float4( 0,0,0,0 ) , float4( 1,1,1,1 ) );
 					float4 appendResult87 = (float4(( lerp(temp_output_78_0,( temp_output_78_0 * (clampResult40).rgb ),_Usecenterglow) * _Emission ) , ( tex2DNode13.a * tex2DNode14.a * _Color.a * i.color.a * _Opacity )));
-					float2 uv_Extra = i.texcoord.xy * _ExtraTex_ST.xy + _ExtraTex_ST.zw;
-					float4 extraTexColor = tex2D(_ExtraTex, uv_Extra);
-
 					fixed4 col = appendResult87;
 					UNITY_APPLY_FOG(i.fogCoord, col);
 					return col;

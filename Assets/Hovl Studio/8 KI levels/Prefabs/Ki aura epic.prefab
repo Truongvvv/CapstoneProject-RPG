@@ -40474,7 +40474,7 @@ MonoBehaviour:
   damagePerTick: 200
   tickInterval: 2
   duration: 10
-  extraVFXPrefab: {fileID: 1606295170265436, guid: 3c19678639bad9e439014c8c901574a3, type: 3}
+  extraVFXPrefab: {fileID: 1222155718541834, guid: 8b5b1225ff9b8d44fbf253dd1ca795a1, type: 3}
 --- !u!1 &1691521229285036
 GameObject:
   m_ObjectHideFlags: 0
