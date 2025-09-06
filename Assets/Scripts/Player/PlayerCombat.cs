@@ -3,41 +3,50 @@ using System.Collections;
 
 public class PlayerCombat : MonoBehaviour
 {
-    public int damage = 20;
+    [Header("Damage Stats")]
+    public int damage = 20;            // dame hiện tại (sẽ scale theo buff và level)
+    public int burnBaseDamage = 200;   // damage cơ bản của VFX đốt
+
+    [HideInInspector] public int baseMeleeDamage;   // damage gốc gậy (dùng cho level up)
+    [HideInInspector] public int baseBurnDamage;    // damage gốc burn (dùng cho level up)
+
     public Collider weaponCollider;
     public static PlayerCombat Instance;
     public Animator animator;
+
+    [Header("Buff Settings")]
     public float buffAmount = 30f;
     public float buffDuration = 5f;
 
-    public int burnBaseDamage = 200; // damage cơ bản của VFX đốt
+    public float currentDamageBuff = 0f;
 
+    void Awake()
+    {
+        Instance = this;
 
-    public float currentDamageBuff = 0f; 
+        // Ghi nhớ damage gốc để cộng thêm khi level up
+        baseMeleeDamage = damage;
+        baseBurnDamage = burnBaseDamage;
+    }
 
     void Start()
     {
         if (weaponCollider != null)
             weaponCollider.enabled = false; // Luôn tắt khi bắt đầu
     }
-    void Awake()
-    {
-        Instance = this;
-    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            // Gọi animation Buff nếu có
             if (animator != null)
                 animator.SetTrigger("Buff");
 
-            // Kích hoạt buff damage
             ApplyDamageBuff(buffAmount, buffDuration);
         }
     }
 
-    // Gọi từ animation event để bắt đầu gây damage
+    // Animation Event: bắt đầu hitbox
     public void MeleeAttackStart()
     {
         Debug.Log("Melee Attack Start!");
@@ -45,7 +54,7 @@ public class PlayerCombat : MonoBehaviour
             weaponCollider.enabled = true;
     }
 
-    // Gọi từ animation event để kết thúc gây damage
+    // Animation Event: tắt hitbox
     public void MeleeAttackEnd()
     {
         Debug.Log("Melee Attack End!");
@@ -61,15 +70,27 @@ public class PlayerCombat : MonoBehaviour
     private IEnumerator DamageBuffCoroutine(float amount, float duration)
     {
         currentDamageBuff += amount;
-        damage += (int)amount;          // tăng melee damage
-        burnBaseDamage += (int)amount;  // tăng burn damage
+        damage += (int)amount;
+        burnBaseDamage += (int)amount;
         Debug.Log("Damage buffed: +" + amount);
 
         yield return new WaitForSeconds(duration);
 
         currentDamageBuff -= amount;
-        damage -= (int)amount;          // giảm melee damage
-        burnBaseDamage -= (int)amount;  // giảm burn damage
+        damage -= (int)amount;
+        burnBaseDamage -= (int)amount;
         Debug.Log("Damage buff expired: -" + amount);
+    }
+
+    // Gọi khi Level Up (tăng vĩnh viễn)
+    public void AddPermanentDamage(int meleeBonus, int burnBonus)
+    {
+        baseMeleeDamage += meleeBonus;
+        baseBurnDamage += burnBonus;
+
+        damage = baseMeleeDamage + (int)currentDamageBuff;
+        burnBaseDamage = baseBurnDamage + (int)currentDamageBuff;
+
+        Debug.Log($"[LEVEL UP BONUS] New Melee Damage = {damage}, Burn Damage = {burnBaseDamage}");
     }
 }

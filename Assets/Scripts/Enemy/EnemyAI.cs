@@ -31,6 +31,7 @@ public class EnemyAI : MonoBehaviour
     public GameObject[] lootPrefabs;       // Các vật phẩm có thể rơi
     [Range(0f, 1f)]
     public float dropChance = 0.9f;        // Xác suất rơi (30%)
+    public int expReward = 50; // EXP khi chết
 
 
     void Start()
@@ -239,6 +240,13 @@ public class EnemyAI : MonoBehaviour
         if (col != null) col.enabled = false;
         this.enabled = false;
         TryDropLoot(); // ← Gọi hàm rớt vật phẩm
+
+        // Gọi EXP cho player
+        PlayerMovement player = FindObjectOfType<PlayerMovement>();
+        if (player != null)
+        {
+            player.GainExp(expReward);
+        }
         // Xóa enemy sau 2 giây
         Destroy(gameObject, 2f);
     }

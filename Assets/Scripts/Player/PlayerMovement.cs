@@ -32,6 +32,14 @@ public class PlayerMovement : MonoBehaviour
     private bool isAttacking = false;
     private float staffTimer = 0f;            // Đếm ngược để ẩn gậy
 
+    [Header("Level System")]
+    public int level = 1;
+    public int currentExp = 0;
+    public int expToNextLevel = 100;
+
+    public int maxHP = 100;
+    public int currentHP;
+
     [Header("Combo VFX")]
     public GameObject[] comboVFX; // Gắn 3 hiệu ứng tương ứng combo 1, 2, 3
     public Transform vfxSpawnPointProjectile;  // Vị trí spawn VFX dạng bay
@@ -102,6 +110,8 @@ public class PlayerMovement : MonoBehaviour
         controller = GetComponent<CharacterController>();
         animator = modelTransform.GetComponent<Animator>(); // Animator nằm trong model
         Cursor.lockState = CursorLockMode.Locked;
+
+        currentHP = maxHP;
     }
     void Awake()
     {
@@ -469,5 +479,36 @@ public class PlayerMovement : MonoBehaviour
         {
             skillScript.burnEffectPrefab = burnEffectPrefab;
         }
+    }
+
+    public void GainExp(int amount)
+    {
+        currentExp += amount;
+
+        if (currentExp >= expToNextLevel)
+        {
+            LevelUp();
+        }
+    }
+    private void LevelUp()
+    {
+        level++;
+        currentExp -= expToNextLevel;
+        expToNextLevel = Mathf.RoundToInt(expToNextLevel * 1.2f); // exp cần tăng dần
+
+        // +20 HP max
+        maxHP += 20;
+        currentHP = maxHP;
+
+        // +10 dame cơ bản vĩnh viễn
+        originalGunDamage += 10f;
+        gunDamage = originalGunDamage;
+
+        if (PlayerCombat.Instance != null)
+        {
+            PlayerCombat.Instance.AddPermanentDamage(10, 10); // +10 melee, +10 burn
+        }
+
+        Debug.Log($"[LEVEL UP] Level {level} | HP: {maxHP} | GunDamage: {gunDamage} | MeleeDamage: {PlayerCombat.Instance?.baseMeleeDamage}");
     }
 }

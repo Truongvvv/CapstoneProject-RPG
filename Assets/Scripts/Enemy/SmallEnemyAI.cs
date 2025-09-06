@@ -26,6 +26,7 @@ public class SmallEnemyAI : MonoBehaviour
     private Vector3 initialPosition;
 
     public LayerMask playerLayer;
+    public int expReward = 50; // EXP khi chết
 
     void Start()
     {
@@ -237,6 +238,13 @@ public class SmallEnemyAI : MonoBehaviour
 
         // Ngừng update logic AI (nhưng KHÔNG tắt script ngay, để animation Die còn chạy)
         this.enabled = false;
+
+        // Gọi EXP cho player
+        PlayerMovement player = FindObjectOfType<PlayerMovement>();
+        if (player != null)
+        {
+            player.GainExp(expReward);
+        }
 
         // Hủy object sau 3 giây (tùy thời lượng animation Die của bạn)
         Destroy(gameObject, 2f);
