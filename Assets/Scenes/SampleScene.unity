@@ -1098,7 +1098,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3235965575132470314, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.000002026558
+      value: 0.138
       objectReference: {fileID: 0}
     - target: {fileID: 3235965575132470314, guid: 1c443c3abb862244aa6185fe28d5f5bb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5726,7 +5726,11 @@ Terrain:
   m_GameObject: {fileID: 1206491284}
   m_Enabled: 1
   serializedVersion: 6
+<<<<<<< Updated upstream
   m_TerrainData: {fileID: 15600000, guid: db6c19c981b28714687abe3ce39ba413, type: 2}
+=======
+  m_TerrainData: {fileID: 0}
+>>>>>>> Stashed changes
   m_TreeDistance: 5000
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
