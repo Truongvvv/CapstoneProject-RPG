@@ -42,7 +42,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -238,7 +238,7 @@ ModelImporter:
       takeName: Qishilong_fly2
       internalID: 1528938389117505398
       firstFrame: 948
-      lastFrame: 2047
+      lastFrame: 2046.9999
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -788,15 +788,15 @@ ModelImporter:
       name: Qishilong_walk
       takeName: Qishilong_walk
       internalID: -889264731830517786
-      firstFrame: 4023
-      lastFrame: 4075
+      firstFrame: 4023.0002
+      lastFrame: 4074.9998
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -812,7 +812,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 4023.0002
     isReadable: 0
   meshes:
     lODScreenPercentages: []
