@@ -30,6 +30,7 @@ public class BossAI : MonoBehaviour
 
     public Transform attackPoint;
     private bool hasStartedGongAnim = false;
+    public int expReward = 200; // EXP khi chết
 
     void Start()
     {
@@ -107,7 +108,7 @@ public class BossAI : MonoBehaviour
                 {
                     hasRoared = true;
                     roarTimer = 0f;
-                    hasStartedGongAnim = false;             // ✅ reset lại để reuse sau này
+                    hasStartedGongAnim = false;             // reset lại để reuse sau này
                     currentState = State.Chase;
                 }
                 break;
@@ -126,20 +127,8 @@ public class BossAI : MonoBehaviour
                 animator.SetBool("isAttacking", true);
 
                 attackTimer += Time.deltaTime;
-                if (!hasDealtDamage && attackTimer >= attackCooldown)
-                {
-                    Collider[] hits = Physics.OverlapSphere(attackPoint.position, attackRadius, playerLayer);
-                    foreach (Collider hit in hits)
-                    {
-                        if (hit.transform == player)
-                        {
-                            hit.GetComponent<PlayerHealth>()?.TakeDamage(40f);
-                            hasDealtDamage = true;
-                            attackTimer = 0f;
-                            break;
-                        }
-                    }
-                }
+                //if (!hasDealtDamage && attackTimer >= attackCooldown)
+                
                 break;
 
             case State.Retreat:
@@ -189,7 +178,23 @@ public class BossAI : MonoBehaviour
             }
         }
     }
+    public void DealDamage()
+    {
+        Collider[] hits = Physics.OverlapSphere(
+            attackPoint.position,
+            attackRadius,
+            playerLayer
+        );
 
+        foreach (Collider hit in hits)
+        {
+            if (hit.CompareTag("Player"))
+            {
+                Debug.Log("Boss hit player!");
+                hit.GetComponent<PlayerHealth>()?.TakeDamage(100f);
+            }
+        }
+    }
     public void TakeDamage(float damage)
     {
         health -= damage;
@@ -197,7 +202,7 @@ public class BossAI : MonoBehaviour
         {
             Die();
         }
-    }
+    }   
 
     void Die()
     {
@@ -206,10 +211,25 @@ public class BossAI : MonoBehaviour
             PlayerQuestManager.Instance.AddKill(gameObject.tag);
         }
 
+        // Vô hiệu hóa collider để player không còn va chạm với enemy đã chết
+        Collider col = GetComponent<Collider>();
+        if (col != null) col.enabled = false;
         agent.isStopped = true;
+
+        // Tắt các trạng thái khác để không bị override anim Die
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isAttacking", false);
         animator.SetTrigger("Die");
+
         this.enabled = false;
-        Destroy(gameObject, 3f);
+
+        // Gọi EXP cho player
+        PlayerMovement player = FindObjectOfType<PlayerMovement>();
+        if (player != null)
+        {
+            player.GainExp(expReward);
+        }
+        Destroy(gameObject, 10f);
     }
 
     private void EnablePhysics(bool enable)

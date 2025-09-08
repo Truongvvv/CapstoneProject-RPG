@@ -293,6 +293,12 @@ public class PlayerMovement : MonoBehaviour
                 chomper.TakeDamage(gunDamage);
                 Debug.Log("Chomper bị bắn trúng! Gây damage.");
             }
+            BossAI bosslion = hit.collider.GetComponent<BossAI>();
+            if (bosslion != null)
+            {
+                bosslion.TakeDamage(gunDamage);
+                Debug.Log("BossLion bị bắn trúng! Gây damage.");
+            }
 
             // Di chuyển hiệu ứng đạn bay tới điểm trúng
             if (bulletVFX != null)
@@ -494,11 +500,19 @@ public class PlayerMovement : MonoBehaviour
     {
         level++;
         currentExp -= expToNextLevel;
-        expToNextLevel = Mathf.RoundToInt(expToNextLevel * 1.2f); // exp cần tăng dần
+        expToNextLevel = Mathf.RoundToInt(expToNextLevel * 1.2f); // tăng exp required
 
         // +20 HP max
         maxHP += 20;
         currentHP = maxHP;
+
+        // Đồng bộ sang PlayerHealth
+        PlayerHealth health = GetComponent<PlayerHealth>();
+        if (health != null)
+        {
+            health.maxHealth = maxHP;
+            health.Heal(maxHP); // full máu sau khi level up
+        }
 
         // +10 dame cơ bản vĩnh viễn
         originalGunDamage += 10f;
@@ -506,9 +520,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (PlayerCombat.Instance != null)
         {
-            PlayerCombat.Instance.AddPermanentDamage(10, 10); // +10 melee, +10 burn
+            PlayerCombat.Instance.AddPermanentDamage(10, 10);
         }
 
-        Debug.Log($"[LEVEL UP] Level {level} | HP: {maxHP} | GunDamage: {gunDamage} | MeleeDamage: {PlayerCombat.Instance?.baseMeleeDamage}");
+        Debug.Log($"[LEVEL UP] Level {level} | HP: {maxHP} | GunDamage: {gunDamage}");
     }
 }

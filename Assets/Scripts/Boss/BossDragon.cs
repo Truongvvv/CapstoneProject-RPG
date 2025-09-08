@@ -21,6 +21,7 @@ public class BossDragon : MonoBehaviour
     public float roarDuration = 3f;
     private float roarTimer = 0f;
     private bool hasRoared = false;
+    private bool isRoaring = false;
 
     [Header("VFX Settings")]
     public GameObject chargeVFXPrefab;   // prefab hiệu ứng gồng
@@ -67,24 +68,9 @@ public class BossDragon : MonoBehaviour
             {
                 currentState = State.Fly;
             }
-            else if (!hasRoared)
+            else if (!hasRoared || isRoaring) // CHỈ ROAR KHI CHƯA ROAR HOẶC ĐANG ROAR
             {
                 currentState = State.Roar;
-            }
-            else
-            {
-                currentState = State.Chase;
-            }
-        }
-        else if (distance <= detectionRange)
-        {
-            if (!hasFlown)
-            {
-                currentState = State.Fly;
-            }
-            else if (!hasRoared)
-            {
-                currentState = State.Roar; // phải gồng trước
             }
             else if (distance <= attackRange)
             {
@@ -157,39 +143,44 @@ public class BossDragon : MonoBehaviour
                 break;
 
             case State.Roar:
-                if (agent.enabled) agent.enabled = false;   // tắt navmesh để đứng im tại chỗ
+                isRoaring = true;
 
-                transform.LookAt(player); // quay về phía player
+                if (agent.enabled)
+                {
+                    agent.isStopped = true;
+                    agent.ResetPath();
+                    agent.velocity = Vector3.zero;
+                }
+
+                Vector3 lookPos = new Vector3(player.position.x, transform.position.y, player.position.z);
+                transform.LookAt(lookPos);
+
                 animator.SetBool("isRunning", false);
                 animator.SetBool("isAttacking", false);
 
-                // Trigger animation + spawn VFX chỉ 1 lần
                 if (!hasRoared && activeChargeVFX == null)
                 {
                     animator.SetTrigger("Roar");
+                    hasRoared = true;
 
                     if (chargeVFXPrefab != null && vfxSpawnPoint != null)
                     {
-                        activeChargeVFX = Instantiate(
-                            chargeVFXPrefab,
-                            vfxSpawnPoint.position,
-                            Quaternion.identity,
-                            vfxSpawnPoint
-                        );
+                        activeChargeVFX = Instantiate(chargeVFXPrefab, vfxSpawnPoint.position, Quaternion.identity, vfxSpawnPoint);
                     }
                 }
 
                 roarTimer += Time.deltaTime;
                 if (roarTimer >= roarDuration)
                 {
-                    hasRoared = true;
+                    isRoaring = false;   // báo hiệu roar đã xong
                     currentState = State.Chase;
                     roarTimer = 0f;
 
-                    // Bật lại navmesh khi gồng xong
-                    if (!agent.enabled) agent.enabled = true;
+                    if (agent.enabled)
+                    {
+                        agent.isStopped = false;
+                    }
 
-                    // Xoá hiệu ứng gồng
                     if (activeChargeVFX != null)
                     {
                         Destroy(activeChargeVFX);
