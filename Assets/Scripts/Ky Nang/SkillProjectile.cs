@@ -10,11 +10,14 @@ public class SkillProjectile : MonoBehaviour
     {
         Destroy(gameObject, lifeTime); // tự hủy nếu không trúng gì
     }
-
     void OnTriggerEnter(Collider other)
     {
         SmallEnemyAI enemy = other.GetComponent<SmallEnemyAI>();
         BossAI boss = other.GetComponent<BossAI>();
+        RoockEnemyAI roock = other.GetComponent<RoockEnemyAI>();
+        BossDragon bossDragon = other.GetComponent<BossDragon>();
+        EnemyAI enemyAI = other.GetComponent<EnemyAI>();
+
 
         Debug.Log("Projectile hit: " + other.name);
         Debug.Log("Enemy found: " + (enemy != null));
@@ -48,8 +51,47 @@ public class SkillProjectile : MonoBehaviour
             else
                 Debug.LogError("Burn prefab missing SkillBurnProjectile!");
         }
+        else if (bossDragon != null)
+        {
+            bossDragon.TakeDamage(initialHitDamage);
 
-        if (enemy != null || boss != null)
+            int burnDamage = PlayerCombat.Instance != null ? PlayerCombat.Instance.burnBaseDamage : 0;
+            GameObject burn = Instantiate(burnEffectPrefab, bossDragon.transform.position, Quaternion.identity, bossDragon.transform);
+
+            SkillBurnProjectile burnScript = burn.GetComponent<SkillBurnProjectile>();
+            if (burnScript != null)
+                burnScript.Init(bossDragon, burnDamage);
+            else
+                Debug.LogError("Burn prefab missing SkillBurnProjectile!");
+        }
+        else if (enemyAI != null)
+        {
+            enemyAI.TakeDamage(initialHitDamage);
+
+            int burnDamage = PlayerCombat.Instance != null ? PlayerCombat.Instance.burnBaseDamage : 0;
+            GameObject burn = Instantiate(burnEffectPrefab, enemyAI.transform.position, Quaternion.identity, enemyAI.transform);
+
+            SkillBurnProjectile burnScript = burn.GetComponent<SkillBurnProjectile>();
+            if (burnScript != null)
+                burnScript.Init(enemyAI, burnDamage);
+            else
+                Debug.LogError("Burn prefab missing SkillBurnProjectile!");
+        }
+        if (roock != null)
+        {
+            roock.TakeDamage(initialHitDamage);
+
+            int burnDamage = PlayerCombat.Instance != null ? PlayerCombat.Instance.burnBaseDamage : 0;
+            GameObject burn = Instantiate(burnEffectPrefab, roock.transform.position, Quaternion.identity, roock.transform);
+
+            SkillBurnProjectile burnScript = burn.GetComponent<SkillBurnProjectile>();
+            if (burnScript != null)
+                burnScript.Init(roock, burnDamage);
+            else
+                Debug.LogError("Burn prefab missing SkillBurnProjectile!");
+        }
+
+        if (enemy != null || boss != null || bossDragon != null || enemyAI != null || roock != null)
         {
             Destroy(gameObject);
         }

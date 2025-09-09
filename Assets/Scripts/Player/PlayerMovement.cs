@@ -293,11 +293,19 @@ public class PlayerMovement : MonoBehaviour
                 chomper.TakeDamage(gunDamage);
                 Debug.Log("Chomper bị bắn trúng! Gây damage.");
             }
+            // Gây damage nếu trúng BossLion
             BossAI bosslion = hit.collider.GetComponent<BossAI>();
             if (bosslion != null)
             {
                 bosslion.TakeDamage(gunDamage);
                 Debug.Log("BossLion bị bắn trúng! Gây damage.");
+            }
+            // Gây damage nếu trúng BossDragon
+            BossDragon bossDragon = hit.collider.GetComponent<BossDragon>();
+            if (bossDragon != null)
+            {
+                bossDragon.TakeDamage(gunDamage);
+                Debug.Log("BossDragon bij bắn trúng! Gây dame.");
             }
 
             // Di chuyển hiệu ứng đạn bay tới điểm trúng

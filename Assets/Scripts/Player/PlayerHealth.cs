@@ -25,7 +25,7 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Player has died!");
-        // TODO: Thêm hiệu ứng chết, disable movement, respawn, v.v.
+        // TODO: Thêm hiệu ứng chết, disable movement, respawn, v.v.       
     }
 
     // (Tùy chọn) Thêm hồi máu

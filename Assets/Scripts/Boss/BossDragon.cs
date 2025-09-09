@@ -223,8 +223,11 @@ public class BossDragon : MonoBehaviour
                 animator.SetBool("isRunning", true);
                 animator.SetBool("isAttacking", false);
                 break;
+       
+        
         }
     }
+   
     public void DealDamage()
     {
         Collider[] hits = Physics.OverlapSphere(
@@ -249,6 +252,35 @@ public class BossDragon : MonoBehaviour
         if (health <= 0)
         {
             Die();
+        }
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Weapon"))
+        {
+            PlayerCombat combat = other.GetComponentInParent<PlayerCombat>();
+            if (combat != null)
+            {
+                int finalDamage = combat.damage;
+                TakeDamage(finalDamage);
+
+                if (finalDamage > 20)
+                {
+                    Debug.Log("Gậy đánh trúng với buff! Gây damage: " + finalDamage);
+                }
+                else if (finalDamage == 20)
+                {
+                    Debug.Log("Gậy đánh trúng! Gây damage mặc định: " + finalDamage);
+                }
+                else
+                {
+                    Debug.Log("Gậy đánh trúng! Damage bất thường: " + finalDamage);
+                }
+            }
+            else
+            {
+                Debug.Log("Không tìm thấy PlayerCombat!");
+            }
         }
     }
 

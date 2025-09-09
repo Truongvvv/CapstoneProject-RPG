@@ -10,7 +10,10 @@ public class SkillBurnProjectile : MonoBehaviour
 
     private float elapsed = 0f;
     private SmallEnemyAI enemy;
+    private RoockEnemyAI roock;
+    private EnemyAI enemyAI;
     private BossAI boss;
+    private BossDragon bossDragon;
     private int burnDamage;
 
     public void Init(SmallEnemyAI target, int burnDamage)
@@ -24,7 +27,21 @@ public class SkillBurnProjectile : MonoBehaviour
         boss = target;
         this.burnDamage = burnDamage;
     }
-
+    public void Init(BossDragon target, int burnDamage)
+    {
+        bossDragon = target;
+        this.burnDamage = burnDamage;
+    }
+    public void Init(EnemyAI target, int burnDamage)
+    {
+        enemyAI = target;
+        this.burnDamage = burnDamage;
+    }
+    public void Init(RoockEnemyAI target, int burnDamage)
+    {
+        roock = target;
+        this.burnDamage = burnDamage;
+    }
     private void Start()
     {
         StartCoroutine(DoBurnDamage());
@@ -55,7 +72,21 @@ public class SkillBurnProjectile : MonoBehaviour
                 boss.TakeDamage(burnDamage);
                 Debug.Log($"[Burn] Boss bị đốt {burnDamage} damage");
             }
-
+            if (roock != null)
+            {
+                roock.TakeDamage(burnDamage);
+                Debug.Log($"[Burn] rook bị đốt {burnDamage} damage");
+            }
+            if (enemyAI != null)
+            {
+                enemyAI.TakeDamage(burnDamage);
+                Debug.Log($"[Burn] Rhino bị đốt {burnDamage} damage");
+            }
+            if (bossDragon != null)
+            {
+                bossDragon.TakeDamage(burnDamage);
+                Debug.Log($"[Burn] BossDragon bị đốt {burnDamage} damage");
+            }
             // Spawn VFX màu mè
             if (extraVFXPrefab != null)
             {
