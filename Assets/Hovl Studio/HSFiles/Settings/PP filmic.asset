@@ -1,31 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8317624552108899335
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6050e2d5de785ce4d931e4dbdbf2d755, type: 3}
-  m_Name: ChromaticAberration
-  m_EditorClassIdentifier: 
-  active: 1
-  enabled:
-    overrideState: 1
-    value: 1
-  spectralLut:
-    overrideState: 0
-    value: {fileID: 0}
-    defaultState: 1
-  intensity:
-    overrideState: 1
-    value: 0
-  fastMode:
-    overrideState: 0
-    value: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e6292b2c06870d4495f009f912b9600, type: 3}
-  m_Name: PP low
+  m_Name: PP filmic
   m_EditorClassIdentifier: 
   settings:
   - {fileID: 114731164026991314}
   - {fileID: 114065851182806750}
-  - {fileID: -8317624552108899335}
 --- !u!114 &114065851182806750
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -60,7 +33,7 @@ MonoBehaviour:
     value: 1
   gradingMode:
     overrideState: 1
-    value: 0
+    value: 1
   externalLut:
     overrideState: 0
     value: {fileID: 0}
@@ -94,7 +67,7 @@ MonoBehaviour:
     overrideState: 0
     value: 1
   temperature:
-    overrideState: 1
+    overrideState: 0
     value: 0
   tint:
     overrideState: 0
@@ -107,10 +80,10 @@ MonoBehaviour:
     value: 0
   saturation:
     overrideState: 1
-    value: 24
+    value: 10
   brightness:
-    overrideState: 1
-    value: 4
+    overrideState: 0
+    value: 0
   postExposure:
     overrideState: 1
     value: 0.6
@@ -119,7 +92,7 @@ MonoBehaviour:
     value: 3
   mixerRedOutRedIn:
     overrideState: 1
-    value: 110
+    value: 100
   mixerRedOutGreenIn:
     overrideState: 0
     value: 0
@@ -131,7 +104,7 @@ MonoBehaviour:
     value: 0
   mixerGreenOutGreenIn:
     overrideState: 1
-    value: 110
+    value: 100
   mixerGreenOutBlueIn:
     overrideState: 0
     value: 0
@@ -143,7 +116,7 @@ MonoBehaviour:
     value: 0
   mixerBlueOutBlueIn:
     overrideState: 1
-    value: 110
+    value: 100
   lift:
     overrideState: 0
     value: {x: 1, y: 1, z: 1, w: 0}
@@ -151,10 +124,10 @@ MonoBehaviour:
     overrideState: 1
     value: {x: 1, y: 1, z: 1, w: -0.077419356}
   gain:
-    overrideState: 0
-    value: {x: 0.99999934, y: 0.9999999, z: 1, w: 0.0025244094}
-  masterCurve:
     overrideState: 1
+    value: {x: 1, y: 1, z: 1, w: 0.28387097}
+  masterCurve:
+    overrideState: 0
     value:
       curve:
         serializedVersion: 2
@@ -313,7 +286,7 @@ MonoBehaviour:
       - 0.984375
       - 0.9921875
   redCurve:
-    overrideState: 1
+    overrideState: 0
     value:
       curve:
         serializedVersion: 2
@@ -1371,7 +1344,7 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 5
+    value: 6.5
   threshold:
     overrideState: 0
     value: 1
@@ -1383,7 +1356,7 @@ MonoBehaviour:
     value: 65472
   diffusion:
     overrideState: 1
-    value: 7
+    value: 8.2
   anamorphicRatio:
     overrideState: 0
     value: 0

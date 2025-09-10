@@ -6820,7 +6820,7 @@ MonoBehaviour:
   flyDuration: 1.6
   specialSkillCooldown: 5
   specialSkillDuration: 3
-  specialSkillRadius: 8
+  specialSkillRadius: 10
   specialSkillDamage: 500
   specialSkillVFX: {fileID: 1707000239251520, guid: 7ca99580e6cb71e49a3da241e1ce24a1, type: 3}
 --- !u!4 &881154677 stripped
