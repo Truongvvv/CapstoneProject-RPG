@@ -16,6 +16,7 @@ public class BossDragon : MonoBehaviour
     private bool hasDealtDamage = false;
     public float attackCooldown = 1.5f;
     private float attackTimer = 0f;
+    public int expReward = 200; // EXP khi chết
 
     [Header("Roar Settings")]
     public float roarDuration = 3f;
@@ -33,13 +34,25 @@ public class BossDragon : MonoBehaviour
 
     private Vector3 originalPosition;
 
-    private enum State { Idle, Fly, Roar, Chase, Attack, Retreat, Return }
+    private enum State { Idle, Fly, Roar, Chase, Attack, Retreat, Return, SpecialSkill }
     private State currentState;
 
     [Header("Fly Settings")]
     public float flyDuration = 5f;   // thời gian bay
     private float flyTimer = 0f;
     private bool hasFlown = false;
+
+    [Header("Special Skill Settings")]
+    public float specialSkillCooldown = 10f;
+    public float specialSkillDuration = 3f; // thời gian thi triển skill
+    public float specialSkillRadius = 5f;
+    public float specialSkillDamage = 150f;
+    public GameObject specialSkillVFX;
+
+    private float combatTimer = 0f;
+    private bool isUsingSpecialSkill = false;
+    private float specialSkillTimer = 0f;
+
 
     void Start()
     {
@@ -80,10 +93,21 @@ public class BossDragon : MonoBehaviour
             {
                 currentState = State.Chase;
             }
+
+            // Chỉ tính combatTimer khi boss đang Chase hoặc Attack
+            if (currentState == State.Chase || currentState == State.Attack)
+            {
+                combatTimer += Time.deltaTime;
+                if (combatTimer >= specialSkillCooldown && !isUsingSpecialSkill)
+                {
+                    currentState = State.SpecialSkill;
+                }
+            }
         }
         else
         {
-            // Reset roar khi player chạy mất
+            // Reset khi player chạy khỏi detectionRange
+            combatTimer = 0f;
             hasRoared = false;
             roarTimer = 0f;
 
@@ -223,8 +247,57 @@ public class BossDragon : MonoBehaviour
                 animator.SetBool("isRunning", true);
                 animator.SetBool("isAttacking", false);
                 break;
-       
-        
+
+            case State.SpecialSkill:
+                if (!isUsingSpecialSkill)
+                {
+                    isUsingSpecialSkill = true;
+                    specialSkillTimer = 0f;
+
+                    // Boss đứng yên, bỏ qua player
+                    if (agent.enabled)
+                    {
+                        agent.isStopped = true;
+                        agent.ResetPath();
+                        agent.velocity = Vector3.zero;
+                    }
+
+                    // Play anim đặc biệt
+                    animator.SetTrigger("SpecialSkill");
+
+                    // Spawn VFX
+                    if (specialSkillVFX != null)
+                    {
+                        GameObject vfx = Instantiate(specialSkillVFX, transform.position, Quaternion.identity, transform);
+                        Destroy(vfx, specialSkillDuration); // sống đúng bằng thời gian thi triển skill
+                    }
+
+                    // Damage AOE
+                    Collider[] hits = Physics.OverlapSphere(transform.position, specialSkillRadius, playerLayer);
+                    foreach (Collider hit in hits)
+                    {
+                        hit.GetComponent<PlayerHealth>()?.TakeDamage(specialSkillDamage);
+                    }
+                }
+
+                // Chỉ đếm thời gian skill, không quan tâm player
+                specialSkillTimer += Time.deltaTime;
+                if (specialSkillTimer >= specialSkillDuration)
+                {
+                    isUsingSpecialSkill = false;
+                    combatTimer = 0f;
+
+                    // Sau khi xong skill mới quay về FSM bình thường
+                    float dist = Vector3.Distance(transform.position, player.position);
+                    if (dist <= attackRange)
+                        currentState = State.Attack;
+                    else if (dist <= detectionRange)
+                        currentState = State.Chase;
+                    else
+                        currentState = State.Return;
+                }
+                break;
+
         }
     }
    
@@ -286,15 +359,38 @@ public class BossDragon : MonoBehaviour
 
     void Die()
     {
-        animator.SetTrigger("Die");
+        if (PlayerQuestManager.Instance != null)
+        {
+            PlayerQuestManager.Instance.AddKill(gameObject.tag);
+        }
+
+        // Vô hiệu hóa collider để player không còn va chạm với enemy đã chết
+        Collider col = GetComponent<Collider>();
+        if (col != null) col.enabled = false;
         agent.isStopped = true;
+
+        // Tắt các trạng thái khác để không bị override anim Die
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isAttacking", false);
+        animator.SetTrigger("Die");
+
         this.enabled = false;
-        Destroy(gameObject, 3f);
+
+        // Gọi EXP cho player
+        PlayerMovement player = FindObjectOfType<PlayerMovement>();
+        if (player != null)
+        {
+            player.GainExp(expReward);
+        }
+        Destroy(gameObject, 8f);
     }
 
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position + transform.forward * 1.5f, attackRadius);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, specialSkillRadius);
     }
 }

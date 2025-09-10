@@ -508,7 +508,9 @@ public class PlayerMovement : MonoBehaviour
     {
         level++;
         currentExp -= expToNextLevel;
-        expToNextLevel = Mathf.RoundToInt(expToNextLevel * 1.2f); // tăng exp required
+
+        // Cứ mỗi level mới thì yêu cầu exp tăng thêm 50
+        expToNextLevel += 50;
 
         // +20 HP max
         maxHP += 20;
@@ -531,6 +533,6 @@ public class PlayerMovement : MonoBehaviour
             PlayerCombat.Instance.AddPermanentDamage(10, 10);
         }
 
-        Debug.Log($"[LEVEL UP] Level {level} | HP: {maxHP} | GunDamage: {gunDamage}");
+        Debug.Log($"[LEVEL UP] Level {level} | Exp cần để lên level kế: {expToNextLevel} | HP: {maxHP} | GunDamage: {gunDamage}");
     }
 }
