@@ -9,6 +9,8 @@ TagManager:
   - Weapon
   - Chomper
   - Lion
+  - SkeleteMon
+  - Rook
   layers:
   - Default
   - TransparentFX
@@ -21,9 +23,9 @@ TagManager:
   - Rhino
   - Chomper
   - BossLion
-  - 
-  - 
-  - 
+  - Rook
+  - SkeleteMon
+  - DragonBoss
   - 
   - 
   - 

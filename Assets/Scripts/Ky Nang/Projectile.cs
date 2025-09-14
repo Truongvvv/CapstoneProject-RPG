@@ -53,6 +53,24 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        BossDragon bossDragon = other.GetComponent<BossDragon>();
+        if (bossDragon != null)
+        {
+            bossDragon.TakeDamage(finalDamage);
+            Debug.Log("Trúng " + other.name + " - Gây damage: " + finalDamage);
+            Destroy(gameObject);
+            return;
+        }
+
+        RoockEnemyAI roockEnemyAI = other.GetComponent<RoockEnemyAI>();
+        if (roockEnemyAI != null)
+        {
+            roockEnemyAI.TakeDamage(finalDamage);
+            Debug.Log("Trúng " + other.name + " - Gây damage: " + finalDamage);
+            Destroy(gameObject);
+            return;
+        }
     }
 
     private bool IsTargetTag(string tag)
