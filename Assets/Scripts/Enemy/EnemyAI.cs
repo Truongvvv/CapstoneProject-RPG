@@ -33,14 +33,12 @@ public class EnemyAI : MonoBehaviour
     public float dropChance = 0.9f;        // Xác suất rơi (30%)
     public int expReward = 50; // EXP khi chết
 
-
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         currentState = State.Idle;
-        originalPosition = transform.position;
-
+        originalPosition = transform.position;       
     }
 
     void Update()
@@ -224,7 +222,11 @@ public class EnemyAI : MonoBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
-        if (health <= 0)
+        if (health > 0)
+        {
+            animator.SetTrigger("Hurt");
+        }
+        else
         {
             Die();
             

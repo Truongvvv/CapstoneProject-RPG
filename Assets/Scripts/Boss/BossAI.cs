@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class BossAI : MonoBehaviour
@@ -32,12 +33,26 @@ public class BossAI : MonoBehaviour
     private bool hasStartedGongAnim = false;
     public int expReward = 200; // EXP khi chết
 
+    private Renderer[] renderers;
+    private Color[] originalColors;
+    public Color hitColor = Color.red;
+    public float hitFlashDuration = 0.2f;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         originalPosition = transform.position;
         currentState = State.Idle;
+
+        // Lấy tất cả renderer trong boss (bao gồm SkinnedMeshRenderer)
+        renderers = GetComponentsInChildren<Renderer>();
+
+        originalColors = new Color[renderers.Length];
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            originalColors[i] = renderers[i].material.color;
+        }
     }
 
     void Update()
@@ -198,11 +213,31 @@ public class BossAI : MonoBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
+
+        if (renderers != null && renderers.Length > 0)
+        {
+            StartCoroutine(FlashHitColor());
+        }
+
         if (health <= 0)
         {
             Die();
         }
-    }   
+    }
+    private IEnumerator FlashHitColor()
+    {
+        foreach (var r in renderers)
+        {
+            r.material.color = hitColor;
+        }
+
+        yield return new WaitForSeconds(hitFlashDuration);
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].material.color = originalColors[i];
+        }
+    }
 
     void Die()
     {
