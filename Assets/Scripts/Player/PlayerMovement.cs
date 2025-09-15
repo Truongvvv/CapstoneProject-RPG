@@ -104,6 +104,15 @@ public class PlayerMovement : MonoBehaviour
     private float buffFCooldownTimer = 0f;
     private float skillVCooldownTimer = 0f;
 
+    [Header("Âm thanh")]
+    public AudioSource audioSource; // gắn AudioSource (thường gắn vào Player hoặc model)
+    public AudioClip shootSFX;
+    public AudioClip combo1SFX;
+    public AudioClip combo2SFX;
+    public AudioClip combo3SFX;
+    public AudioClip buffSFX;
+    public AudioClip skillVSFX;
+
 
     void Start()
     {
@@ -254,6 +263,7 @@ public class PlayerMovement : MonoBehaviour
         if (gunAnimator != null)
         {
             gunAnimator.SetTrigger("Fire");
+            PlaySound(shootSFX);
         }
 
         if (firePoint == null)
@@ -440,6 +450,9 @@ public class PlayerMovement : MonoBehaviour
 
             Debug.Log("Spawn VFX Combo " + comboStep);
         }
+        if (comboStep == 1) PlaySound(combo1SFX);
+        else if (comboStep == 2) PlaySound(combo2SFX);
+        else if (comboStep == 3) PlaySound(combo3SFX);
     }
 
     private IEnumerator BuffRoutine()
@@ -457,6 +470,8 @@ public class PlayerMovement : MonoBehaviour
 
         // Tăng damage súng
         ApplyDamageBuff(buffDamageAmount, buffDuration);
+
+        PlaySound(buffSFX);
 
         Debug.Log("BUFF ACTIVATED!");
 
@@ -534,5 +549,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Debug.Log($"[LEVEL UP] Level {level} | Exp cần để lên level kế: {expToNextLevel} | HP: {maxHP} | GunDamage: {gunDamage}");
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
     }
 }

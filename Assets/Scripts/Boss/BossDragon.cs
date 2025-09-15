@@ -53,6 +53,10 @@ public class BossDragon : MonoBehaviour
     private bool isUsingSpecialSkill = false;
     private float specialSkillTimer = 0f;
 
+    [Header("Audio Settings")]
+    public AudioSource audioSource;
+    public AudioClip roarSFX;
+
 
     void Start()
     {
@@ -60,6 +64,8 @@ public class BossDragon : MonoBehaviour
         animator = GetComponent<Animator>();
         currentState = State.Idle;
         originalPosition = transform.position;
+        Application.targetFrameRate = 120;
+        QualitySettings.vSyncCount = 0;
     }
 
     void Update()
@@ -187,6 +193,8 @@ public class BossDragon : MonoBehaviour
                     animator.SetTrigger("Roar");
                     hasRoared = true;
 
+                    PlaySound(roarSFX);
+
                     if (chargeVFXPrefab != null && vfxSpawnPoint != null)
                     {
                         activeChargeVFX = Instantiate(chargeVFXPrefab, vfxSpawnPoint.position, Quaternion.identity, vfxSpawnPoint);
@@ -217,7 +225,7 @@ public class BossDragon : MonoBehaviour
                 agent.isStopped = false;
                 agent.SetDestination(player.position);
                 animator.SetBool("isRunning", true);
-                animator.SetBool("isAttacking", false);
+                animator.SetBool("isAttacking", false);             
                 break;
 
             case State.Attack:
@@ -383,6 +391,14 @@ public class BossDragon : MonoBehaviour
             player.GainExp(expReward);
         }
         Destroy(gameObject, 8f);
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
     }
 
     void OnDrawGizmosSelected()
