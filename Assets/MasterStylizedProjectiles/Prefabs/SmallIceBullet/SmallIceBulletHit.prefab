@@ -48941,7 +48941,7 @@ GameObject:
   - component: {fileID: 6951045033159309328}
   m_Layer: 0
   m_Name: SmallIceBulletHit
-  m_TagString: Untagged
+  m_TagString: Hit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

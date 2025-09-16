@@ -11,6 +11,13 @@ TagManager:
   - Lion
   - SkeleteMon
   - Rook
+  - Projectile
+  - BuffedProjectile
+  - Hit
+  - BuffedHit
+  - Combo1
+  - Combo2
+  - Combo3
   layers:
   - Default
   - TransparentFX
