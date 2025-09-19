@@ -275,74 +275,39 @@ public class PlayerMovement : MonoBehaviour
         Ray ray = new Ray(firePoint.position, firePoint.forward);
         RaycastHit hit;
 
-        // --- CHỌN PREFAB THEO TRẠNG THÁI BUFF ---
-        GameObject projectilePrefab = isBuffed ? buffedProjectileVFXPrefab : projectileVFXPrefab;
-        GameObject hitPrefab = isBuffed ? buffedHitEffectPrefab : hitEffectPrefab;
+        // --- CHỌN TAG THEO TRẠNG THÁI BUFF ---
+        string projectileTag = isBuffed ? "BuffedProjectile" : "Projectile";
+        string hitTag = isBuffed ? "BuffedHit" : "Hit";
 
-        GameObject bulletVFX = null;
-        if (projectilePrefab != null)
-        {
-            bulletVFX = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-        }
+        // Spawn projectile VFX từ pool
+        GameObject bulletVFX = PoolingManager.Instance.SpawnFromPool(projectileTag, firePoint.position, firePoint.rotation);
 
         if (Physics.Raycast(ray, out hit, 100f))
         {
-            Debug.Log($"Raycast hit: {hit.collider.name}");
-
-            // Gây damage nếu trúng enemy
+            // Gây damage
             EnemyAI enemy = hit.collider.GetComponent<EnemyAI>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(gunDamage);
-                Debug.Log("Enemy bị bắn trúng! Gây damage.");
-            }
-            // Gây damage nếu trúng enemy
+            if (enemy != null) enemy.TakeDamage(gunDamage);
+
             SmallEnemyAI chomper = hit.collider.GetComponent<SmallEnemyAI>();
-            if (chomper != null)
-            {
-                chomper.TakeDamage(gunDamage);
-                Debug.Log("Chomper bị bắn trúng! Gây damage.");
-            }
-            // Gây damage nếu trúng BossLion
+            if (chomper != null) chomper.TakeDamage(gunDamage);
+
             BossAI bosslion = hit.collider.GetComponent<BossAI>();
-            if (bosslion != null)
-            {
-                bosslion.TakeDamage(gunDamage);
-                Debug.Log("BossLion bị bắn trúng! Gây damage.");
-            }
-            // Gây damage nếu trúng BossDragon
+            if (bosslion != null) bosslion.TakeDamage(gunDamage);
+
             BossDragon bossDragon = hit.collider.GetComponent<BossDragon>();
-            if (bossDragon != null)
-            {
-                bossDragon.TakeDamage(gunDamage);
-                Debug.Log("BossDragon bij bắn trúng! Gây dame.");
-            }
+            if (bossDragon != null) bossDragon.TakeDamage(gunDamage);
 
-            // Di chuyển hiệu ứng đạn bay tới điểm trúng
+            RoockEnemyAI rookEnemy = hit.collider.GetComponent<RoockEnemyAI>();
+            if (rookEnemy != null) rookEnemy.TakeDamage(gunDamage);
+
+            // Di chuyển viên đạn đến điểm trúng
             if (bulletVFX != null)
-                StartCoroutine(MoveBulletVFX(bulletVFX, hit.point));
-
-            // Spawn hiệu ứng trúng
-            if (hitPrefab != null)
-            {
-                GameObject impactVFX = Instantiate(hitPrefab, hit.point, Quaternion.LookRotation(hit.normal));
-                Destroy(impactVFX, 1f);
-            }
+                StartCoroutine(MoveBulletVFX(bulletVFX, hit.point, hitTag));
         }
         else
         {
-            // Không trúng: đạn bay thẳng
             if (bulletVFX != null)
-            {
-                Rigidbody rb = bulletVFX.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.velocity = firePoint.forward * projectileVisualSpeed;
-                }
-                Destroy(bulletVFX, 2f);
-            }
-
-            Debug.Log("Raycast missed");
+                StartCoroutine(MoveBulletVFX(bulletVFX, ray.GetPoint(100f), hitTag)); // bay đến xa rồi tắt
         }
     }
     void HandleComboAttack()
@@ -414,42 +379,33 @@ public class PlayerMovement : MonoBehaviour
     //effect cho từng combo
     public void SpawnComboVFX()
     {
-        GameObject[] vfxArray = isBuffed ? buffedComboVFX : comboVFX;
-        int index = Mathf.Clamp(comboStep - 1, 0, vfxArray.Length - 1);
+        string comboTag = isBuffed ? $"BuffedCombo{comboStep}" : $"Combo{comboStep}";
 
-        if (vfxArray.Length > index && vfxArray[index] != null)
-        {
-            // Nếu đang buff thì spawn tại projectile point, ngược lại dùng mặc định
-            Transform spawnPoint = isBuffed && vfxSpawnPointProjectile != null
+        Transform spawnPoint = isBuffed && vfxSpawnPointProjectile != null
+            ? vfxSpawnPointProjectile
+            : (comboStep == 3 && vfxSpawnPointProjectile != null)
                 ? vfxSpawnPointProjectile
-                : (comboStep == 3 && vfxSpawnPointProjectile != null)
-                    ? vfxSpawnPointProjectile
-                    : vfxSpawnPoint;
+                : vfxSpawnPoint;
 
-            GameObject vfx = Instantiate(vfxArray[index], spawnPoint.position, spawnPoint.rotation);
-            Destroy(vfx, 2f);
+        GameObject vfx = PoolingManager.Instance.SpawnFromPool(comboTag, spawnPoint.position, spawnPoint.rotation);
 
+        if (vfx != null)
+        {
             Rigidbody rb = vfx.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                Vector3 direction;
-
-                // DÙNG CHUNG HƯỚNG combo3 (projectile point) nếu đang buff
-                if (isBuffed && vfxSpawnPointProjectile != null)
-                {
-                    direction = vfxSpawnPointProjectile.forward;
-                }
-                else
-                {
-                    direction = spawnPoint.forward;
-                }
-
+                Vector3 direction = spawnPoint.forward;
                 float force = isBuffed ? buffVFXProjectileForce : projectileForce;
+                rb.velocity = Vector3.zero; // reset velocity
                 rb.AddForce(direction * force, ForceMode.Impulse);
             }
 
-            Debug.Log("Spawn VFX Combo " + comboStep);
+            // Auto disable sau 2 giây
+            StartCoroutine(DisableAfterSeconds(vfx, 2f));
         }
+
+        Debug.Log("Spawn VFX Combo " + comboStep);
+
         if (comboStep == 1) PlaySound(combo1SFX);
         else if (comboStep == 2) PlaySound(combo2SFX);
         else if (comboStep == 3) PlaySound(combo3SFX);
@@ -459,10 +415,14 @@ public class PlayerMovement : MonoBehaviour
     {
         isBuffed = true;
 
-        // Tạo hiệu ứng quanh người (instantiate prefab)
+        // Tạo hiệu ứng quanh người từ pool
         if (buffAuraVFX != null)
         {
-            currentAura = Instantiate(buffAuraVFX, transform.position, Quaternion.identity, transform);
+            currentAura = PoolingManager.Instance.SpawnFromPool("BuffAura", transform.position, Quaternion.identity);
+            if (currentAura != null)
+            {
+                currentAura.transform.SetParent(transform);
+            }
         }
 
         // Tăng damage vũ khí tay
@@ -479,35 +439,64 @@ public class PlayerMovement : MonoBehaviour
 
         isBuffed = false;
 
-        // Xoá hiệu ứng buff sau khi hết buff
+        // Tắt hiệu ứng buff sau khi hết buff
         if (currentAura != null)
-            Destroy(currentAura);
+        {
+            currentAura.SetActive(false); // thay vì Destroy
+            currentAura = null;
+        }
     }
 
-    private IEnumerator MoveBulletVFX(GameObject bullet, Vector3 target)
+    private IEnumerator MoveBulletVFX(GameObject bullet, Vector3 target, string hitTag)
     {
-        float speed = projectileVisualSpeed; // giống với tốc độ viên đạn bình thường
-        while (bullet != null && Vector3.Distance(bullet.transform.position, target) > 0.1f)
+        float speed = projectileVisualSpeed;
+
+        while (bullet != null && bullet.activeSelf && Vector3.Distance(bullet.transform.position, target) > 0.1f)
         {
             bullet.transform.position = Vector3.MoveTowards(bullet.transform.position, target, speed * Time.deltaTime);
             yield return null;
         }
 
         if (bullet != null)
-            Destroy(bullet);
+        {
+            // tắt projectile
+            bullet.SetActive(false);
+
+            // spawn hit VFX một lần duy nhất
+            GameObject hitVFX = PoolingManager.Instance.SpawnFromPool(hitTag, target, Quaternion.identity);
+            if (hitVFX != null)
+                StartCoroutine(DisableAfterSeconds(hitVFX, 1.5f));
+        }
     }
+    private IEnumerator DisableAfterSeconds(GameObject obj, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        if (obj != null && obj.activeSelf)
+            obj.SetActive(false);
+    }
+
 
     void ShootSkillV()
     {
-        GameObject projectile = Instantiate(skillProjectilePrefab, skillSpawnPoint.position, skillSpawnPoint.rotation);
-        Rigidbody rb = projectile.GetComponent<Rigidbody>();
-        rb.velocity = skillSpawnPoint.forward * skillProjectileSpeed;
+        // Spawn từ pool thay vì Instantiate
+        GameObject projectile = PoolingManager.Instance.SpawnFromPool("SkillProjectile", skillSpawnPoint.position, skillSpawnPoint.rotation);
 
-        SkillProjectile skillScript = projectile.GetComponent<SkillProjectile>();
-        if (skillScript != null)
+        if (projectile != null)
         {
-            skillScript.burnEffectPrefab = burnEffectPrefab;
+            Rigidbody rb = projectile.GetComponent<Rigidbody>();
+            rb.velocity = skillSpawnPoint.forward * skillProjectileSpeed;
+
+            SkillProjectile skillScript = projectile.GetComponent<SkillProjectile>();
+            if (skillScript != null)
+            {
+                skillScript.burnEffectPrefab = burnEffectPrefab;
+            }
+
+            // Auto disable sau 5s (để tránh bay mãi)
+            StartCoroutine(DisableAfterSeconds(projectile, 5f));
         }
+
+        PlaySound(skillVSFX);
     }
 
     public void GainExp(int amount)

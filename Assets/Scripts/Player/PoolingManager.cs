@@ -50,6 +50,13 @@ public class PoolingManager : MonoBehaviour
         }
 
         GameObject obj = poolDictionary[tag].Dequeue();
+
+        if (obj == null)
+        {
+            Debug.LogWarning("Object trong pool " + tag + " null, có thể bị Destroy nhầm.");
+            return null;
+        }
+
         obj.SetActive(true);
         obj.transform.SetPositionAndRotation(position, rotation);
 

@@ -5544,7 +5544,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1967604026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5564,9 +5564,6 @@ MonoBehaviour:
   - tag: BuffedProjectile
     prefab: {fileID: 8378503196372639160, guid: 56a31e3fb12a7da4cb69ab4dfcc420ac, type: 3}
     size: 20
-  - tag: Hit
-    prefab: {fileID: 4186470608034871016, guid: 4b780a14d074f2f4cb9b853b6644dce1, type: 3}
-    size: 20
   - tag: BuffedHit
     prefab: {fileID: 1644958980890870, guid: 5e841c48be9318145af9204a7658cc2e, type: 3}
     size: 20
@@ -5579,6 +5576,24 @@ MonoBehaviour:
   - tag: Combo3
     prefab: {fileID: 1996079926692674, guid: fb101b1453aec9747a5ed7244075b1a2, type: 3}
     size: 10
+  - tag: BuffedCombo1
+    prefab: {fileID: 3020920808754819069, guid: d860dbff6d19af4448c7d0e478fa5cef, type: 3}
+    size: 10
+  - tag: BuffedCombo2
+    prefab: {fileID: 6882116249847192011, guid: c4b2ddd78a478394da66879a43e7af99, type: 3}
+    size: 10
+  - tag: BuffedCombo3
+    prefab: {fileID: 6111486948785554852, guid: f7967f33aeac15f48a3732e3fd3ac36c, type: 3}
+    size: 10
+  - tag: BuffAura
+    prefab: {fileID: 1371584380506648, guid: 13bf577ec3321a741a0ca5ccdee3e9b1, type: 3}
+    size: 20
+  - tag: Hit
+    prefab: {fileID: 4186470608034871016, guid: 4b780a14d074f2f4cb9b853b6644dce1, type: 3}
+    size: 20
+  - tag: SkillProjectile
+    prefab: {fileID: 5912344974454636654, guid: a5e8f365e98f6b94c9ee19b1acba5d58, type: 3}
+    size: 20
 --- !u!4 &1967604027
 Transform:
   m_ObjectHideFlags: 0
@@ -5728,6 +5743,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2000327898172057374, guid: 6cc9bcfb85a124a4f813bff1f54281b2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 2189495687021888431, guid: 6cc9bcfb85a124a4f813bff1f54281b2, type: 3}
       propertyPath: m_Name
       value: Ellen
