@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1528d5009715bd542a143033471dd29b, type: 3}
+  m_Name: DefaultSetting
+  m_EditorClassIdentifier: 
+  masterInitVolume: 1
+  musicInitVolume: 0.3
+  sfxInitVolume: 0.3
+  voiceInitVolume: 1
+  muteAll: 0
+  resolution: 3
+  fullscreen: 2
+  graphicQuality: 3
+  fpsLimit: 60
+  textureQuality: 2
+  shadowQuality: 2
+  antiAliasing: 1
+  postProcessing: 1
+  renderScalePercent: 100
+  mouseSensitivity: 1.5
+  invertYAxis: 0
+  inputDevice: 0
+  vibration: 1
+  difficulty: 1
+  autoSave: 1
+  tutorialEnabled: 1
+  cameraShake: 1
+  hud: 0
+  fieldOfView: 90
+  language: 0
+  subtitle: 1
+  region: 0
+  crossPlatformPlay: 1
+  voiceChat: 2
+  chatFilter: 1
+  showPing: 1
+  privacy: 0

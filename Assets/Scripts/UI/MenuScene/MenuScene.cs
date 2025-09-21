@@ -1,12 +1,13 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
-using EditorAttributes;
+//using EditorAttributes;
+using GameConfig;
 
 public class MenuScene : MonoBehaviour
 {
     [Header("UI References")]
-    [Required]
+    //[Required]
     [SerializeField]
     private Canvas _canvas;
 
@@ -20,13 +21,17 @@ public class MenuScene : MonoBehaviour
 
     [Header("Dialogs")]
     [Space(5)]
+    [SerializeField] private GameObject _newGameDialog;
     [SerializeField] private GameObject _settingDialog;
     [SerializeField] private GameObject _helpDialog;
-    [SerializeField] private GameObject _newGameDialog;
 
     private void Awake()
     {
         InitButtonEvents();
+
+        _newGameDialog.gameObject.SetActive(false);
+        _settingDialog.gameObject.SetActive(false);
+        _helpDialog.gameObject.SetActive(false);
     }
 
     private void InitButtonEvents()
@@ -38,6 +43,7 @@ public class MenuScene : MonoBehaviour
         _exitButton.onClick.AddListener(OnExitButtonPressed);
     }
 
+    #region Onclick Events
     private void OnExitButtonPressed()
     {
 #if UNITY_EDITOR
@@ -66,4 +72,5 @@ public class MenuScene : MonoBehaviour
     {
 
     }
+    #endregion
 }
