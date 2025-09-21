@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Security.Cryptography;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
@@ -32,6 +33,8 @@ public class EnemyAI : MonoBehaviour
     [Range(0f, 1f)]
     public float dropChance = 0.9f;        // Xác suất rơi (30%)
     public int expReward = 50; // EXP khi chết
+    [Header("Extra Loot")]
+    public GameObject healthPotionPrefab;
 
     void Start()
     {
@@ -173,12 +176,19 @@ public class EnemyAI : MonoBehaviour
     //Hàm rớt vật phẩm
     void TryDropLoot()
     {
-        if (lootPrefabs.Length == 0) return;
-
-        if (Random.value <= dropChance)
+        // 1. Rớt random item
+        if (lootPrefabs.Length > 0 && Random.value <= dropChance)
         {
             int index = Random.Range(0, lootPrefabs.Length);
-            Instantiate(lootPrefabs[index], transform.position + Vector3.up * 0.5f, Quaternion.identity);
+            Vector3 offset = new Vector3(0.5f, 0.5f, 0); // lệch sang bên phải 0.5
+            Instantiate(lootPrefabs[index], transform.position + offset, Quaternion.identity);
+        }
+
+        // 2. Luôn rớt bình máu
+        if (healthPotionPrefab != null)
+        {
+            Vector3 offset = new Vector3(-0.5f, 0.5f, 0); // lệch sang bên trái 0.5
+            Instantiate(healthPotionPrefab, transform.position + offset, Quaternion.identity);
         }
     }
 

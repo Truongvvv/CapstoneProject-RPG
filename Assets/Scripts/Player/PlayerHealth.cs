@@ -1,20 +1,28 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
     public float maxHealth = 100f;
     private float currentHealth;
 
+    [Header("UI")]
+    public Slider healthSlider;
+    public Text healthText;
+
     void Start()
     {
         currentHealth = maxHealth;
+        UpdateHealthUI();
     }
 
-    // Gọi hàm này để gây sát thương lên player
+    // Gây sát thương
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
-        Debug.Log($"Player took {amount} damage. Current health: {currentHealth}");
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        UpdateHealthUI();
 
         if (currentHealth <= 0f)
         {
@@ -25,17 +33,42 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Player has died!");
-        // TODO: Thêm hiệu ứng chết, disable movement, respawn, v.v.       
     }
 
-    // (Tùy chọn) Thêm hồi máu
+    // Hồi máu
     public void Heal(float amount)
     {
-        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
-        Debug.Log($"Player healed. Current health: {currentHealth}");
+        currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        UpdateHealthUI();
     }
 
-    // (Tùy chọn) Getter để lấy máu còn lại
+    // Dùng khi player lên level
+    public void SetMaxHealth(float newMaxHealth, bool refill = true)
+    {
+        maxHealth = newMaxHealth;
+
+        if (refill)
+            currentHealth = maxHealth; // hồi đầy máu nếu muốn
+
+        UpdateHealthUI(); // luôn cập nhật UI khi max HP thay đổi
+    }
+
+    // Cập nhật Slider + Text
+    void UpdateHealthUI()
+    {
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
+        }
+
+        if (healthText != null)
+        {
+            healthText.text = $"HP: {(int)currentHealth}/{(int)maxHealth}";
+        }
+    }
+
     public float GetHealth()
     {
         return currentHealth;
