@@ -8,7 +8,7 @@ public class EnemyAI : MonoBehaviour
     public float detectionRange = 15f;
     public float attackRange = 2f;
     public float retreatRange = 5f;
-    public float health = 100f;
+    public float health = 400f;
     public float retreatThreshold = 30f; // Nếu máu thấp hơn thì chạy trốn
 
     public float attackRadius = 1.5f;      // bán kính đánh trúng
@@ -132,26 +132,18 @@ public class EnemyAI : MonoBehaviour
                 agent.isStopped = true;
                 agent.velocity = Vector3.zero;
                 transform.LookAt(player);
+
                 animator.applyRootMotion = false;
                 animator.SetBool("isRunning", false);
                 animator.SetBool("isAttacking", true);
 
                 attackTimer += Time.deltaTime;
 
-                if (!hasDealtDamage && attackTimer >= attackCooldown)
+                if (attackTimer >= attackCooldown)
                 {
-                    Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward * 1.0f, attackRadius, playerLayer);
-                    foreach (Collider hit in hits)
-                    {
-                        if (hit.transform == player)
-                        {
-                            Debug.Log("Enemy hit player");
-                            hit.GetComponent<PlayerHealth>()?.TakeDamage(20f);
-                            hasDealtDamage = true;
-                            attackTimer = 0f;
-                            break;
-                        }
-                    }
+                    attackTimer = 0f;
+                    animator.SetTrigger("DoAttack"); // nếu có anim trigger riêng
+                    Invoke(nameof(DealDamage), 0.2f); // sau 0.2s mới check và gây dame
                 }
                 break;
 
@@ -172,7 +164,24 @@ public class EnemyAI : MonoBehaviour
                 break;
         }
     }
+    void DealDamage()
+    {
+        Collider[] hits = Physics.OverlapSphere(
+            transform.position + transform.forward * 1.0f,
+            attackRadius,
+            playerLayer
+        );
 
+        foreach (Collider hit in hits)
+        {
+            if (hit.transform == player)
+            {
+                Debug.Log("Enemy hit player");
+                hit.GetComponent<PlayerHealth>()?.TakeDamage(50f);
+                break;
+            }
+        }
+    }
     //Hàm rớt vật phẩm
     void TryDropLoot()
     {

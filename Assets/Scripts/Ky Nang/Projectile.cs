@@ -71,6 +71,14 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        EnemyDragon dragonEnemy = other.GetComponent<EnemyDragon>();
+        if (dragonEnemy != null)
+        {
+            dragonEnemy.TakeDamage(finalDamage);
+            Debug.Log("Trúng " + other.name + " - Gây damage: " + finalDamage);
+            Destroy(gameObject);
+            return;
+        }
     }
 
     private bool IsTargetTag(string tag)

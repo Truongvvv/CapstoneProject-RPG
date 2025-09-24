@@ -23,6 +23,7 @@ public class RoockEnemyAI : MonoBehaviour
     private float patrolTimer = 0f;
     public float patrolInterval = 3f; // đổi điểm patrol mỗi 3 giây
     private Vector3 initialPosition;
+    public float attackRadius = 3f;      // bán kính đánh trúng
 
     public LayerMask playerLayer;
 
@@ -75,22 +76,20 @@ public class RoockEnemyAI : MonoBehaviour
 
             case State.Attack:
                 agent.isStopped = true;
+                agent.velocity = Vector3.zero;
                 transform.LookAt(player);
+
+                animator.applyRootMotion = false;
                 animator.SetBool("isRunning", false);
                 animator.SetBool("isAttacking", true);
 
                 attackTimer += Time.deltaTime;
+
                 if (attackTimer >= attackCooldown)
                 {
-                    Collider[] hits = Physics.OverlapSphere(transform.position, attackRange, playerLayer);
-                    foreach (var hit in hits)
-                    {
-                        if (hit.transform == player)
-                        {
-                            hit.GetComponent<PlayerHealth>()?.TakeDamage(25f);
-                        }
-                    }
                     attackTimer = 0f;
+                    animator.SetTrigger("DoAttack"); // nếu có anim trigger riêng
+                    Invoke(nameof(DealDamage), 0.2f); // sau 0.2s mới check và gây dame
                 }
                 break;
 
@@ -120,6 +119,24 @@ public class RoockEnemyAI : MonoBehaviour
                     currentState = State.Patrol; // quay lại patrol sau khi về vị trí ban đầu
                 }
                 break;
+        }
+    }
+    void DealDamage()
+    {
+        Collider[] hits = Physics.OverlapSphere(
+            transform.position + transform.forward * 1.0f,
+            attackRadius,
+            playerLayer
+        );
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.transform == player)
+            {
+                Debug.Log("Enemy hit player");
+                hit.GetComponent<PlayerHealth>()?.TakeDamage(40f);
+                break;
+            }
         }
     }
 
