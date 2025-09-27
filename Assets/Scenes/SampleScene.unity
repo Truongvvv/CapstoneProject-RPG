@@ -8083,6 +8083,10 @@ PrefabInstance:
       value: SkeleteMon
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
+      propertyPath: quests.Array.data[0].expReward
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[1].questName
       value: Kill Rook
       objectReference: {fileID: 0}

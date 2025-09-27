@@ -45,6 +45,11 @@ public class PlayerQuestManager : MonoBehaviour
         }
     }
 
+    public int GetCurrentQuestIndex()
+    {
+        return currentQuestIndex;
+    }
+
     public void AddKill(string enemyTag)
     {
         if (currentQuest != null && currentQuest.isAccepted && !currentQuest.isCompleted)
@@ -78,10 +83,19 @@ public class PlayerQuestManager : MonoBehaviour
         if (currentQuest != null && currentQuest.isCompleted)
         {
             Debug.Log("Trả nhiệm vụ: " + currentQuest.questName);
+
+            // Thưởng EXP cho player
+            PlayerMovement player = FindObjectOfType<PlayerMovement>();
+            if (player != null)
+            {
+                player.GainExp(currentQuest.expReward);
+                Debug.Log($"[QUEST] +{currentQuest.expReward} EXP từ {currentQuest.questName}");
+            }
+
             QuestTracker.Instance.ClearTracker();
             currentQuest = null;
 
-            // Nhận nhiệm vụ tiếp theo (nếu còn)
+            // Nhận nhiệm vụ tiếp theo
             AcceptNextQuest(questList);
         }
     }

@@ -12,6 +12,8 @@ public class QuestGiver : MonoBehaviour
     private bool playerInRange;
     private int selectedIndex = 0; // 0 = nhận, 1 = trả
 
+    public int[] expRewards; // mảng phần thưởng exp theo thứ tự quest
+
     void Start()
     {
         questUI.SetActive(false);
@@ -49,7 +51,21 @@ public class QuestGiver : MonoBehaviour
                 }
                 else if (selectedIndex == 1 && PlayerQuestManager.Instance.CanTurnIn())
                 {
+                    int questIndex = PlayerQuestManager.Instance.GetCurrentQuestIndex();
                     PlayerQuestManager.Instance.TurnInQuest(quests);
+
+                    // ---- Thưởng EXP theo mảng ----
+                    PlayerMovement player = FindObjectOfType<PlayerMovement>();
+                    if (player != null)
+                    {
+                        int reward = 200; // mặc định
+                        if (expRewards != null && questIndex < expRewards.Length)
+                            reward = expRewards[questIndex];
+
+                        player.GainExp(reward);
+                        Debug.Log($"[QUEST] Hoàn thành quest {questIndex}, +{reward} EXP!");
+                    }
+
                     questUI.SetActive(false);
                 }
             }
