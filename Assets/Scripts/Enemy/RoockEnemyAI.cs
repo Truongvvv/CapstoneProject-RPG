@@ -24,6 +24,16 @@ public class RoockEnemyAI : MonoBehaviour
     public float patrolInterval = 3f; // đổi điểm patrol mỗi 3 giây
     private Vector3 initialPosition;
     public float attackRadius = 3f;      // bán kính đánh trúng
+    [Header("Loot Settings")]
+    public GameObject[] lootPrefabs;       // Các vật phẩm có thể rơi
+    [Range(0f, 1f)]
+    public float dropChance = 0.9f;        // Xác suất rơi (90%)
+    [Header("Extra Loot")]
+    public GameObject healthPotionPrefab;
+
+
+    private Vector3 spawnPoint;
+    private Quaternion spawnRotation;
 
     public LayerMask playerLayer;
 
@@ -31,6 +41,9 @@ public class RoockEnemyAI : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        currentState = State.Idle;
+        spawnPoint = transform.position;
+        spawnRotation = transform.rotation;
         initialPosition = transform.position;
     }
 
@@ -189,23 +202,73 @@ public class RoockEnemyAI : MonoBehaviour
             }
         }
     }
-    void Die()
+    void TryDropLoot()
     {
-        if (PlayerQuestManager.Instance != null)
+        // 1. Rớt random item
+        if (lootPrefabs.Length > 0 && Random.value <= dropChance)
         {
-            PlayerQuestManager.Instance.AddKill(gameObject.tag);
+            int index = Random.Range(0, lootPrefabs.Length);
+            Vector3 offset = new Vector3(0.5f, 0.5f, 0);
+            Instantiate(lootPrefabs[index], transform.position + offset, Quaternion.identity);
         }
 
+        // 2. Luôn rớt bình máu
+        if (healthPotionPrefab != null)
+        {
+            Vector3 offset = new Vector3(-0.5f, 0.5f, 0);
+            Instantiate(healthPotionPrefab, transform.position + offset, Quaternion.identity);
+        }
+    }
+
+    void Die()
+    {
         animator.SetTrigger("Die");
         agent.isStopped = true;
+
+        // Ẩn collider
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
 
+        // Ẩn mesh renderer (model biến mất)
+        foreach (Renderer r in GetComponentsInChildren<Renderer>())
+            r.enabled = false;
+
+        // Tắt NavMeshAgent + AI
+        agent.enabled = false;
+        this.enabled = false;
+
+        TryDropLoot();
+
         PlayerMovement player = FindObjectOfType<PlayerMovement>();
         if (player != null)
+        {
             player.GainExp(expReward);
+        }
 
-        Destroy(gameObject, 2f);
+        // Hẹn hồi sinh sau 10 giây
+        Invoke(nameof(Respawn), 10f);
+    }
+    void Respawn()
+    {
+        health = 300f; // hoặc dùng maxHealth
+
+        foreach (Renderer r in GetComponentsInChildren<Renderer>())
+            r.enabled = true;
+
+        Collider col = GetComponent<Collider>();
+        if (col != null) col.enabled = true;
+
+        agent.enabled = true;
+        this.enabled = true;
+
+        agent.Warp(spawnPoint);
+        transform.rotation = spawnRotation;
+
+        // Reset animator đúng cách
+        animator.Rebind();
+        animator.Update(0f);
+
+        currentState = State.Idle;
     }
 
     void OnDrawGizmosSelected()

@@ -439,6 +439,9 @@ MonoBehaviour:
   patrolRadius: 10
   patrolInterval: 3
   attackRadius: 3
+  lootPrefabs: []
+  dropChance: 0.9
+  healthPotionPrefab: {fileID: 0}
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -556,6 +559,9 @@ MonoBehaviour:
   patrolRadius: 15
   patrolInterval: 3
   attackRadius: 3
+  lootPrefabs: []
+  dropChance: 0.9
+  healthPotionPrefab: {fileID: 0}
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -932,6 +938,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -9030539452928752679, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -8800149170198534275, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.25
@@ -988,9 +1002,165 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -8198891563690028711, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -7160793908248099495, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -6848467621886443290, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -6177642474088948958, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -6101499516219220586, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -5908598343899765610, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -5490867874046250378, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -4504369626594253086, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -4334072010641093626, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -4238831602851491272, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -4022123211635809532, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -3822877537057681581, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -3468593987807084332, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -2320828036839933246, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -1185714302947140735, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -970436531481118979, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -806521400605154254, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -369282243257662313, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 883035055334631763, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
       propertyPath: m_Name
       value: Mon_BlackDragon31_Skeleton
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_TagString
+      value: BlackMon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201846939646455081, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2551068020562054109, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3560195172173584855, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3607671278085371776, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4118633992297667346, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4220239911951066596, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4403039671313729995, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4949048231981175553, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5237895619173909316, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332809968238436118, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5353239801203298169, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5366919953560279106, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5594830903767197167, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005289281799709730, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6433093016925539096, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7317287196292843220, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7618363277175975297, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8677219773205093729, guid: 4a1d642987830c44093a1308fc6321d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1449,6 +1619,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 132742, guid: a3e7850e56f7e2d4a8cb9e150f10c835, type: 3}
       propertyPath: m_Name
+      value: Dragon1
+      objectReference: {fileID: 0}
+    - target: {fileID: 132742, guid: a3e7850e56f7e2d4a8cb9e150f10c835, type: 3}
+      propertyPath: m_TagString
       value: Dragon1
       objectReference: {fileID: 0}
     - target: {fileID: 400904, guid: a3e7850e56f7e2d4a8cb9e150f10c835, type: 3}
@@ -5264,6 +5438,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dragon2
       objectReference: {fileID: 0}
+    - target: {fileID: 130416, guid: 70f277dcf2cdfdd4db7ee0ca76e07767, type: 3}
+      propertyPath: m_TagString
+      value: Dragon2
+      objectReference: {fileID: 0}
     - target: {fileID: 459364, guid: 70f277dcf2cdfdd4db7ee0ca76e07767, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.8
@@ -6183,7 +6361,7 @@ MonoBehaviour:
   detectionRange: 15
   attackRange: 4
   retreatRange: 5
-  health: 300
+  health: 400
   retreatThreshold: 30
   attackRadius: 4
   playerLayer:
@@ -6470,6 +6648,10 @@ PrefabInstance:
     - target: {fileID: 8753619234690991416, guid: e812c04705f47d645beb13e90ec0ff93, type: 3}
       propertyPath: m_Name
       value: GolemPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 8753619234690991416, guid: e812c04705f47d645beb13e90ec0ff93, type: 3}
+      propertyPath: m_TagString
+      value: Golem
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7297,6 +7479,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   expReward: 50
+  lootPrefabs:
+  - {fileID: 0}
+  dropChance: 0.9
+  healthPotionPrefab: {fileID: 0}
 --- !u!65 &1583306575
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7569,6 +7755,81 @@ MonoBehaviour:
   dropChance: 1
   expReward: 50
   healthPotionPrefab: {fileID: 6888270979956852927, guid: 3207481f3c74c1946b167e972806bcd3, type: 3}
+--- !u!1 &1685611047 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 109776, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+  m_PrefabInstance: {fileID: 1761858996}
+  m_PrefabAsset: {fileID: 0}
+--- !u!195 &1685611048
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685611047}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 3.73
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 5.23
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!65 &1685611049
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685611047}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.2022305, y: 6.1274815, z: 5.6764264}
+  m_Center: {x: -0.06542304, y: 2.5637429, z: -0.4100017}
+--- !u!114 &1685611052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685611047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75963847746585641b2558783e8aadb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 2100194186}
+  detectionRange: 15
+  attackRange: 5
+  retreatRange: 5
+  health: 600
+  retreatThreshold: 150
+  attackRadius: 5
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  attackCooldown: 1
+  lootPrefabs: []
+  dropChance: 0.9
+  expReward: 50
+  healthPotionPrefab: {fileID: 0}
 --- !u!1 &1690233993
 GameObject:
   m_ObjectHideFlags: 0
@@ -7644,6 +7905,92 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1690233993}
   m_CullTransparentMesh: 1
+--- !u!1001 &1761858996
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 109776, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_Name
+      value: Dragon3
+      objectReference: {fileID: 0}
+    - target: {fileID: 109776, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_TagString
+      value: Dragon3
+      objectReference: {fileID: 0}
+    - target: {fileID: 480112, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 480112, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 480112, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 480112, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -25.274952
+      objectReference: {fileID: 0}
+    - target: {fileID: 480112, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.000005722046
+      objectReference: {fileID: 0}
+    - target: {fileID: 480112, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 50.771587
+      objectReference: {fileID: 0}
+    - target: {fileID: 480112, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99856824
+      objectReference: {fileID: 0}
+    - target: {fileID: 480112, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 480112, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.053493824
+      objectReference: {fileID: 0}
+    - target: {fileID: 480112, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 480112, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 480112, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 480112, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 480112, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 109776, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1685611049}
+    - targetCorrespondingSourceObject: {fileID: 109776, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1685611048}
+    - targetCorrespondingSourceObject: {fileID: 109776, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1685611052}
+  m_SourcePrefab: {fileID: 100100000, guid: 8e302007cba46d94b970c6a0955b9628, type: 3}
 --- !u!1 &1967604025
 GameObject:
   m_ObjectHideFlags: 0
@@ -7932,6 +8279,18 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 2100194186}
+    - target: {fileID: 6844584439717025557, guid: 510e450a9dabe4c4a8f50c43d2a631d5, type: 3}
+      propertyPath: healthPotionPrefab
+      value: 
+      objectReference: {fileID: 6888270979956852927, guid: 3207481f3c74c1946b167e972806bcd3, type: 3}
+    - target: {fileID: 6844584439717025557, guid: 510e450a9dabe4c4a8f50c43d2a631d5, type: 3}
+      propertyPath: lootPrefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844584439717025557, guid: 510e450a9dabe4c4a8f50c43d2a631d5, type: 3}
+      propertyPath: 'lootPrefabs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1225773293244643807, guid: 48f713572c7a4cb458bd4d0f201075c5, type: 3}
     - target: {fileID: 8781499296576010760, guid: 510e450a9dabe4c4a8f50c43d2a631d5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.31
@@ -8064,7 +8423,11 @@ PrefabInstance:
       objectReference: {fileID: 427772819}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.size
-      value: 4
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
+      propertyPath: quests.Array.data[0].enemyTag
+      value: Chomper
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[1].enemyTag
@@ -8072,75 +8435,91 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[2].enemyTag
-      value: Lion
+      value: BlackMon
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[3].enemyTag
-      value: DragonBoss
+      value: Rhino
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[4].enemyTag
-      value: SkeleteMon
+      value: Golem
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[0].expReward
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
+      propertyPath: quests.Array.data[1].expReward
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[1].questName
-      value: Kill Rook
+      value: Kill Crooked
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
+      propertyPath: quests.Array.data[2].expReward
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[2].questName
-      value: Kill Boss Lion
+      value: Kill Blackmon
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
+      propertyPath: quests.Array.data[3].expReward
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[3].questName
-      value: Kill BossDragon
+      value: Kill 10 Rhino
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
+      propertyPath: quests.Array.data[4].expReward
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[4].questName
-      value: Kill SkeleteMon
+      value: Kill 10 Golem
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[0].description
-      value: 2 chomper
+      value: 3 chomper
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[1].description
-      value: 3 rook
+      value: 5 rook
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[2].description
-      value: 1 Lion
+      value: 5 Blackmon
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[3].description
-      value: Boss Dragon
+      value: 10 Rhino
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[4].description
-      value: 3 SkeleteMon
+      value: 10 Golem
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[0].requiredKills
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[1].requiredKills
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[2].requiredKills
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[3].requiredKills
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3226348459711388634, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: quests.Array.data[4].requiredKills
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4031264036815738703, guid: 7cf1069a64f4ccc438182d7789157513, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8276,3 +8655,4 @@ SceneRoots:
   - {fileID: 1377516715}
   - {fileID: 708618348}
   - {fileID: 963920543}
+  - {fileID: 1761858996}

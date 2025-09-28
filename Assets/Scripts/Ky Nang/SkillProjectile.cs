@@ -18,6 +18,7 @@ public class SkillProjectile : MonoBehaviour
         BossDragon bossDragon = other.GetComponent<BossDragon>();
         EnemyAI enemyAI = other.GetComponent<EnemyAI>();
         EnemyDragon dragonEnemy = other.GetComponent<EnemyDragon>();
+        EnemyDragonTwo dragonTwoEnemy = other.GetComponent<EnemyDragonTwo>();
 
 
         Debug.Log("Projectile hit: " + other.name);
@@ -105,8 +106,21 @@ public class SkillProjectile : MonoBehaviour
             else
                 Debug.LogError("Burn prefab missing SkillBurnProjectile!");
         }
+        if (dragonTwoEnemy != null)
+        {
+            dragonTwoEnemy.TakeDamage(initialHitDamage);
 
-        if (enemy != null || boss != null || bossDragon != null || enemyAI != null || roock != null || dragonEnemy != null)
+            int burnDamage = PlayerCombat.Instance != null ? PlayerCombat.Instance.burnBaseDamage : 0;
+            GameObject burn = Instantiate(burnEffectPrefab, dragonTwoEnemy.transform.position, Quaternion.identity, dragonTwoEnemy.transform);
+
+            SkillBurnProjectile burnScript = burn.GetComponent<SkillBurnProjectile>();
+            if (burnScript != null)
+                burnScript.Init(dragonTwoEnemy, burnDamage);
+            else
+                Debug.LogError("Burn prefab missing SkillBurnProjectile!");
+        }
+
+        if (enemy != null || boss != null || bossDragon != null || enemyAI != null || roock != null || dragonEnemy != null || dragonTwoEnemy != null)
         {
             Destroy(gameObject);
         }

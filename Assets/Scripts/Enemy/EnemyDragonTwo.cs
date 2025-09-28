@@ -1,15 +1,14 @@
-﻿using System.Security.Cryptography;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyDragonTwo : MonoBehaviour
 {
     public Transform player;
     public float detectionRange = 15f;
     public float attackRange = 2f;
     public float retreatRange = 5f;
-    public float health = 400f;
-    public float retreatThreshold = 30f; // Nếu máu thấp hơn thì chạy trốn
+    public float health = 600f;
+    public float retreatThreshold = 150f; // Nếu máu thấp hơn thì chạy trốn
 
     public float attackRadius = 1.5f;      // bán kính đánh trúng
     public LayerMask playerLayer;          // layer của player
@@ -21,18 +20,14 @@ public class EnemyAI : MonoBehaviour
     private Animator animator;
 
     private Vector3 originalPosition;
-    private enum State { Idle, Roar, Chase, Attack, Retreat, Return }
+    private enum State { Idle, Chase, Attack, Retreat, Return }
     private State currentState;
-
-    public float roarDuration = 1.5f;
-    private float roarTimer = 0f;
-    private bool hasRoared = false;
 
     [Header("Loot Settings")]
     public GameObject[] lootPrefabs;       // Các vật phẩm có thể rơi
     [Range(0f, 1f)]
-    public float dropChance = 0.9f;        // Xác suất rơi (30%)
-    public int expReward = 250; // EXP khi chết
+    public float dropChance = 0.9f;        // Xác suất rơi (90%)
+    public int expReward = 50;             // EXP khi chết
     [Header("Extra Loot")]
     public GameObject healthPotionPrefab;
 
@@ -63,32 +58,15 @@ public class EnemyAI : MonoBehaviour
         }
         else if (distance <= detectionRange)
         {
-            if (!hasRoared)
-            {
-                currentState = State.Roar;
-            }
-            else
-            {
-                currentState = State.Chase;
-            }
+            currentState = State.Chase;
         }
         else
         {
-            // Mất dấu player → reset roar
-            hasRoared = false;
-            roarTimer = 0f;
-
             float backDistance = Vector3.Distance(transform.position, originalPosition);
             if (backDistance > 0.5f)
                 currentState = State.Return;
             else
                 currentState = State.Idle;
-        }
-
-        if (distance > detectionRange)
-        {
-            hasRoared = false;
-            roarTimer = 0f;
         }
 
         if (currentState != State.Attack)
@@ -107,6 +85,7 @@ public class EnemyAI : MonoBehaviour
             case State.Idle:
                 agent.isStopped = true;
                 animator.SetBool("isRunning", false);
+                animator.SetBool("isAttacking", false);
                 break;
 
             case State.Chase:
@@ -114,23 +93,6 @@ public class EnemyAI : MonoBehaviour
                 agent.SetDestination(player.position);
                 animator.SetBool("isRunning", true);
                 animator.SetBool("isAttacking", false);
-                break;
-
-            case State.Roar:
-                agent.isStopped = true;
-                agent.velocity = Vector3.zero;
-                transform.LookAt(player);
-                animator.SetBool("isRunning", false);
-                animator.SetBool("isAttacking", false);
-                animator.SetTrigger("Roar");
-
-                roarTimer += Time.deltaTime;
-                if (roarTimer >= roarDuration)
-                {
-                    hasRoared = true;
-                    currentState = State.Chase;
-                    roarTimer = 0f;
-                }
                 break;
 
             case State.Attack:
@@ -148,7 +110,7 @@ public class EnemyAI : MonoBehaviour
                 {
                     attackTimer = 0f;
                     animator.SetTrigger("DoAttack"); // nếu có anim trigger riêng
-                    Invoke(nameof(DealDamage), 0.2f); // sau 0.2s mới check và gây dame
+                    Invoke(nameof(DealDamage), 0.1f); // sau 0.2s mới check và gây dame
                 }
                 break;
 
@@ -169,6 +131,7 @@ public class EnemyAI : MonoBehaviour
                 break;
         }
     }
+
     void DealDamage()
     {
         Collider[] hits = Physics.OverlapSphere(
@@ -182,11 +145,12 @@ public class EnemyAI : MonoBehaviour
             if (hit.transform == player)
             {
                 Debug.Log("Enemy hit player");
-                hit.GetComponent<PlayerHealth>()?.TakeDamage(50f);
+                hit.GetComponent<PlayerHealth>()?.TakeDamage(80f);
                 break;
             }
         }
     }
+
     //Hàm rớt vật phẩm
     void TryDropLoot()
     {
@@ -194,21 +158,20 @@ public class EnemyAI : MonoBehaviour
         if (lootPrefabs.Length > 0 && Random.value <= dropChance)
         {
             int index = Random.Range(0, lootPrefabs.Length);
-            Vector3 offset = new Vector3(0.5f, 0.5f, 0); // lệch sang bên phải 0.5
+            Vector3 offset = new Vector3(0.5f, 0.5f, 0);
             Instantiate(lootPrefabs[index], transform.position + offset, Quaternion.identity);
         }
 
         // 2. Luôn rớt bình máu
         if (healthPotionPrefab != null)
         {
-            Vector3 offset = new Vector3(-0.5f, 0.5f, 0); // lệch sang bên trái 0.5
+            Vector3 offset = new Vector3(-0.5f, 0.5f, 0);
             Instantiate(healthPotionPrefab, transform.position + offset, Quaternion.identity);
         }
     }
 
     void OnTriggerEnter(Collider other)
-    {        
-
+    {
         if (other.CompareTag("Weapon"))
         {
             PlayerCombat combat = other.GetComponentInParent<PlayerCombat>();
@@ -235,7 +198,7 @@ public class EnemyAI : MonoBehaviour
                 Debug.Log("Không tìm thấy PlayerCombat!");
             }
         }
-    }   
+    }
 
     // Hàm để nhận sát thương
     public void TakeDamage(float damage)
@@ -248,7 +211,6 @@ public class EnemyAI : MonoBehaviour
         else
         {
             Die();
-            
         }
     }
 
@@ -280,6 +242,7 @@ public class EnemyAI : MonoBehaviour
         // Hẹn hồi sinh sau 10 giây
         Invoke(nameof(Respawn), 10f);
     }
+
     void Respawn()
     {
         // Reset stats
@@ -300,11 +263,8 @@ public class EnemyAI : MonoBehaviour
         agent.Warp(spawnPoint);
         transform.rotation = spawnRotation;
 
-        // Reset animator hoàn toàn
-        animator.Rebind();     // reset toàn bộ parameter + state
-        animator.Update(0f);   // cập nhật ngay lập tức
-
-        // Đảm bảo Idle chạy
+        // Reset animator về Idle
+        animator.ResetTrigger("Die");
         animator.SetBool("isRunning", false);
         animator.SetBool("isAttacking", false);
         animator.Play("Idle", 0, 0f);
