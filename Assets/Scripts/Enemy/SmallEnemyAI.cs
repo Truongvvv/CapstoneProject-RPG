@@ -248,6 +248,9 @@ public class SmallEnemyAI : MonoBehaviour
 
     void Die()
     {
+        if (PlayerQuestManager.Instance != null)
+            PlayerQuestManager.Instance.AddKill(gameObject.tag);
+
         animator.SetTrigger("Die");
         agent.isStopped = true;
 

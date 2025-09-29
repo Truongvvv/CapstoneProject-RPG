@@ -27,7 +27,7 @@ public class EnemyDragon : MonoBehaviour
     public GameObject[] lootPrefabs;       // Các vật phẩm có thể rơi
     [Range(0f, 1f)]
     public float dropChance = 0.9f;        // Xác suất rơi (90%)
-    public int expReward = 50;             // EXP khi chết
+    public int expReward = 300;             // EXP khi chết
     [Header("Extra Loot")]
     public GameObject healthPotionPrefab;
 
@@ -216,6 +216,9 @@ public class EnemyDragon : MonoBehaviour
 
     void Die()
     {
+        if (PlayerQuestManager.Instance != null)
+            PlayerQuestManager.Instance.AddKill(gameObject.tag);
+
         animator.SetTrigger("Die");
         agent.isStopped = true;
 

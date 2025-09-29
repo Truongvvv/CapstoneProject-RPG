@@ -8,6 +8,7 @@ public class EnemyDragonTwo : MonoBehaviour
     public float attackRange = 2f;
     public float retreatRange = 5f;
     public float health = 600f;
+    public int expReward = 400;             // EXP khi chết
     public float retreatThreshold = 150f; // Nếu máu thấp hơn thì chạy trốn
 
     public float attackRadius = 1.5f;      // bán kính đánh trúng
@@ -27,7 +28,6 @@ public class EnemyDragonTwo : MonoBehaviour
     public GameObject[] lootPrefabs;       // Các vật phẩm có thể rơi
     [Range(0f, 1f)]
     public float dropChance = 0.9f;        // Xác suất rơi (90%)
-    public int expReward = 50;             // EXP khi chết
     [Header("Extra Loot")]
     public GameObject healthPotionPrefab;
 
@@ -216,6 +216,9 @@ public class EnemyDragonTwo : MonoBehaviour
 
     void Die()
     {
+        if (PlayerQuestManager.Instance != null)
+            PlayerQuestManager.Instance.AddKill(gameObject.tag);
+
         animator.SetTrigger("Die");
         agent.isStopped = true;
 
@@ -246,7 +249,7 @@ public class EnemyDragonTwo : MonoBehaviour
     void Respawn()
     {
         // Reset stats
-        health = 400f;
+        health = 600f;
 
         // Hiện lại model
         foreach (Renderer r in GetComponentsInChildren<Renderer>())
@@ -267,7 +270,12 @@ public class EnemyDragonTwo : MonoBehaviour
         animator.ResetTrigger("Die");
         animator.SetBool("isRunning", false);
         animator.SetBool("isAttacking", false);
-        animator.Play("Idle", 0, 0f);
+        // Reset animator hoàn toàn
+        animator.Rebind();
+        animator.Update(0f);
+
+        // Force Idle
+        animator.Play("Idle01", 0, 0f);
 
         currentState = State.Idle;
     }
