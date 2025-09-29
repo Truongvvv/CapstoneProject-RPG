@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using GameConfig;
@@ -8,13 +9,13 @@ using Cysharp.Threading.Tasks;
 
 public class SettingsUI : MonoBehaviour
 {
-    [Header("Audio UI")]
-    [SerializeField] private Toggle _muteToggle;
+    [Header("Audio UI")] [SerializeField] private Toggle _muteToggle;
     [SerializeField] private Slider _musicSlider;
     [SerializeField] private Slider _sfxSlider;
 
-    [Header("Graphics UI")]
-    [SerializeField] private Toggle _fullscreenToggle;
+    [Header("Graphics UI")] [SerializeField]
+    private Toggle _fullscreenToggle;
+
     [SerializeField] private TMP_Dropdown _resolutionDropdown;
     [SerializeField] private Button _fps30Button;
     [SerializeField] private Button _fps60Button;
@@ -30,6 +31,10 @@ public class SettingsUI : MonoBehaviour
 
     [SerializeField] private Sprite _unselectedSprite;
     [SerializeField] private Sprite _selectedSprite;
+
+    public static Action<float> OnMusicVolumeChange;
+    public static Action<float> OnSfxVolumeChange;
+    public static Action<AudioType> PlaySound;
 
     private void Awake()
     {
@@ -105,8 +110,10 @@ public class SettingsUI : MonoBehaviour
     }
 
     #region 🔊 Audio
+
     private void OnMuteChanged(bool isOn)
     {
+        PlaySound?.Invoke(AudioType.Click_02);
         PlayerPrefs.SetInt(SettingKey.MuteAll, isOn ? 1 : 0);
         PlayerPrefs.Save();
         AudioListener.volume = isOn ? 0 : 1;
@@ -116,18 +123,25 @@ public class SettingsUI : MonoBehaviour
     {
         PlayerPrefs.SetFloat(SettingKey.MusicVolume, value);
         PlayerPrefs.Save();
+
+        OnMusicVolumeChange?.Invoke(value);
     }
 
     private void OnSfxVolumeChanged(float value)
     {
         PlayerPrefs.SetFloat(SettingKey.SfxVolume, value);
         PlayerPrefs.Save();
+
+        OnSfxVolumeChange?.Invoke(value);
     }
+
     #endregion
 
     #region 🎨 Graphics
+
     private void OnFullscreenChanged(bool isOn)
     {
+        PlaySound?.Invoke(AudioType.Click_02);
         Screen.fullScreen = isOn;
         PlayerPrefs.SetInt(SettingKey.Fullscreen, isOn ? 1 : 0);
         PlayerPrefs.Save();
@@ -135,6 +149,7 @@ public class SettingsUI : MonoBehaviour
 
     private void OnResolutionChanged(int index)
     {
+        PlaySound?.Invoke(AudioType.Click_02);
         var res = _availableResolutions[index];
         Screen.SetResolution(res.width, res.height, Screen.fullScreen);
         PlayerPrefs.SetInt(SettingKey.Resolution, index);
@@ -143,6 +158,7 @@ public class SettingsUI : MonoBehaviour
 
     private void SetFps(int fps)
     {
+        PlaySound?.Invoke(AudioType.Click_02);
         Application.targetFrameRate = fps;
         PlayerPrefs.SetInt(SettingKey.FpsLimit, fps);
         PlayerPrefs.Save();
@@ -174,7 +190,7 @@ public class SettingsUI : MonoBehaviour
         else if (fps == 60) buttonToSet = _fps60Button;
         else if (fps == 120) buttonToSet = _fps120Button;
         else if (fps == 144) buttonToSet = _fps144Button;
-        else if (fps <= 0) buttonToSet = _fpsUnlimitedButton; 
+        else if (fps <= 0) buttonToSet = _fpsUnlimitedButton;
 
         if (buttonToSet != null)
             HighlightFpsButton(buttonToSet);
@@ -184,6 +200,7 @@ public class SettingsUI : MonoBehaviour
 
     public void ClosePanel()
     {
+        PlaySound?.Invoke(AudioType.Click_02);
         this.gameObject.SetActive(false);
     }
 }
