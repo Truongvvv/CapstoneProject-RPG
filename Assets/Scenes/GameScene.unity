@@ -10215,6 +10215,130 @@ PrefabInstance:
       propertyPath: completeButton
       value: 
       objectReference: {fileID: 1604697145}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.size
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[5].enemyTag
+      value: Lion
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[6].enemyTag
+      value: Dragon1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[7].enemyTag
+      value: Dragon2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[8].enemyTag
+      value: Dragon3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[9].enemyTag
+      value: Dragon4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[10].enemyTag
+      value: DragonBoss
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[5].expReward
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[5].questName
+      value: Kill Boss Lion King
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[6].expReward
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[6].questName
+      value: Kill 5 Dragon 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[7].expReward
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[7].questName
+      value: Kill 5 Dragon 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[8].expReward
+      value: 700
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[8].questName
+      value: Kill 10 Dragon 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[9].expReward
+      value: 750
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[9].questName
+      value: Kill 10 Dragon 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[10].expReward
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[10].questName
+      value: Kill Boss Dragon King
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[5].description
+      value: Lion King
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[6].description
+      value: 5 Dragon 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[7].description
+      value: 5 Dragon 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[8].description
+      value: 10 Dragon 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[9].description
+      value: 10 Dragon 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[10].description
+      value: Dragon King
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[5].requiredKills
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[6].requiredKills
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[7].requiredKills
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[8].requiredKills
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[9].requiredKills
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: quests.Array.data[10].requiredKills
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7627040738957196652, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
       propertyPath: m_Name
       value: Capsule
@@ -10380,6 +10504,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: M_B_44_Qishilong_skin_Skeleton
       objectReference: {fileID: 0}
+    - target: {fileID: 8385987523052043656, guid: f2261caba050c704c9dd8f0b4a255aef, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1131731503}
     - target: {fileID: 8710004729265786354, guid: f2261caba050c704c9dd8f0b4a255aef, type: 3}
       propertyPath: m_LocalPosition.x
       value: 763.8
