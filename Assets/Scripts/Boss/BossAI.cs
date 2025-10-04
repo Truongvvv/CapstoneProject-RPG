@@ -38,6 +38,12 @@ public class BossAI : MonoBehaviour
     public Color hitColor = Color.red;
     public float hitFlashDuration = 0.2f;
 
+    [Header("Drop Settings")]
+    public GameObject dropItemPrefab;     // Item
+    public Transform dropPosition;        // Vị trí spawn item
+
+    private bool isDead = false;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -212,6 +218,8 @@ public class BossAI : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
+        if (isDead) return;
+
         health -= damage;
 
         if (renderers != null && renderers.Length > 0)
@@ -241,6 +249,9 @@ public class BossAI : MonoBehaviour
 
     void Die()
     {
+        if (isDead) return; // Chặn gọi nhiều lần
+        isDead = true;
+
         if (PlayerQuestManager.Instance != null)
         {
             PlayerQuestManager.Instance.AddKill(gameObject.tag);
@@ -264,6 +275,14 @@ public class BossAI : MonoBehaviour
         {
             player.GainExp(expReward);
         }
+
+        // Drop 1 crystal
+        if (dropItemPrefab != null)
+        {
+            Vector3 spawnPos = dropPosition != null ? dropPosition.position : transform.position;
+            Instantiate(dropItemPrefab, spawnPos, Quaternion.identity);
+        }
+
         Destroy(gameObject, 10f);
     }
 

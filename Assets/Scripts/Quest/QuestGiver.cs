@@ -4,20 +4,25 @@ using System.Collections.Generic;
 
 public class QuestGiver : MonoBehaviour
 {
+    [Header("Quest Settings")]
     public List<Quest> quests; // Danh sách các nhiệm vụ
+    public int[] expRewards;   // Mảng phần thưởng EXP theo thứ tự quest
+
+    [Header("UI Elements")]
     public GameObject questUI;
     public Button acceptButton;
     public Button completeButton;
+    public Text mainQuestText;
+    public Text keyQuestText;
 
     private bool playerInRange;
     private int selectedIndex = 0; // 0 = nhận, 1 = trả
-
-    public int[] expRewards; // mảng phần thưởng exp theo thứ tự quest
 
     void Start()
     {
         questUI.SetActive(false);
         HighlightButton();
+        UpdateQuestUI(); // Cập nhật lần đầu
     }
 
     void Update()
@@ -27,6 +32,7 @@ public class QuestGiver : MonoBehaviour
             questUI.SetActive(true);
             selectedIndex = 0;
             HighlightButton();
+            UpdateQuestUI(); // Cập nhật khi mở UI
         }
 
         if (questUI.activeSelf)
@@ -44,11 +50,14 @@ public class QuestGiver : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
+                // Nhận quest
                 if (selectedIndex == 0 && !PlayerQuestManager.Instance.HasActiveQuest())
                 {
                     PlayerQuestManager.Instance.AcceptNextQuest(quests);
+                    UpdateQuestUI();
                     questUI.SetActive(false);
                 }
+                // Trả quest
                 else if (selectedIndex == 1 && PlayerQuestManager.Instance.CanTurnIn())
                 {
                     int questIndex = PlayerQuestManager.Instance.GetCurrentQuestIndex();
@@ -66,10 +75,37 @@ public class QuestGiver : MonoBehaviour
                         Debug.Log($"[QUEST] Hoàn thành quest {questIndex}, +{reward} EXP!");
                     }
 
+                    UpdateQuestUI();
                     questUI.SetActive(false);
                 }
             }
         }
+
+        // Cập nhật UI liên tục (hiển thị tiến độ key quest)
+        if (questUI.activeSelf)
+            UpdateQuestUI();
+    }
+
+    void UpdateQuestUI()
+    {
+        var qm = PlayerQuestManager.Instance;
+        if (qm == null) return;
+
+        // Hiện Main Quest
+        if (qm.HasActiveQuest())
+        {
+            Quest quest = qm.activeQuest;
+            mainQuestText.text = $"Main Quest: {quest.questName} ({quest.currentKills}/{quest.requiredKills})";
+        }
+        else
+        {
+            mainQuestText.text = "";
+        }
+
+        // Hiện Key Quest
+        string keyQuestStatus = qm.keyQuestCompleted ? "Hoàn thành"
+                                                     : $"{qm.crystalsCollected}/{qm.crystalsRequired}";
+        keyQuestText.text = $"Key Quest: Thu thập pha lê ({keyQuestStatus})";
     }
 
     void HighlightButton()

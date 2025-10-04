@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
 
 public class PlayerQuestManager : MonoBehaviour
 {
@@ -7,10 +8,21 @@ public class PlayerQuestManager : MonoBehaviour
     public Quest currentQuest;
     private int currentQuestIndex = -1; // Chưa nhận nhiệm vụ
 
+    [Header("Key Quest (Thu thập pha lê)")]
+    public TMP_Text keyQuestText;      // Text hiển thị trong QuestTracker
+    public int crystalsCollected = 0;
+    public int crystalsRequired = 4;
+    public bool keyQuestCompleted = false;
+
+    [Header("Quest UI")]
+    public TMP_Text questMessageText;  // Bổ sung để tránh lỗi null nếu bạn đang dùng trong UpdateQuestUI
+
     void Awake()
     {
         Instance = this;
     }
+
+    public Quest activeQuest => currentQuest;
 
     public bool HasActiveQuest()
     {
@@ -54,7 +66,6 @@ public class PlayerQuestManager : MonoBehaviour
     {
         if (currentQuest != null && currentQuest.isAccepted && !currentQuest.isCompleted)
         {
-            // Chỉ tăng số lượng nếu tag đúng
             if (enemyTag == currentQuest.enemyTag)
             {
                 currentQuest.currentKills++;
@@ -84,7 +95,6 @@ public class PlayerQuestManager : MonoBehaviour
         {
             Debug.Log("Trả nhiệm vụ: " + currentQuest.questName);
 
-            // Thưởng EXP cho player
             PlayerMovement player = FindObjectOfType<PlayerMovement>();
             if (player != null)
             {
@@ -95,8 +105,32 @@ public class PlayerQuestManager : MonoBehaviour
             QuestTracker.Instance.ClearTracker();
             currentQuest = null;
 
-            // Nhận nhiệm vụ tiếp theo
             AcceptNextQuest(questList);
+        }
+    }
+
+    // Cập nhật text trong QuestTracker
+    void UpdateQuestUI()
+    {
+        if (keyQuestText != null)
+        {
+            if (keyQuestCompleted)
+                keyQuestText.text = "Thu thập pha lê (Hoàn thành)";
+            else
+                keyQuestText.text = $"Thu thập pha lê ({crystalsCollected}/{crystalsRequired})";
+        }
+    }
+
+    // Gọi khi nhặt Crystal
+    public void CollectCrystal(string crystalID)
+    {
+        crystalsCollected++;
+        UpdateQuestUI();
+
+        if (crystalsCollected >= crystalsRequired)
+        {
+            keyQuestCompleted = true;
+            UpdateQuestUI();
         }
     }
 }
