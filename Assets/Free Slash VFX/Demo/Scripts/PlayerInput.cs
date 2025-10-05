@@ -150,11 +150,11 @@ namespace MaykerStudio
             set => asset.bindingMask = value;
         }
 
-        public ReadOnlyArray<InputDevice>? devices
-        {
-            get => asset.devices;
-            set => asset.devices = value;
-        }
+        //public ReadOnlyArray<InputDevice>? devices
+        //{
+        //    get => asset.devices;
+        //    set => asset.devices = value;
+        //}
 
         public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
 
@@ -257,6 +257,9 @@ namespace MaykerStudio
                 return asset.controlSchemes[m_KeyboardSchemeIndex];
             }
         }
+
+        ReadOnlyArray<UnityEngine.InputSystem.InputDevice>? IInputActionCollection.devices { get => m_Player.devices; set => m_Player.devices = value; }
+
         public interface IPlayerActions
         {
             void OnMove(InputAction.CallbackContext context);
