@@ -468,6 +468,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 100166, guid: a5674d01884853d4e8f2386a171e14d9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100166, guid: a5674d01884853d4e8f2386a171e14d9, type: 3}
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
@@ -2101,6 +2105,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  healthSlider: {fileID: 0}
+  healthText: {fileID: 0}
 --- !u!114 &8150988489072063711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2121,6 +2127,7 @@ MonoBehaviour:
     currentKills: 0
     isAccepted: 0
     isCompleted: 0
+    expReward: 0
 --- !u!82 &704961055142178733
 AudioSource:
   m_ObjectHideFlags: 0

@@ -8,7 +8,7 @@ public class EnemyAI : MonoBehaviour
     public float detectionRange = 15f;
     public float attackRange = 2f;
     public float retreatRange = 5f;
-    public float health = 100f;
+    public float health = 400f;
     public float retreatThreshold = 30f; // Nếu máu thấp hơn thì chạy trốn
 
     public float attackRadius = 1.5f;      // bán kính đánh trúng
@@ -32,16 +32,21 @@ public class EnemyAI : MonoBehaviour
     public GameObject[] lootPrefabs;       // Các vật phẩm có thể rơi
     [Range(0f, 1f)]
     public float dropChance = 0.9f;        // Xác suất rơi (30%)
-    public int expReward = 50; // EXP khi chết
+    public int expReward = 250; // EXP khi chết
     [Header("Extra Loot")]
     public GameObject healthPotionPrefab;
+
+    private Vector3 spawnPoint;
+    private Quaternion spawnRotation;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         currentState = State.Idle;
-        originalPosition = transform.position;       
+        originalPosition = transform.position;
+        spawnPoint = transform.position;
+        spawnRotation = transform.rotation;
     }
 
     void Update()
@@ -132,26 +137,18 @@ public class EnemyAI : MonoBehaviour
                 agent.isStopped = true;
                 agent.velocity = Vector3.zero;
                 transform.LookAt(player);
+
                 animator.applyRootMotion = false;
                 animator.SetBool("isRunning", false);
                 animator.SetBool("isAttacking", true);
 
                 attackTimer += Time.deltaTime;
 
-                if (!hasDealtDamage && attackTimer >= attackCooldown)
+                if (attackTimer >= attackCooldown)
                 {
-                    Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward * 1.0f, attackRadius, playerLayer);
-                    foreach (Collider hit in hits)
-                    {
-                        if (hit.transform == player)
-                        {
-                            Debug.Log("Enemy hit player");
-                            hit.GetComponent<PlayerHealth>()?.TakeDamage(20f);
-                            hasDealtDamage = true;
-                            attackTimer = 0f;
-                            break;
-                        }
-                    }
+                    attackTimer = 0f;
+                    animator.SetTrigger("DoAttack"); // nếu có anim trigger riêng
+                    Invoke(nameof(DealDamage), 0.2f); // sau 0.2s mới check và gây dame
                 }
                 break;
 
@@ -172,7 +169,24 @@ public class EnemyAI : MonoBehaviour
                 break;
         }
     }
+    void DealDamage()
+    {
+        Collider[] hits = Physics.OverlapSphere(
+            transform.position + transform.forward * 1.0f,
+            attackRadius,
+            playerLayer
+        );
 
+        foreach (Collider hit in hits)
+        {
+            if (hit.transform == player)
+            {
+                Debug.Log("Enemy hit player");
+                hit.GetComponent<PlayerHealth>()?.TakeDamage(50f);
+                break;
+            }
+        }
+    }
     //Hàm rớt vật phẩm
     void TryDropLoot()
     {
@@ -193,12 +207,7 @@ public class EnemyAI : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other)
-    {
-        //if (other.CompareTag("Weapon")) // Gậy gắn tag "Weapon"
-        //{
-        //    Debug.Log("Gay 20dame ");
-        //    TakeDamage(20); // Hoặc dùng gậy chứa script chỉ định damage
-        //}
+    {        
 
         if (other.CompareTag("Weapon"))
         {
@@ -247,20 +256,60 @@ public class EnemyAI : MonoBehaviour
     {
         animator.SetTrigger("Die");
         agent.isStopped = true;
-        // Vô hiệu hóa collider để player không còn va chạm với enemy đã chết
+
+        // Ẩn collider
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
-        this.enabled = false;
-        TryDropLoot(); // ← Gọi hàm rớt vật phẩm
 
-        // Gọi EXP cho player
+        // Ẩn mesh renderer (model biến mất)
+        foreach (Renderer r in GetComponentsInChildren<Renderer>())
+            r.enabled = false;
+
+        // Tắt NavMeshAgent + AI
+        agent.enabled = false;
+        this.enabled = false;
+
+        TryDropLoot();
+
         PlayerMovement player = FindObjectOfType<PlayerMovement>();
         if (player != null)
         {
             player.GainExp(expReward);
         }
-        // Xóa enemy sau 2 giây
-        Destroy(gameObject, 2f);
+
+        // Hẹn hồi sinh sau 10 giây
+        Invoke(nameof(Respawn), 10f);
+    }
+    void Respawn()
+    {
+        // Reset stats
+        health = 400f;
+
+        // Hiện lại model
+        foreach (Renderer r in GetComponentsInChildren<Renderer>())
+            r.enabled = true;
+
+        // Bật collider
+        Collider col = GetComponent<Collider>();
+        if (col != null) col.enabled = true;
+
+        // Bật NavMeshAgent + AI
+        agent.enabled = true;
+        this.enabled = true;
+
+        agent.Warp(spawnPoint);
+        transform.rotation = spawnRotation;
+
+        // Reset animator hoàn toàn
+        animator.Rebind();     // reset toàn bộ parameter + state
+        animator.Update(0f);   // cập nhật ngay lập tức
+
+        // Đảm bảo Idle chạy
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isAttacking", false);
+        animator.Play("Idle", 0, 0f);
+
+        currentState = State.Idle;
     }
 
     void OnDrawGizmosSelected()

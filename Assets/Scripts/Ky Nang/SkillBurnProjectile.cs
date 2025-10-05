@@ -14,6 +14,8 @@ public class SkillBurnProjectile : MonoBehaviour
     private EnemyAI enemyAI;
     private BossAI boss;
     private BossDragon bossDragon;
+    private EnemyDragon dragonEnemy;
+    private EnemyDragonTwo dragonTwoEnemy;
     private int burnDamage;
 
     public void Init(SmallEnemyAI target, int burnDamage)
@@ -40,6 +42,16 @@ public class SkillBurnProjectile : MonoBehaviour
     public void Init(RoockEnemyAI target, int burnDamage)
     {
         roock = target;
+        this.burnDamage = burnDamage;
+    }
+    public void Init(EnemyDragon target, int burnDamage)
+    {
+        dragonEnemy = target;
+        this.burnDamage = burnDamage;
+    }
+    public void Init(EnemyDragonTwo target, int burnDamage)
+    {
+        dragonTwoEnemy = target;
         this.burnDamage = burnDamage;
     }
     private void Start()
@@ -81,6 +93,16 @@ public class SkillBurnProjectile : MonoBehaviour
             {
                 enemyAI.TakeDamage(burnDamage);
                 Debug.Log($"[Burn] Rhino bị đốt {burnDamage} damage");
+            }
+            if (dragonEnemy != null)
+            {
+                dragonEnemy.TakeDamage(burnDamage);
+                Debug.Log($"[Burn] BossDragon bị đốt {burnDamage} damage");
+            }
+            if (dragonTwoEnemy != null)
+            {
+                dragonTwoEnemy.TakeDamage(burnDamage);
+                Debug.Log($"[Burn] BossDragon bị đốt {burnDamage} damage");
             }
             if (bossDragon != null)
             {

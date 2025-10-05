@@ -17,6 +17,8 @@ public class SkillProjectile : MonoBehaviour
         RoockEnemyAI roock = other.GetComponent<RoockEnemyAI>();
         BossDragon bossDragon = other.GetComponent<BossDragon>();
         EnemyAI enemyAI = other.GetComponent<EnemyAI>();
+        EnemyDragon dragonEnemy = other.GetComponent<EnemyDragon>();
+        EnemyDragonTwo dragonTwoEnemy = other.GetComponent<EnemyDragonTwo>();
 
 
         Debug.Log("Projectile hit: " + other.name);
@@ -91,7 +93,34 @@ public class SkillProjectile : MonoBehaviour
                 Debug.LogError("Burn prefab missing SkillBurnProjectile!");
         }
 
-        if (enemy != null || boss != null || bossDragon != null || enemyAI != null || roock != null)
+        if (dragonEnemy != null)
+        {
+            dragonEnemy.TakeDamage(initialHitDamage);
+
+            int burnDamage = PlayerCombat.Instance != null ? PlayerCombat.Instance.burnBaseDamage : 0;
+            GameObject burn = Instantiate(burnEffectPrefab, dragonEnemy.transform.position, Quaternion.identity, dragonEnemy.transform);
+
+            SkillBurnProjectile burnScript = burn.GetComponent<SkillBurnProjectile>();
+            if (burnScript != null)
+                burnScript.Init(dragonEnemy, burnDamage);
+            else
+                Debug.LogError("Burn prefab missing SkillBurnProjectile!");
+        }
+        if (dragonTwoEnemy != null)
+        {
+            dragonTwoEnemy.TakeDamage(initialHitDamage);
+
+            int burnDamage = PlayerCombat.Instance != null ? PlayerCombat.Instance.burnBaseDamage : 0;
+            GameObject burn = Instantiate(burnEffectPrefab, dragonTwoEnemy.transform.position, Quaternion.identity, dragonTwoEnemy.transform);
+
+            SkillBurnProjectile burnScript = burn.GetComponent<SkillBurnProjectile>();
+            if (burnScript != null)
+                burnScript.Init(dragonTwoEnemy, burnDamage);
+            else
+                Debug.LogError("Burn prefab missing SkillBurnProjectile!");
+        }
+
+        if (enemy != null || boss != null || bossDragon != null || enemyAI != null || roock != null || dragonEnemy != null || dragonTwoEnemy != null)
         {
             Destroy(gameObject);
         }

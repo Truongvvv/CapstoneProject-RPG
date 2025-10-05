@@ -300,6 +300,12 @@ public class PlayerMovement : MonoBehaviour
             RoockEnemyAI rookEnemy = hit.collider.GetComponent<RoockEnemyAI>();
             if (rookEnemy != null) rookEnemy.TakeDamage(gunDamage);
 
+            EnemyDragon dragonEnemy = hit.collider.GetComponent<EnemyDragon>();
+            if (dragonEnemy != null) dragonEnemy.TakeDamage(gunDamage);
+
+            EnemyDragonTwo dragonTwoEnemy = hit.collider.GetComponent<EnemyDragonTwo>();
+            if (dragonTwoEnemy != null) dragonTwoEnemy.TakeDamage(gunDamage);
+
             // Di chuyển viên đạn đến điểm trúng
             if (bulletVFX != null)
                 StartCoroutine(MoveBulletVFX(bulletVFX, hit.point, hitTag));

@@ -18,6 +18,12 @@ TagManager:
   - Combo1
   - Combo2
   - Combo3
+  - BlackMon
+  - Dragon1
+  - Dragon2
+  - Dragon3
+  - Dragon4
+  - Golem
   layers:
   - Default
   - TransparentFX
@@ -33,7 +39,7 @@ TagManager:
   - Rook
   - SkeleteMon
   - DragonBoss
-  - 
+  - BlackMon
   - 
   - 
   - 

@@ -53,12 +53,17 @@ public class BossDragon : MonoBehaviour
     private bool isUsingSpecialSkill;
     private float specialSkillTimer;
 
+    [Header("Drop Settings")]
+    public GameObject dropItemPrefab;     // Item
+    public Transform dropPosition;        // Vị trí spawn item
+
     [Header("Audio Settings")]
     public AudioSource audioSource;
     public AudioClip roarSFX;
 
     private float pathUpdateInterval = 0.3f; // update path mỗi 0.3s
     private float pathTimer = 0f;
+    private bool isDead = false;
 
     private Vector3 originalPosition;
 
@@ -366,12 +371,16 @@ public class BossDragon : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (isDead) return;
         health -= damage;
         if (health <= 0) Die();
     }
 
     void Die()
     {
+        if (isDead) return; // Chặn gọi nhiều lần
+        isDead = true;
+
         if (PlayerQuestManager.Instance != null)
             PlayerQuestManager.Instance.AddKill(gameObject.tag);
 
@@ -387,6 +396,13 @@ public class BossDragon : MonoBehaviour
 
         // EXP reward (đã cache playerMovement)
         playerMovement?.GainExp(expReward);
+
+        // Drop 1 crystal
+        if (dropItemPrefab != null)
+        {
+            Vector3 spawnPos = dropPosition != null ? dropPosition.position : transform.position;
+            Instantiate(dropItemPrefab, spawnPos, Quaternion.identity);
+        }
 
         Destroy(gameObject, 8f);
     }

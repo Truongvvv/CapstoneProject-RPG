@@ -27,12 +27,25 @@ public class SmallEnemyAI : MonoBehaviour
 
     public LayerMask playerLayer;
     public int expReward = 50; // EXP khi chết
+    private Vector3 spawnPoint;
+    private Quaternion spawnRotation;
+    [Header("Loot Settings")]
+    public GameObject[] lootPrefabs;       // Các vật phẩm có thể rơi
+    [Range(0f, 1f)]
+    public float dropChance = 0.9f;        // Xác suất rơi (90%)
+    [Header("Extra Loot")]
+    public GameObject healthPotionPrefab;
+
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         initialPosition = transform.position;
+
+        // Set spawn point để dùng khi hồi sinh
+        spawnPoint = transform.position;
+        spawnRotation = transform.rotation;
     }
 
     void Update()
@@ -215,40 +228,85 @@ public class SmallEnemyAI : MonoBehaviour
         }
     }
 
+    void TryDropLoot()
+    {
+        // 1. Rớt random item
+        if (lootPrefabs.Length > 0 && Random.value <= dropChance)
+        {
+            int index = Random.Range(0, lootPrefabs.Length);
+            Vector3 offset = new Vector3(0.5f, 0.5f, 0);
+            Instantiate(lootPrefabs[index], transform.position + offset, Quaternion.identity);
+        }
+
+        // 2. Luôn rớt bình máu
+        if (healthPotionPrefab != null)
+        {
+            Vector3 offset = new Vector3(-0.5f, 0.5f, 0);
+            Instantiate(healthPotionPrefab, transform.position + offset, Quaternion.identity);
+        }
+    }
+
     void Die()
     {
         if (PlayerQuestManager.Instance != null)
-        {
             PlayerQuestManager.Instance.AddKill(gameObject.tag);
-        }
 
-        // Bật trigger Die
         animator.SetTrigger("Die");
-
-        // Dừng NavMeshAgent
         agent.isStopped = true;
 
-        // Tắt các trạng thái khác để không bị override anim Die
-        animator.SetBool("isRunning", false);
-        animator.SetBool("isAttacking", false);
-        animator.SetBool("isPatrolling", false);
-
-        // Vô hiệu hóa collider để player không còn va chạm với enemy đã chết
+        // Ẩn collider
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
 
-        // Ngừng update logic AI (nhưng KHÔNG tắt script ngay, để animation Die còn chạy)
+        // Ẩn mesh renderer (model biến mất)
+        foreach (Renderer r in GetComponentsInChildren<Renderer>())
+            r.enabled = false;
+
+        // Tắt NavMeshAgent + AI
+        agent.enabled = false;
         this.enabled = false;
 
-        // Gọi EXP cho player
+        TryDropLoot();
+
         PlayerMovement player = FindObjectOfType<PlayerMovement>();
         if (player != null)
         {
             player.GainExp(expReward);
         }
 
-        // Hủy object sau 3 giây (tùy thời lượng animation Die của bạn)
-        Destroy(gameObject, 2f);
+        // Hẹn hồi sinh sau 10 giây
+        Invoke(nameof(Respawn), 10f);
+    }
+
+    void Respawn()
+    {
+        // Reset stats
+        health = 100f;
+
+        // Hiện lại model
+        foreach (Renderer r in GetComponentsInChildren<Renderer>())
+            r.enabled = true;
+
+        // Bật collider
+        Collider col = GetComponent<Collider>();
+        if (col != null) col.enabled = true;
+
+        // Bật NavMeshAgent + AI
+        agent.enabled = true;
+        this.enabled = true;
+
+        // Đặt về spawn point
+        agent.Warp(spawnPoint);
+        transform.rotation = spawnRotation;
+
+        // Reset animator về Idle
+        animator.Rebind(); // reset toàn bộ animator state
+        animator.Update(0f);
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isAttacking", false);
+        animator.SetBool("isPatrolling", false);
+
+        currentState = State.Idle;
     }
 
     void OnDrawGizmosSelected()
