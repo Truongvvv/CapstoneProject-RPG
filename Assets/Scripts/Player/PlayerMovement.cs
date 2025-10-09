@@ -104,6 +104,10 @@ public class PlayerMovement : MonoBehaviour
     private float buffFCooldownTimer = 0f;
     private float skillVCooldownTimer = 0f;
 
+    [Header("Skill Cooldown UI")]
+    public UnityEngine.UI.Text fCooldownText;
+    public UnityEngine.UI.Text vCooldownText;
+
     [Header("Âm thanh")]
     public AudioSource audioSource; // gắn AudioSource (thường gắn vào Player hoặc model)
     public AudioClip shootSFX;
@@ -251,9 +255,26 @@ public class PlayerMovement : MonoBehaviour
             ShootSkillV();
             skillVCooldownTimer = skillVCooldown;
         }
-        // Giảm cooldown
-        buffFCooldownTimer -= Time.deltaTime;
-        skillVCooldownTimer -= Time.deltaTime;
+        // Giảm cooldown và cập nhật UI
+        if (buffFCooldownTimer > 0)
+        {
+            buffFCooldownTimer -= Time.deltaTime;
+            fCooldownText.text = Mathf.Ceil(buffFCooldownTimer).ToString();
+        }
+        else
+        {
+            fCooldownText.text = "";
+        }
+
+        if (skillVCooldownTimer > 0)
+        {
+            skillVCooldownTimer -= Time.deltaTime;
+            vCooldownText.text = Mathf.Ceil(skillVCooldownTimer).ToString();
+        }
+        else
+        {
+            vCooldownText.text = "";
+        }
 
     }
 
