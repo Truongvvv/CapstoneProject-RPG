@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
 public class QuestGiver : MonoBehaviour
 {
@@ -12,8 +13,9 @@ public class QuestGiver : MonoBehaviour
     public GameObject questUI;
     public Button acceptButton;
     public Button completeButton;
-    public Text mainQuestText;
-    public Text keyQuestText;
+
+    public TextMeshProUGUI mainQuestText;
+    public TextMeshProUGUI keyQuestText;
 
     private bool playerInRange;
     private int selectedIndex = 0; // 0 = nhận, 1 = trả
@@ -72,7 +74,7 @@ public class QuestGiver : MonoBehaviour
                             reward = expRewards[questIndex];
 
                         player.GainExp(reward);
-                        Debug.Log($"[QUEST] Hoàn thành quest {questIndex}, +{reward} EXP!");
+                        Debug.Log($"[QUEST] Complete quest {questIndex}, +{reward} EXP!");
                     }
 
                     UpdateQuestUI();
@@ -103,9 +105,9 @@ public class QuestGiver : MonoBehaviour
         }
 
         // Hiện Key Quest
-        string keyQuestStatus = qm.keyQuestCompleted ? "Hoàn thành"
+        string keyQuestStatus = qm.keyQuestCompleted ? "Complete"
                                                      : $"{qm.crystalsCollected}/{qm.crystalsRequired}";
-        keyQuestText.text = $"Key Quest: Thu thập pha lê ({keyQuestStatus})";
+        keyQuestText.text = $"Key Quest: collection Crystal ({keyQuestStatus})";
     }
 
     void HighlightButton()
