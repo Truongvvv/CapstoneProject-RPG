@@ -17,7 +17,7 @@ namespace EditorAttributes
         /// <param name="maxRange">Maximum size of the collection</param>
         public CollectionRangeAttribute(int minRange, int maxRange)
 #if UNITY_2023_3_OR_NEWER
-        : base(true) 
+            : base(true)
 #endif
         {
             MinRange = minRange;

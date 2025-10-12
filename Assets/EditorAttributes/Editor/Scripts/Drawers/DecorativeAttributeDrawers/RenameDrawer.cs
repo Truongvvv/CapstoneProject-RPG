@@ -5,99 +5,100 @@ using UnityEditor.UIElements;
 
 namespace EditorAttributes.Editor
 {
-	[CustomPropertyDrawer(typeof(RenameAttribute))]
+    [CustomPropertyDrawer(typeof(RenameAttribute))]
     public class RenameDrawer : PropertyDrawerBase
     {
-		public override VisualElement CreatePropertyGUI(SerializedProperty property)
-		{
-			var renameAttribute = attribute as RenameAttribute;
-
-			var root = new VisualElement();
-			var errorBox = new HelpBox();
-			var propertyField = new PropertyField(property, GetNewName(renameAttribute, property, errorBox));
-
-			root.Add(propertyField);
-
-			if (renameAttribute.StringInputMode == StringInputMode.Dynamic)
-			{
-				Label propertyLabel = null;
-
-				ExecuteLater(propertyField, () => propertyLabel = propertyField.Q<Label>());
-
-				UpdateVisualElement(propertyField, () =>
-				{
-					if (propertyLabel != null)
-						propertyLabel.text = GetNewName(renameAttribute, property, errorBox);
-				});
-
-				DisplayErrorBox(root, errorBox);
-			}
-
-			return root;
-		}
-
-        internal static string GetNewName(RenameAttribute renameAttribute, SerializedProperty property, HelpBox errorBox)
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
-			var newName = GetDynamicString(renameAttribute.Name, property, renameAttribute, errorBox);
+            var renameAttribute = attribute as RenameAttribute;
 
-			switch (renameAttribute.CaseType)
-			{
-				case CaseType.None:
-					return newName;
+            var root = new VisualElement();
+            var errorBox = new HelpBox();
+            var propertyField = new PropertyField(property, GetNewName(renameAttribute, property, errorBox));
 
-				case CaseType.Unity:
-					newName = ObjectNames.NicifyVariableName(newName);
-					break;
+            root.Add(propertyField);
 
-				case CaseType.Pascal:
-					var pascalName = char.ToUpper(newName[0]) + newName[1..];
+            if (renameAttribute.StringInputMode == StringInputMode.Dynamic)
+            {
+                Label propertyLabel = null;
 
-					FormatString(ref pascalName);
+                ExecuteLater(propertyField, () => propertyLabel = propertyField.Q<Label>());
 
-					newName = pascalName;
-					break;
+                UpdateVisualElement(propertyField, () =>
+                {
+                    if (propertyLabel != null)
+                        propertyLabel.text = GetNewName(renameAttribute, property, errorBox);
+                });
 
-				case CaseType.Camel:
-					var camelName = char.ToLower(newName[0]) + newName[1..];
+                DisplayErrorBox(root, errorBox);
+            }
 
-					FormatString(ref camelName);
+            return root;
+        }
 
-					newName = camelName;
-					break;
+        internal static string GetNewName(RenameAttribute renameAttribute, SerializedProperty property,
+            HelpBox errorBox)
+        {
+            var newName = GetDynamicString(renameAttribute.Name, property, renameAttribute, errorBox);
 
-				case CaseType.Snake:
-					newName = newName.Replace(" ", "_");
-					break;
+            switch (renameAttribute.CaseType)
+            {
+                case CaseType.None:
+                    return newName;
 
-				case CaseType.Kebab:
-					newName = newName.Replace(" ", "-");
-					break;
+                case CaseType.Unity:
+                    newName = ObjectNames.NicifyVariableName(newName);
+                    break;
 
-				case CaseType.Upper:
-					newName = newName.ToUpper();
-					break;
+                case CaseType.Pascal:
+                    var pascalName = char.ToUpper(newName[0]) + newName[1..];
 
-				case CaseType.Lower:
-					newName = newName.ToLower();
-					break;
-			}
+                    FormatString(ref pascalName);
 
-			return newName;
-		}
+                    newName = pascalName;
+                    break;
+
+                case CaseType.Camel:
+                    var camelName = char.ToLower(newName[0]) + newName[1..];
+
+                    FormatString(ref camelName);
+
+                    newName = camelName;
+                    break;
+
+                case CaseType.Snake:
+                    newName = newName.Replace(" ", "_");
+                    break;
+
+                case CaseType.Kebab:
+                    newName = newName.Replace(" ", "-");
+                    break;
+
+                case CaseType.Upper:
+                    newName = newName.ToUpper();
+                    break;
+
+                case CaseType.Lower:
+                    newName = newName.ToLower();
+                    break;
+            }
+
+            return newName;
+        }
 
         private static void FormatString(ref string stringToFormat)
         {
-			while (stringToFormat.Contains(" "))
-			{
-				var spaceIndex = stringToFormat.IndexOf(" ");
+            while (stringToFormat.Contains(" "))
+            {
+                var spaceIndex = stringToFormat.IndexOf(" ");
                 var charAfterSpace = stringToFormat[spaceIndex + 1];
                 var stringBuilder = new StringBuilder(stringToFormat);
 
                 stringBuilder.Replace(charAfterSpace, char.ToUpper(charAfterSpace), spaceIndex + 1, 1);
 
-				stringToFormat = stringBuilder.ToString();
-				stringToFormat = stringToFormat.Remove(spaceIndex, 1);
-			}
-		}
+                stringToFormat = stringBuilder.ToString();
+                stringToFormat = stringToFormat.Remove(spaceIndex, 1);
+            }
+        }
     }
 }

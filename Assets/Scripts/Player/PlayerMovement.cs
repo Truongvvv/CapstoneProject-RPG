@@ -3,57 +3,47 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Di chuyển")]
-    public float moveSpeed = 6f;
+    [Header("Di chuyển")] public float moveSpeed = 6f;
     public float jumpHeight = 2f;
     public float gravity = -9.81f;
 
-    [Header("Dash")]
-    public float dashSpeed = 20f;
+    [Header("Dash")] public float dashSpeed = 20f;
     public float dashDuration = 0.2f;
     public float dashCooldown = 1f;
 
     public float gunDamage = 10f;
 
-    [Header("Ground Check")]
-    public Transform groundCheck;
+    [Header("Ground Check")] public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
 
-    [Header("Camera & Model")]
-    public Transform cameraTransform;         // Gắn MainCamera
-    public Transform modelTransform;          // Gắn object là model (có Animator)
+    [Header("Camera & Model")] public Transform cameraTransform; // Gắn MainCamera
+    public Transform modelTransform; // Gắn object là model (có Animator)
 
-    [Header("Combat")]
-    public GameObject staff;                  // Gậy (hiện/ẩn)
-    public float staffHideDelay = 5f;         // 5s không dùng thì ẩn
-    private int comboStep = 0;         // 1 → 2 → 3
+    [Header("Combat")] public GameObject staff; // Gậy (hiện/ẩn)
+    public float staffHideDelay = 5f; // 5s không dùng thì ẩn
+    private int comboStep = 0; // 1 → 2 → 3
     private int requestedComboStep = 0; // combo player muốn (tăng theo lần nhấn)
     private bool isAttacking = false;
-    private float staffTimer = 0f;            // Đếm ngược để ẩn gậy
+    private float staffTimer = 0f; // Đếm ngược để ẩn gậy
 
-    [Header("Level System")]
-    public int level = 1;
+    [Header("Level System")] public int level = 1;
     public int currentExp = 0;
     public int expToNextLevel = 100;
 
     public int maxHP = 100;
     public int currentHP;
 
-    [Header("Combo VFX")]
-    public GameObject[] comboVFX; // Gắn 3 hiệu ứng tương ứng combo 1, 2, 3
-    public Transform vfxSpawnPointProjectile;  // Vị trí spawn VFX dạng bay
+    [Header("Combo VFX")] public GameObject[] comboVFX; // Gắn 3 hiệu ứng tương ứng combo 1, 2, 3
+    public Transform vfxSpawnPointProjectile; // Vị trí spawn VFX dạng bay
 
-    [Header("VFX")]   
-    public Transform vfxSpawnPoint;   // Gắn điểm đầu gậy (vị trí spawn)
+    [Header("VFX")] public Transform vfxSpawnPoint; // Gắn điểm đầu gậy (vị trí spawn)
 
-    [Header("VFX Đạn Bay")]
-    public GameObject projectileVFXPrefab; // Prefab viên đạn visual bay ra
+    [Header("VFX Đạn Bay")] public GameObject projectileVFXPrefab; // Prefab viên đạn visual bay ra
     public float projectileVisualSpeed = 50f; // Tốc độ bay (tùy chỉnh)
 
-    [Header("VFX Buff Shooting")]
-    public GameObject buffedProjectileVFXPrefab; // Prefab đạn khi buff
-    public GameObject buffedHitEffectPrefab;     // Prefab nổ khi buff
+    [Header("VFX Buff Shooting")] public GameObject buffedProjectileVFXPrefab; // Prefab đạn khi buff
+    public GameObject buffedHitEffectPrefab; // Prefab nổ khi buff
 
     private CharacterController controller;
     private Animator animator;
@@ -69,43 +59,37 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private Transform firePoint; // Gắn điểm bắn (nòng súng) trong Inspector
 
-    [Header("Hiệu ứng")]
-    public GameObject hitEffectPrefab; // Prefab hiệu ứng trúng đạn (tùy chọn)
+    [Header("Hiệu ứng")] public GameObject hitEffectPrefab; // Prefab hiệu ứng trúng đạn (tùy chọn)
     public Animator gunAnimator; // Gắn animator từ model/súng
     public float projectileForce = 500f; // Lực đẩy ra trước
 
     private float originalGunDamage; // Ghi nhớ damage gốc
-    private float buffTimer = 0f;    // Đếm thời gian buff
+    private float buffTimer = 0f; // Đếm thời gian buff
 
-    [Header("Buff")]
-    public float buffDamageAmount = 30f;
+    [Header("Buff")] public float buffDamageAmount = 30f;
     public float buffDuration = 10f;
     public GameObject buffAuraVFX; // Hiệu ứng buff quanh người
     private GameObject currentAura;
 
     private bool isBuffed = false;
 
-    [Header("Combo VFX Buff Mode")]
-    public GameObject[] buffedComboVFX; // Gắn 3 cái tương ứng
+    [Header("Combo VFX Buff Mode")] public GameObject[] buffedComboVFX; // Gắn 3 cái tương ứng
     public float buffVFXProjectileForce = 5f; // Lực bay
 
     public Transform[] buffedComboVFXDirections; // size 3
 
-    [Header("Skill V")]
-    public GameObject skillProjectilePrefab; // Prefab đạn kỹ năng
-    public Transform skillSpawnPoint;        // Vị trí xuất phát
+    [Header("Skill V")] public GameObject skillProjectilePrefab; // Prefab đạn kỹ năng
+    public Transform skillSpawnPoint; // Vị trí xuất phát
     public float skillProjectileSpeed = 20f; // Tốc độ bay
-    public GameObject burnEffectPrefab;      // Prefab hiệu ứng burn (gây dame theo thời gian)
+    public GameObject burnEffectPrefab; // Prefab hiệu ứng burn (gây dame theo thời gian)
 
-    [Header("Skill Cooldowns")]
-    public float buffFCooldown = 10f;   // F hồi chiêu 10s
-    public float skillVCooldown = 40f;   // V hồi chiêu 40s
+    [Header("Skill Cooldowns")] public float buffFCooldown = 10f; // F hồi chiêu 10s
+    public float skillVCooldown = 40f; // V hồi chiêu 40s
 
     private float buffFCooldownTimer = 0f;
     private float skillVCooldownTimer = 0f;
 
-    [Header("Âm thanh")]
-    public AudioSource audioSource; // gắn AudioSource (thường gắn vào Player hoặc model)
+    [Header("Âm thanh")] public AudioSource audioSource; // gắn AudioSource (thường gắn vào Player hoặc model)
     public AudioClip shootSFX;
     public AudioClip combo1SFX;
     public AudioClip combo2SFX;
@@ -113,6 +97,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip buffSFX;
     public AudioClip skillVSFX;
 
+    [SerializeField] private PlayerUI _playerUI;
 
     void Start()
     {
@@ -121,7 +106,9 @@ public class PlayerMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         currentHP = maxHP;
+        _playerUI.SetUpHealth(currentHP, maxHP);
     }
+
     void Awake()
     {
         originalGunDamage = gunDamage;
@@ -136,11 +123,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-
         if (Input.GetMouseButtonDown(0)) // Chuột trái
         {
             Shoot();
         }
+
         // Jump
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -149,7 +136,7 @@ public class PlayerMovement : MonoBehaviour
             if (animator != null)
                 animator.SetBool("isJumping", true); // Bắt đầu Jump
         }
-     
+
 
         // Ground check
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -203,7 +190,6 @@ public class PlayerMovement : MonoBehaviour
             //controller.Move(moveInput * moveSpeed * Time.deltaTime);
         }
 
-        
 
         // Gravity
         velocity.y += gravity * Time.deltaTime;
@@ -243,18 +229,26 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && !isBuffed && buffFCooldownTimer <= 0f)
         {
             StartCoroutine(BuffRoutine());
+            if (_playerUI) _playerUI.UseSkill_F();
             buffFCooldownTimer = buffFCooldown;
         }
+
         //buf v
         if (Input.GetKeyDown(KeyCode.V) && skillVCooldownTimer <= 0f)
         {
             ShootSkillV();
+            if (_playerUI) _playerUI.UseSkill_V();
             skillVCooldownTimer = skillVCooldown;
         }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if(_playerUI) _playerUI.OnQuestButtonPressed();
+        }
+        
         // Giảm cooldown
         buffFCooldownTimer -= Time.deltaTime;
         skillVCooldownTimer -= Time.deltaTime;
-
     }
 
 
@@ -280,7 +274,8 @@ public class PlayerMovement : MonoBehaviour
         string hitTag = isBuffed ? "BuffedHit" : "Hit";
 
         // Spawn projectile VFX từ pool
-        GameObject bulletVFX = PoolingManager.Instance.SpawnFromPool(projectileTag, firePoint.position, firePoint.rotation);
+        GameObject bulletVFX =
+            PoolingManager.Instance.SpawnFromPool(projectileTag, firePoint.position, firePoint.rotation);
 
         if (Physics.Raycast(ray, out hit, 100f))
         {
@@ -316,6 +311,7 @@ public class PlayerMovement : MonoBehaviour
                 StartCoroutine(MoveBulletVFX(bulletVFX, ray.GetPoint(100f), hitTag)); // bay đến xa rồi tắt
         }
     }
+
     void HandleComboAttack()
     {
         if (Input.GetMouseButtonDown(1))
@@ -362,7 +358,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void MeleeAttackEnd()
     {
-        
         // Kiểm tra có yêu cầu combo tiếp không
         if (requestedComboStep > comboStep && comboStep < 3)
         {
@@ -402,7 +397,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 Vector3 direction = spawnPoint.forward;
                 float force = isBuffed ? buffVFXProjectileForce : projectileForce;
-                rb.velocity = Vector3.zero; // reset velocity
+                rb.linearVelocity = Vector3.zero; // reset velocity
                 rb.AddForce(direction * force, ForceMode.Impulse);
             }
 
@@ -474,6 +469,7 @@ public class PlayerMovement : MonoBehaviour
                 StartCoroutine(DisableAfterSeconds(hitVFX, 1.5f));
         }
     }
+
     private IEnumerator DisableAfterSeconds(GameObject obj, float duration)
     {
         yield return new WaitForSeconds(duration);
@@ -485,12 +481,14 @@ public class PlayerMovement : MonoBehaviour
     void ShootSkillV()
     {
         // Spawn từ pool thay vì Instantiate
-        GameObject projectile = PoolingManager.Instance.SpawnFromPool("SkillProjectile", skillSpawnPoint.position, skillSpawnPoint.rotation);
+        GameObject projectile =
+            PoolingManager.Instance.SpawnFromPool("SkillProjectile", skillSpawnPoint.position,
+                skillSpawnPoint.rotation);
 
         if (projectile != null)
         {
             Rigidbody rb = projectile.GetComponent<Rigidbody>();
-            rb.velocity = skillSpawnPoint.forward * skillProjectileSpeed;
+            rb.linearVelocity = skillSpawnPoint.forward * skillProjectileSpeed;
 
             SkillProjectile skillScript = projectile.GetComponent<SkillProjectile>();
             if (skillScript != null)
@@ -514,6 +512,7 @@ public class PlayerMovement : MonoBehaviour
             LevelUp();
         }
     }
+
     private void LevelUp()
     {
         level++;
@@ -534,6 +533,9 @@ public class PlayerMovement : MonoBehaviour
             health.Heal(maxHP); // full máu sau khi level up
         }
 
+        if (_playerUI)
+            _playerUI.UpdateHealth(currentHP, maxHP);
+
         // +10 dame cơ bản vĩnh viễn
         originalGunDamage += 10f;
         gunDamage = originalGunDamage;
@@ -543,7 +545,8 @@ public class PlayerMovement : MonoBehaviour
             PlayerCombat.Instance.AddPermanentDamage(10, 10);
         }
 
-        Debug.Log($"[LEVEL UP] Level {level} | Exp cần để lên level kế: {expToNextLevel} | HP: {maxHP} | GunDamage: {gunDamage}");
+        Debug.Log(
+            $"[LEVEL UP] Level {level} | Exp cần để lên level kế: {expToNextLevel} | HP: {maxHP} | GunDamage: {gunDamage}");
     }
 
     private void PlaySound(AudioClip clip)

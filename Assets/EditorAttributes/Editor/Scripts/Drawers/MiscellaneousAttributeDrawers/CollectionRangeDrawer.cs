@@ -14,7 +14,8 @@ namespace EditorAttributes.Editor
             var root = new VisualElement();
 
             if (!ReflectionUtility.IsPropertyCollection(property))
-                return new HelpBox("The CollectionRange Attribute can only be used on collections", HelpBoxMessageType.Error);
+                return new HelpBox("The CollectionRange Attribute can only be used on collections",
+                    HelpBoxMessageType.Error);
 
             var propertyField = CreatePropertyField(property);
 
@@ -33,7 +34,8 @@ namespace EditorAttributes.Editor
 
         private void ClampCollectionSize(SerializedProperty property, CollectionRangeAttribute collectionRangeAttribute)
         {
-            property.arraySize = Mathf.Clamp(property.arraySize, collectionRangeAttribute.MinRange, collectionRangeAttribute.MaxRange);
+            property.arraySize = Mathf.Clamp(property.arraySize, collectionRangeAttribute.MinRange,
+                collectionRangeAttribute.MaxRange);
             property.serializedObject.ApplyModifiedProperties();
         }
     }

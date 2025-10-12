@@ -5,115 +5,119 @@ using EditorAttributes.Editor.Utility;
 
 namespace EditorAttributes.Editor
 {
-	[CustomPropertyDrawer(typeof(ConditionalFieldAttribute))]
+    [CustomPropertyDrawer(typeof(ConditionalFieldAttribute))]
     public class ConditionalFieldDrawer : PropertyDrawerBase
     {
-		public override VisualElement CreatePropertyGUI(SerializedProperty property)
-		{
-			var conditionalAttribute = attribute as ConditionalFieldAttribute;
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            var conditionalAttribute = attribute as ConditionalFieldAttribute;
 
-			var root = new VisualElement();
-			var propertyField = CreatePropertyField(property);
+            var root = new VisualElement();
+            var propertyField = CreatePropertyField(property);
 
-			var errorBox = new HelpBox();
+            var errorBox = new HelpBox();
 
-			root.Add(propertyField);
+            root.Add(propertyField);
 
-			UpdateVisualElement(root, () =>
-			{
-				var canDrawProperty = CanDrawProperty(conditionalAttribute, conditionalAttribute.BooleanNames, property, errorBox);
+            UpdateVisualElement(root, () =>
+            {
+                var canDrawProperty = CanDrawProperty(conditionalAttribute, conditionalAttribute.BooleanNames, property,
+                    errorBox);
 
-				switch (conditionalAttribute.ConditionResult)
-				{
-					case ConditionResult.ShowHide:
-						if (canDrawProperty)
-						{
-							AddElement(root, propertyField);
-						}
-						else
-						{
-							RemoveElement(root, propertyField);
-						}
-						break;
+                switch (conditionalAttribute.ConditionResult)
+                {
+                    case ConditionResult.ShowHide:
+                        if (canDrawProperty)
+                        {
+                            AddElement(root, propertyField);
+                        }
+                        else
+                        {
+                            RemoveElement(root, propertyField);
+                        }
 
-					case ConditionResult.EnableDisable:
-						propertyField.SetEnabled(canDrawProperty);
-						break;
-				}
+                        break;
 
-				DisplayErrorBox(root, errorBox);
-			});
+                    case ConditionResult.EnableDisable:
+                        propertyField.SetEnabled(canDrawProperty);
+                        break;
+                }
 
-			return root;
-		}
+                DisplayErrorBox(root, errorBox);
+            });
 
-		private bool CanDrawProperty(ConditionalFieldAttribute attribute, string[] conditionNames, SerializedProperty property, HelpBox errorBox)
-		{
-			var booleanList = new List<bool>();
+            return root;
+        }
 
-			foreach (var conditionName in conditionNames)
-			{
-				var memberInfo = ReflectionUtility.GetValidMemberInfo(conditionName, property);
-				var serializedProperty = property.serializedObject.FindProperty(conditionName);
+        private bool CanDrawProperty(ConditionalFieldAttribute attribute, string[] conditionNames,
+            SerializedProperty property, HelpBox errorBox)
+        {
+            var booleanList = new List<bool>();
 
-				if (memberInfo == null)
-				{
-					errorBox.text = $"The provided condition \"{conditionName}\" could not be found";
-					continue;
-				}
+            foreach (var conditionName in conditionNames)
+            {
+                var memberInfo = ReflectionUtility.GetValidMemberInfo(conditionName, property);
+                var serializedProperty = property.serializedObject.FindProperty(conditionName);
 
-				if (ReflectionUtility.GetMemberInfoType(memberInfo) == typeof(bool))
-				{
-					var propertyValue = (bool)ReflectionUtility.GetMemberInfoValue(memberInfo, property);
+                if (memberInfo == null)
+                {
+                    errorBox.text = $"The provided condition \"{conditionName}\" could not be found";
+                    continue;
+                }
 
-					booleanList.Add(propertyValue);
-				}
-				else if (serializedProperty != null && serializedProperty.propertyType == SerializedPropertyType.Boolean)
-				{
-					var propertyValue = serializedProperty.boolValue;
+                if (ReflectionUtility.GetMemberInfoType(memberInfo) == typeof(bool))
+                {
+                    var propertyValue = (bool)ReflectionUtility.GetMemberInfoValue(memberInfo, property);
 
-					booleanList.Add(propertyValue);
-				}
-				else
-				{
-					errorBox.text = $"The provided condition \"{conditionName}\" is not a valid boolean";
-				}
-			}
+                    booleanList.Add(propertyValue);
+                }
+                else if (serializedProperty != null &&
+                         serializedProperty.propertyType == SerializedPropertyType.Boolean)
+                {
+                    var propertyValue = serializedProperty.boolValue;
 
-			for (int i = 0; i < booleanList.Count; i++)
-			{
-				if (!(attribute.NegatedValues == null || attribute.NegatedValues.Length == 0))
-				{
-					if (attribute.NegatedValues[i]) 
-						booleanList[i] = !booleanList[i];
-				}
+                    booleanList.Add(propertyValue);
+                }
+                else
+                {
+                    errorBox.text = $"The provided condition \"{conditionName}\" is not a valid boolean";
+                }
+            }
 
-				switch (attribute.ConditionType)
-				{
-					case ConditionType.AND:
-						if (!booleanList[i]) return false;
-						continue;
+            for (int i = 0; i < booleanList.Count; i++)
+            {
+                if (!(attribute.NegatedValues == null || attribute.NegatedValues.Length == 0))
+                {
+                    if (attribute.NegatedValues[i])
+                        booleanList[i] = !booleanList[i];
+                }
 
-					case ConditionType.OR:
-						if (booleanList[i]) return true;
-						continue;
+                switch (attribute.ConditionType)
+                {
+                    case ConditionType.AND:
+                        if (!booleanList[i]) return false;
+                        continue;
 
-					case ConditionType.NAND:
-						if (!booleanList[i]) return true;
-						continue;
+                    case ConditionType.OR:
+                        if (booleanList[i]) return true;
+                        continue;
 
-					case ConditionType.NOR:
-						if (booleanList[i]) return false;
-						continue;
-				}
-			}
+                    case ConditionType.NAND:
+                        if (!booleanList[i]) return true;
+                        continue;
 
-			return attribute.ConditionType switch
-			{
-				ConditionType.AND => true,
-				ConditionType.NOR => true,
-				_ => false,
-			};
-		}
-	}
+                    case ConditionType.NOR:
+                        if (booleanList[i]) return false;
+                        continue;
+                }
+            }
+
+            return attribute.ConditionType switch
+            {
+                ConditionType.AND => true,
+                ConditionType.NOR => true,
+                _ => false,
+            };
+        }
+    }
 }

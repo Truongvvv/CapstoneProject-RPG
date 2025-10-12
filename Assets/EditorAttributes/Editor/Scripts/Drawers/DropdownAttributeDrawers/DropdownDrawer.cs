@@ -10,168 +10,188 @@ using EditorAttributes.Editor.Utility;
 
 namespace EditorAttributes.Editor
 {
-	[CustomPropertyDrawer(typeof(DropdownAttribute))]
-	public class DropdownDrawer : PropertyDrawerBase
-	{
-		public override VisualElement CreatePropertyGUI(SerializedProperty property)
-		{
-			var dropdownAttribute = attribute as DropdownAttribute;
-			var root = new VisualElement();
-			var errorBox = new HelpBox();
+    [CustomPropertyDrawer(typeof(DropdownAttribute))]
+    public class DropdownDrawer : PropertyDrawerBase
+    {
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            var dropdownAttribute = attribute as DropdownAttribute;
+            var root = new VisualElement();
+            var errorBox = new HelpBox();
 
-			var collectionInfo = ReflectionUtility.GetValidMemberInfo(dropdownAttribute.CollectionName, property);
-			var propertyValues = ConvertCollectionValuesToStrings(dropdownAttribute.CollectionName, property, collectionInfo, errorBox);
+            var collectionInfo = ReflectionUtility.GetValidMemberInfo(dropdownAttribute.CollectionName, property);
+            var propertyValues =
+                ConvertCollectionValuesToStrings(dropdownAttribute.CollectionName, property, collectionInfo, errorBox);
 
-			var displayValues = GetDisplayValues(collectionInfo, dropdownAttribute, property, propertyValues);
+            var displayValues = GetDisplayValues(collectionInfo, dropdownAttribute, property, propertyValues);
 
-			var dropdownField = IsCollectionValid(displayValues) ? new DropdownField(property.displayName, displayValues, GetDropdownDefaultValueIndex(propertyValues, property))
-				: new DropdownField(property.displayName, new List<string>() { "NULL" }, 0);
+            var dropdownField = IsCollectionValid(displayValues)
+                ? new DropdownField(property.displayName, displayValues,
+                    GetDropdownDefaultValueIndex(propertyValues, property))
+                : new DropdownField(property.displayName, new List<string>() { "NULL" }, 0);
 
-			dropdownField.tooltip = property.tooltip;
-			dropdownField.AddToClassList(BaseField<Void>.alignedFieldUssClassName);
+            dropdownField.tooltip = property.tooltip;
+            dropdownField.AddToClassList(BaseField<Void>.alignedFieldUssClassName);
 
-			AddPropertyContextMenu(dropdownField, property);
+            AddPropertyContextMenu(dropdownField, property);
 
-			dropdownField.RegisterValueChangedCallback((callback) =>
-			{
-				if (!property.hasMultipleDifferentValues)
-					SetPropertyValue(property, callback.newValue, dropdownAttribute, propertyValues, dropdownField, collectionInfo);
-			});
+            dropdownField.RegisterValueChangedCallback((callback) =>
+            {
+                if (!property.hasMultipleDifferentValues)
+                    SetPropertyValue(property, callback.newValue, dropdownAttribute, propertyValues, dropdownField,
+                        collectionInfo);
+            });
 
-			dropdownField.TrackPropertyValue(property, (trackedProperty) =>
-			{
-				if (propertyValues.Contains(trackedProperty.boxedValue.ToString()))
-				{
-					dropdownField.SetValueWithoutNotify(displayValues[propertyValues.IndexOf(trackedProperty.boxedValue.ToString())]);
-				}
-				else
-				{
-					Debug.LogWarning($"The value <b>{trackedProperty.boxedValue}</b> set to the <b>{trackedProperty.name}</b> variable is not a value available in the dropdown", trackedProperty.serializedObject.targetObject);
-				}
-			});
+            dropdownField.TrackPropertyValue(property, (trackedProperty) =>
+            {
+                if (propertyValues.Contains(trackedProperty.boxedValue.ToString()))
+                {
+                    dropdownField.SetValueWithoutNotify(
+                        displayValues[propertyValues.IndexOf(trackedProperty.boxedValue.ToString())]);
+                }
+                else
+                {
+                    Debug.LogWarning(
+                        $"The value <b>{trackedProperty.boxedValue}</b> set to the <b>{trackedProperty.name}</b> variable is not a value available in the dropdown",
+                        trackedProperty.serializedObject.targetObject);
+                }
+            });
 
-			if (dropdownField.value != "NULL" && !HasMismatchedDisplayCollectionCounts(dropdownAttribute, propertyValues, displayValues))
-			{
-				dropdownField.showMixedValue = property.hasMultipleDifferentValues;
+            if (dropdownField.value != "NULL" &&
+                !HasMismatchedDisplayCollectionCounts(dropdownAttribute, propertyValues, displayValues))
+            {
+                dropdownField.showMixedValue = property.hasMultipleDifferentValues;
 
-				if (!property.hasMultipleDifferentValues)
-					SetPropertyValue(property, dropdownField.value, dropdownAttribute, propertyValues, dropdownField, collectionInfo);
-			}
+                if (!property.hasMultipleDifferentValues)
+                    SetPropertyValue(property, dropdownField.value, dropdownAttribute, propertyValues, dropdownField,
+                        collectionInfo);
+            }
 
-			root.Add(dropdownField);
+            root.Add(dropdownField);
 
-			ExecuteLater(dropdownField, () => dropdownField.Q(className: DropdownField.inputUssClassName).style.backgroundColor = EditorExtension.GLOBAL_COLOR / 2f);
+            ExecuteLater(dropdownField,
+                () => dropdownField.Q(className: DropdownField.inputUssClassName).style.backgroundColor =
+                    EditorExtension.GLOBAL_COLOR / 2f);
 
-			UpdateVisualElement(dropdownField, () =>
-			{
-				var currentPropertyValues = ConvertCollectionValuesToStrings(dropdownAttribute.CollectionName, property, collectionInfo, errorBox);
-				var currentDisplayValues = GetDisplayValues(collectionInfo, dropdownAttribute, property, currentPropertyValues);
+            UpdateVisualElement(dropdownField, () =>
+            {
+                var currentPropertyValues = ConvertCollectionValuesToStrings(dropdownAttribute.CollectionName, property,
+                    collectionInfo, errorBox);
+                var currentDisplayValues =
+                    GetDisplayValues(collectionInfo, dropdownAttribute, property, currentPropertyValues);
 
-				if (IsCollectionValid(currentPropertyValues))
-				{
-					errorBox.text = string.Empty;
-					dropdownField.choices = currentDisplayValues;
+                if (IsCollectionValid(currentPropertyValues))
+                {
+                    errorBox.text = string.Empty;
+                    dropdownField.choices = currentDisplayValues;
 
-					propertyValues = currentPropertyValues;
-				}
+                    propertyValues = currentPropertyValues;
+                }
 
-				if (HasMismatchedDisplayCollectionCounts(dropdownAttribute, propertyValues, displayValues))
-				{
-					errorBox.text = "The value collection item count and display names count do not match";
-					DisplayErrorBox(root, errorBox);
+                if (HasMismatchedDisplayCollectionCounts(dropdownAttribute, propertyValues, displayValues))
+                {
+                    errorBox.text = "The value collection item count and display names count do not match";
+                    DisplayErrorBox(root, errorBox);
 
-					return;
-				}
+                    return;
+                }
 
-				DisplayErrorBox(root, errorBox);
-			});
+                DisplayErrorBox(root, errorBox);
+            });
 
-			return root;
-		}
+            return root;
+        }
 
-		protected override string CopyValue(VisualElement element, SerializedProperty property)
-		{
-			var dropdown = element as DropdownField;
-			var dropdownAttribute = attribute as DropdownAttribute;
+        protected override string CopyValue(VisualElement element, SerializedProperty property)
+        {
+            var dropdown = element as DropdownField;
+            var dropdownAttribute = attribute as DropdownAttribute;
 
-			return dropdownAttribute.DisplayNames != null ? dropdown.value : base.CopyValue(element, property);
-		}
+            return dropdownAttribute.DisplayNames != null ? dropdown.value : base.CopyValue(element, property);
+        }
 
-		protected override void PasteValue(VisualElement element, SerializedProperty property, string clipboardValue)
-		{
-			var dropdown = element as DropdownField;
-			var dropdownAttribute = attribute as DropdownAttribute;
+        protected override void PasteValue(VisualElement element, SerializedProperty property, string clipboardValue)
+        {
+            var dropdown = element as DropdownField;
+            var dropdownAttribute = attribute as DropdownAttribute;
 
-			if (dropdown.choices.Contains(clipboardValue))
-			{
-				if (dropdownAttribute.DisplayNames != null)
-				{
-					dropdown.value = clipboardValue;
-				}
-				else
-				{
-					base.PasteValue(element, property, clipboardValue);
-					dropdown.SetValueWithoutNotify(clipboardValue);
-				}
-			}
-			else
-			{
-				Debug.LogWarning($"Could not paste value \"{clipboardValue}\" since is not availiable as an option in the dropdown");
-			}
-		}
+            if (dropdown.choices.Contains(clipboardValue))
+            {
+                if (dropdownAttribute.DisplayNames != null)
+                {
+                    dropdown.value = clipboardValue;
+                }
+                else
+                {
+                    base.PasteValue(element, property, clipboardValue);
+                    dropdown.SetValueWithoutNotify(clipboardValue);
+                }
+            }
+            else
+            {
+                Debug.LogWarning(
+                    $"Could not paste value \"{clipboardValue}\" since is not availiable as an option in the dropdown");
+            }
+        }
 
-		private bool HasMismatchedDisplayCollectionCounts(DropdownAttribute dropdownAttribute, List<string> propertyValues, List<string> collectionValues) => dropdownAttribute.DisplayNames != null && propertyValues.Count != collectionValues.Count;
+        private bool HasMismatchedDisplayCollectionCounts(DropdownAttribute dropdownAttribute,
+            List<string> propertyValues, List<string> collectionValues) => dropdownAttribute.DisplayNames != null &&
+                                                                           propertyValues.Count !=
+                                                                           collectionValues.Count;
 
-		private void SetPropertyValue(SerializedProperty property, string value, DropdownAttribute dropdownAttribute, List<string> propertyValues, DropdownField dropdownField, MemberInfo collectionInfo)
-		{
-			if (dropdownAttribute.DisplayNames != null || IsDictionary(collectionInfo, property, out _))
-			{
-				SetPropertyValueFromString(propertyValues[dropdownField.index], property);
-			}
-			else
-			{
-				SetPropertyValueFromString(value, property);
-			}
-		}
+        private void SetPropertyValue(SerializedProperty property, string value, DropdownAttribute dropdownAttribute,
+            List<string> propertyValues, DropdownField dropdownField, MemberInfo collectionInfo)
+        {
+            if (dropdownAttribute.DisplayNames != null || IsDictionary(collectionInfo, property, out _))
+            {
+                SetPropertyValueFromString(propertyValues[dropdownField.index], property);
+            }
+            else
+            {
+                SetPropertyValueFromString(value, property);
+            }
+        }
 
-		private List<string> GetDisplayValues(MemberInfo collectionInfo, DropdownAttribute dropdownAttribute, SerializedProperty serializedProperty, List<string> propertyValues)
-		{
-			var displayStrings = new List<string>();
+        private List<string> GetDisplayValues(MemberInfo collectionInfo, DropdownAttribute dropdownAttribute,
+            SerializedProperty serializedProperty, List<string> propertyValues)
+        {
+            var displayStrings = new List<string>();
 
-			if (dropdownAttribute.DisplayNames == null)
-			{
-				if (IsDictionary(collectionInfo, serializedProperty, out IDictionary dictionary))
-				{
-					foreach (DictionaryEntry item in dictionary)
-						displayStrings.Add(item.Key == null ? "NULL" : item.Key.ToString());
-				}
-				else
-				{
-					displayStrings = propertyValues;
-				}
-			}
-			else
-			{
-				displayStrings = dropdownAttribute.DisplayNames.ToList();
-			}
+            if (dropdownAttribute.DisplayNames == null)
+            {
+                if (IsDictionary(collectionInfo, serializedProperty, out IDictionary dictionary))
+                {
+                    foreach (DictionaryEntry item in dictionary)
+                        displayStrings.Add(item.Key == null ? "NULL" : item.Key.ToString());
+                }
+                else
+                {
+                    displayStrings = propertyValues;
+                }
+            }
+            else
+            {
+                displayStrings = dropdownAttribute.DisplayNames.ToList();
+            }
 
-			return displayStrings;
-		}
+            return displayStrings;
+        }
 
-		private int GetDropdownDefaultValueIndex(List<string> collectionValues, SerializedProperty property)
-		{
-			var propertyStringValue = GetPropertyValueAsString(property);
+        private int GetDropdownDefaultValueIndex(List<string> collectionValues, SerializedProperty property)
+        {
+            var propertyStringValue = GetPropertyValueAsString(property);
 
-			return collectionValues.Contains(propertyStringValue) ? collectionValues.IndexOf(propertyStringValue) : 0;
-		}
+            return collectionValues.Contains(propertyStringValue) ? collectionValues.IndexOf(propertyStringValue) : 0;
+        }
 
-		private bool IsDictionary(MemberInfo collectionInfo, SerializedProperty serializedProperty, out IDictionary dictionary)
-		{
-			var collectionValue = ReflectionUtility.GetMemberInfoValue(collectionInfo, serializedProperty);
+        private bool IsDictionary(MemberInfo collectionInfo, SerializedProperty serializedProperty,
+            out IDictionary dictionary)
+        {
+            var collectionValue = ReflectionUtility.GetMemberInfoValue(collectionInfo, serializedProperty);
 
-			dictionary = collectionValue as IDictionary;
+            dictionary = collectionValue as IDictionary;
 
-			return collectionValue is IDictionary;
-		}
-	}
+            return collectionValue is IDictionary;
+        }
+    }
 }
