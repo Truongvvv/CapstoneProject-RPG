@@ -16,6 +16,7 @@ public class RandomNavmeshWalker : MonoBehaviour
 
     [Header("Nói chuyện với Player")]
     public float lookAtSpeed = 5f;      // tốc độ quay mặt
+    private Animator anim;
 
     private NavMeshAgent agent;
     private Vector3 startPos;
@@ -36,32 +37,48 @@ public class RandomNavmeshWalker : MonoBehaviour
         pointTimer = 0f;
         isResting = false;
         isTalkingWithPlayer = false;
+        anim = GetComponent<Animator>();
 
         PickRandomDestination();
     }
 
     void Update()
     {
+        // ----- Khi nói chuyện với Player -----
         if (isTalkingWithPlayer && playerTarget != null)
         {
-            // Dừng di chuyển
             if (agent.hasPath) agent.ResetPath();
 
             // Quay mặt về phía Player
             Vector3 dir = (playerTarget.position - transform.position).normalized;
-            dir.y = 0; // chỉ quay theo trục Y
+            dir.y = 0;
             if (dir.sqrMagnitude > 0.001f)
             {
                 Quaternion lookRot = Quaternion.LookRotation(dir);
                 transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * lookAtSpeed);
             }
+
+            // Bật animation Talk
+            if (anim != null)
+            {
+                anim.SetBool("isWalking", false);
+                anim.SetBool("isTalking", true);
+            }
+
             return;
         }
 
+        // ----- Khi không nói chuyện -----
         stateTimer += Time.deltaTime;
 
         if (isResting)
         {
+            if (anim != null)
+            {
+                anim.SetBool("isWalking", false);
+                anim.SetBool("isTalking", false);
+            }
+
             if (stateTimer >= restTime)
             {
                 isResting = false;
@@ -71,6 +88,13 @@ public class RandomNavmeshWalker : MonoBehaviour
         }
         else
         {
+            if (anim != null)
+            {
+                bool moving = agent.velocity.magnitude > 0.1f;
+                anim.SetBool("isWalking", moving);
+                anim.SetBool("isTalking", false);
+            }
+
             pointTimer += Time.deltaTime;
 
             if (stateTimer >= moveDuration)

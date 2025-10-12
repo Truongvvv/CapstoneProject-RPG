@@ -44,7 +44,7 @@ public class PlayerQuestManager : MonoBehaviour
             currentQuest.isCompleted = false;
             currentQuest.currentKills = 0;
 
-            Debug.Log("Nhận nhiệm vụ: " + currentQuest.questName);
+            Debug.Log("Get the quest: " + currentQuest.questName);
             QuestTracker.Instance.UpdateTracker(
                 currentQuest.questName,
                 $"{currentQuest.description} (0/{currentQuest.requiredKills})"
@@ -52,7 +52,7 @@ public class PlayerQuestManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Không còn nhiệm vụ mới!");
+            Debug.Log("No more new missions!");
             QuestTracker.Instance.ClearTracker();
         }
     }
@@ -85,15 +85,15 @@ public class PlayerQuestManager : MonoBehaviour
     void CompleteQuest()
     {
         currentQuest.isCompleted = true;
-        QuestTracker.Instance.UpdateTracker(currentQuest.questName, "Đã hoàn thành!");
-        Debug.Log("Hoàn thành nhiệm vụ: " + currentQuest.questName);
+        QuestTracker.Instance.UpdateTracker(currentQuest.questName, "Completed");
+        Debug.Log("Complete the mission: " + currentQuest.questName);
     }
 
     public void TurnInQuest(List<Quest> questList)
     {
         if (currentQuest != null && currentQuest.isCompleted)
         {
-            Debug.Log("Trả nhiệm vụ: " + currentQuest.questName);
+            Debug.Log("Return the task: " + currentQuest.questName);
 
             PlayerMovement player = FindObjectOfType<PlayerMovement>();
             if (player != null)
@@ -115,9 +115,9 @@ public class PlayerQuestManager : MonoBehaviour
         if (keyQuestText != null)
         {
             if (keyQuestCompleted)
-                keyQuestText.text = "Thu thập pha lê (Hoàn thành)";
+                keyQuestText.text = "Collect Crystals (Complete)";
             else
-                keyQuestText.text = $"Thu thập pha lê ({crystalsCollected}/{crystalsRequired})";
+                keyQuestText.text = $"Collect Crystals ({crystalsCollected}/{crystalsRequired})";
         }
     }
 
