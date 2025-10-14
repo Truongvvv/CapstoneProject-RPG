@@ -250,6 +250,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4502592042031614, guid: 8379f308d5dcffd4ab2f3ee5959a1076, type: 3}
   m_PrefabInstance: {fileID: 18949324}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &26145458 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1363486954092062532, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
+  m_PrefabInstance: {fileID: 2158609452404438785}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &29106307
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4519,6 +4524,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4947662018757878, guid: f4e6ccfc0f9f2de43b1f6ab60a2e5f44, type: 3}
   m_PrefabInstance: {fileID: 608492381}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &621350028 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7830698636409539856, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
+  m_PrefabInstance: {fileID: 2158609452404438785}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &645145136
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8602,6 +8618,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4922269697862426, guid: 7a3b4e0ce3105e340a61cb9472530255, type: 3}
   m_PrefabInstance: {fileID: 1073734170}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1096178947 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7747864006912275407, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
+  m_PrefabInstance: {fileID: 2158609452404438785}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1107805542
 GameObject:
   m_ObjectHideFlags: 0
@@ -9386,6 +9413,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6281289205873cd4eab3843382548bec, type: 3}
+--- !u!114 &1228879585 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5540408129817486167, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
+  m_PrefabInstance: {fileID: 2158609452404438785}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1239810959
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10146,6 +10184,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 510e450a9dabe4c4a8f50c43d2a631d5, type: 3}
+--- !u!114 &1339787660 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4388988780016890700, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
+  m_PrefabInstance: {fileID: 2158609452404438785}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1350483232 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8710004729265786354, guid: f2261caba050c704c9dd8f0b4a255aef, type: 3}
@@ -11672,6 +11721,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ellen
       objectReference: {fileID: 0}
+    - target: {fileID: 2189495687021888431, guid: 6cc9bcfb85a124a4f813bff1f54281b2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2189495687022321615, guid: 6cc9bcfb85a124a4f813bff1f54281b2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 308.83
@@ -12333,143 +12386,23 @@ PrefabInstance:
     - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
       propertyPath: questUI
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 26145458}
     - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
       propertyPath: acceptButton
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1228879585}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: keyQuestText
+      value: 
+      objectReference: {fileID: 1096178947}
+    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
+      propertyPath: mainQuestText
+      value: 
+      objectReference: {fileID: 1339787660}
     - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
       propertyPath: completeButton
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.size
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[5].enemyTag
-      value: Lion
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[6].enemyTag
-      value: Dragon1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[7].enemyTag
-      value: Dragon2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[8].enemyTag
-      value: Dragon3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[9].enemyTag
-      value: Dragon4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[10].enemyTag
-      value: DragonBoss
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[5].expReward
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[5].questName
-      value: Kill Boss Lion King
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[6].expReward
-      value: 600
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[6].questName
-      value: Kill 5 Dragon 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[7].expReward
-      value: 600
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[7].questName
-      value: Kill 5 Dragon 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[8].expReward
-      value: 700
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[8].questName
-      value: Kill 10 Dragon 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[9].expReward
-      value: 750
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[9].questName
-      value: Kill 10 Dragon 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[10].expReward
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[10].questName
-      value: Kill Boss Dragon King
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[5].description
-      value: Lion King
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[6].description
-      value: 5 Dragon 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[7].description
-      value: 5 Dragon 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[8].description
-      value: 10 Dragon 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[9].description
-      value: 10 Dragon 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[10].description
-      value: Dragon King
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[5].requiredKills
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[6].requiredKills
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[7].requiredKills
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[8].requiredKills
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[9].requiredKills
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2747269850258948711, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
-      propertyPath: quests.Array.data[10].requiredKills
-      value: 10
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 621350028}
     - target: {fileID: 7627040738957196652, guid: 80e7b8c361980904e8e80be765d44d85, type: 3}
       propertyPath: m_Name
       value: Capsule
