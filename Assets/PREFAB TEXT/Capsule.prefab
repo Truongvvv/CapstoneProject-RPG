@@ -166,10 +166,60 @@ MonoBehaviour:
     isAccepted: 0
     isCompleted: 0
     expReward: 500
+  - questName: Kill Boss Lion King
+    description: Lion King
+    enemyTag: Lion
+    requiredKills: 10
+    currentKills: 0
+    isAccepted: 0
+    isCompleted: 0
+    expReward: 1000
+  - questName: Kill 5 Dragon 1
+    description: 5 Dragon 1
+    enemyTag: Dragon1
+    requiredKills: 5
+    currentKills: 0
+    isAccepted: 0
+    isCompleted: 0
+    expReward: 600
+  - questName: Kill 5 Dragon 2
+    description: 5 Dragon 2
+    enemyTag: Dragon2
+    requiredKills: 5
+    currentKills: 0
+    isAccepted: 0
+    isCompleted: 0
+    expReward: 600
+  - questName: Kill 10 Dragon 3
+    description: 10 Dragon 3
+    enemyTag: Dragon3
+    requiredKills: 10
+    currentKills: 0
+    isAccepted: 0
+    isCompleted: 0
+    expReward: 700
+  - questName: Kill 10 Dragon 4
+    description: 10 Dragon 4
+    enemyTag: Dragon4
+    requiredKills: 10
+    currentKills: 0
+    isAccepted: 0
+    isCompleted: 0
+    expReward: 750
+  - questName: Kill Boss Dragon King
+    description: Dragon King
+    enemyTag: DragonBoss
+    requiredKills: 10
+    currentKills: 0
+    isAccepted: 0
+    isCompleted: 0
+    expReward: 2000
+  expRewards: 
   questUI: {fileID: 0}
   acceptButton: {fileID: 0}
   completeButton: {fileID: 0}
-  expRewards: 
+  mainQuestText: {fileID: 0}
+  keyQuestText: {fileID: 0}
 --- !u!195 &8310224094927149926
 NavMeshAgent:
   m_ObjectHideFlags: 0

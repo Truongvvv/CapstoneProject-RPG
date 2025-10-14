@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +8,7 @@ using Cysharp.Threading.Tasks;
 using EditorAttributes;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -37,6 +39,8 @@ public class PlayerUI : MonoBehaviour
 
     [Header("Dead UI")] [SerializeField] private GameObject _deadUI;
     [SerializeField] private TextMeshProUGUI _tipText;
+    [SerializeField] private Button _respawnButton;
+    [SerializeField] private Button _homeButton;
 
     [Header("Gameplay UI")] [SerializeField]
     private Image _bloodOverlay;
@@ -101,6 +105,20 @@ public class PlayerUI : MonoBehaviour
         UpdateSkillUI();
     }
 
+    private void OnEnable()
+    {
+        PlayerQuestManager.OnWinGame += GameCompleted;
+        PlayerHealth.OnPlayerDeath += GameDefeated;
+        PlayerHealth.UpdateHealth += UpdateHealth;
+    }
+
+    private void OnDisable()
+    {
+        PlayerQuestManager.OnWinGame -= GameCompleted;
+        PlayerHealth.OnPlayerDeath -= GameDefeated;
+        PlayerHealth.UpdateHealth -= UpdateHealth;
+    }
+
     private void Update()
     {
         if (!_isDead) _playTime += Time.deltaTime;
@@ -144,6 +162,8 @@ public class PlayerUI : MonoBehaviour
         //_questButton.onClick.AddListener(OnQuestButtonPressed);
         _startANewGameButton.onClick.AddListener(OnStartANewGameButtonPressed);
         _returnHomeButton.onClick.AddListener(OnReturnHomeButtonPressed);
+        _respawnButton.onClick.AddListener(Respawn);
+        _homeButton.onClick.AddListener(OnReturnHomeButtonPressed);
     }
 
     public void OnQuestButtonPressed()
@@ -347,7 +367,12 @@ public class PlayerUI : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    public void UpdateHealth(int currentHealth, int maxHealth)
+    private void Respawn()
+    {
+        
+    }
+
+    public void UpdateHealth(float currentHealth, float maxHealth)
     {
         _healthSlider.value = currentHealth;
     }

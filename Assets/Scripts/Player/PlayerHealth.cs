@@ -1,19 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public float maxHealth = 100f;
+    public float maxHealth = 100;
     private float currentHealth;
 
-    [Header("UI")]
-    public Slider healthSlider;
+    [Header("UI")] public Slider healthSlider;
     public Text healthText;
+
+    public static Action OnPlayerDeath;
+    public static Action<float, float> UpdateHealth;
 
     void Start()
     {
         currentHealth = maxHealth;
-        UpdateHealthUI();
+        UpdateHealth?.Invoke(currentHealth, maxHealth);
     }
 
     // Gây sát thương
@@ -22,17 +26,12 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        UpdateHealthUI();
+        UpdateHealth?.Invoke(currentHealth, maxHealth);
 
         if (currentHealth <= 0f)
         {
-            Die();
+            OnPlayerDeath?.Invoke();
         }
-    }
-
-    void Die()
-    {
-        Debug.Log("Player has died!");
     }
 
     // Hồi máu
@@ -40,33 +39,18 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        UpdateHealthUI();
+        UpdateHealth?.Invoke(currentHealth, maxHealth);
     }
 
     // Dùng khi player lên level
-    public void SetMaxHealth(float newMaxHealth, bool refill = true)
+    public void SetMaxHealth(int newMaxHealth, bool refill = true)
     {
         maxHealth = newMaxHealth;
 
         if (refill)
             currentHealth = maxHealth; // hồi đầy máu nếu muốn
 
-        UpdateHealthUI(); // luôn cập nhật UI khi max HP thay đổi
-    }
-
-    // Cập nhật Slider + Text
-    void UpdateHealthUI()
-    {
-        if (healthSlider != null)
-        {
-            healthSlider.maxValue = maxHealth;
-            healthSlider.value = currentHealth;
-        }
-
-        if (healthText != null)
-        {
-            healthText.text = $"HP: {(int)currentHealth}/{(int)maxHealth}";
-        }
+        UpdateHealth?.Invoke(currentHealth, maxHealth);
     }
 
     public float GetHealth()

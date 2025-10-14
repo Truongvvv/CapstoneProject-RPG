@@ -241,7 +241,7 @@ public class PlayerMovement : MonoBehaviour
             skillVCooldownTimer = skillVCooldown;
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             if(_playerUI) _playerUI.OnQuestButtonPressed();
         }
