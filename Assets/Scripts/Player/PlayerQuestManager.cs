@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 
@@ -17,6 +18,8 @@ public class PlayerQuestManager : MonoBehaviour
     [Header("Quest UI")]
     public TMP_Text questMessageText;  // Bổ sung để tránh lỗi null nếu bạn đang dùng trong UpdateQuestUI
 
+    public static Action OnWinGame;
+    
     void Awake()
     {
         Instance = this;
@@ -129,8 +132,9 @@ public class PlayerQuestManager : MonoBehaviour
 
         if (crystalsCollected >= crystalsRequired)
         {
-            keyQuestCompleted = true;
             UpdateQuestUI();
+            keyQuestCompleted = true;
+            OnWinGame?.Invoke();
         }
     }
 }
