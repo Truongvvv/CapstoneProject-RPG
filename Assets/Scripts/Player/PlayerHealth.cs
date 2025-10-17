@@ -1,14 +1,16 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
+    [Header("Health Settings")]
     public float maxHealth = 100;
     private float currentHealth;
+    private bool isDead = false;
 
-    [Header("UI")] public Slider healthSlider;
+    [Header("UI References")]
+    public Slider healthSlider;
     public Text healthText;
 
     public static Action OnPlayerDeath;
@@ -17,44 +19,58 @@ public class PlayerHealth : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        UpdateHealth?.Invoke(currentHealth, maxHealth);
+        UpdateHealthUI();
     }
 
-    // Gây sát thương
     public void TakeDamage(float amount)
     {
+        if (isDead) return;
+
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-
-        UpdateHealth?.Invoke(currentHealth, maxHealth);
+        UpdateHealthUI();
 
         if (currentHealth <= 0f)
         {
+            isDead = true;
             OnPlayerDeath?.Invoke();
         }
     }
 
-    // Hồi máu
     public void Heal(float amount)
     {
+        if (isDead) return;
+
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        UpdateHealth?.Invoke(currentHealth, maxHealth);
+        UpdateHealthUI();
     }
 
-    // Dùng khi player lên level
     public void SetMaxHealth(int newMaxHealth, bool refill = true)
     {
         maxHealth = newMaxHealth;
-
         if (refill)
-            currentHealth = maxHealth; // hồi đầy máu nếu muốn
-
-        UpdateHealth?.Invoke(currentHealth, maxHealth);
+            currentHealth = maxHealth;
+        UpdateHealthUI();
     }
 
-    public float GetHealth()
+    public float GetHealth() => currentHealth;
+
+    public void ResetHealth()
     {
-        return currentHealth;
+        currentHealth = maxHealth;
+        isDead = false;
+        UpdateHealthUI();
+    }
+
+    private void UpdateHealthUI()
+    {
+        if (healthSlider != null)
+            healthSlider.value = currentHealth / maxHealth;
+
+        if (healthText != null)
+            healthText.text = $"{Mathf.RoundToInt(currentHealth)} / {Mathf.RoundToInt(maxHealth)}";
+
+        UpdateHealth?.Invoke(currentHealth, maxHealth);
     }
 }
