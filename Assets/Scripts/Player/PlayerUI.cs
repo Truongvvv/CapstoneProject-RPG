@@ -18,6 +18,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private GameObject _playerStats;
     [SerializeField] private GameObject _resultUI;
     [SerializeField] private Slider _healthSlider;
+    [SerializeField] private TextMeshProUGUI _healthText;
     [SerializeField] private Slider _manaSlider;
     //[SerializeField] private Button _questButton;
     [SerializeField] private GameObject _questPanel;
@@ -375,5 +376,6 @@ public class PlayerUI : MonoBehaviour
     public void UpdateHealth(float currentHealth, float maxHealth)
     {
         _healthSlider.value = currentHealth;
+        _healthText.text = currentHealth + "/" + maxHealth;
     }
 }
