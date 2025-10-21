@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 //using EditorAttributes;
 using GameConfig;
+using UnityEngine.SceneManagement;
 
 public class MenuScene : MonoBehaviour
 {
@@ -79,6 +80,7 @@ public class MenuScene : MonoBehaviour
     private void OnContinueGameButtonPressed()
     {
         PlaySound?.Invoke(AudioType.Click_01);
+        SceneManager.LoadScene(2);
     }
 
     #endregion
