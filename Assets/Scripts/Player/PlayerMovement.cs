@@ -45,6 +45,12 @@ public class PlayerMovement : MonoBehaviour
     [Header("VFX Buff Shooting")] public GameObject buffedProjectileVFXPrefab; // Prefab đạn khi buff
     public GameObject buffedHitEffectPrefab; // Prefab nổ khi buff
 
+    [Header("Âm thanh di chuyển")]
+    public AudioClip[] footstepClips;    // danh sách âm bước chân khi đi thường
+    public AudioClip[] sprintClips;      // danh sách âm khi chạy nhanh
+    public float footstepInterval = 0.5f; // thời gian giữa 2 bước (s)
+    private float footstepTimer = 0f;
+
     private CharacterController controller;
     private Animator animator;
 
@@ -181,13 +187,30 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            // Chạy nhanh khi đè Q + có hướng di chuyển
             bool isSprinting = Input.GetKey(KeyCode.Q) && moveInput.magnitude > 0f;
             float currentSpeed = isSprinting ? moveSpeed + sprintBonus : moveSpeed;
 
             controller.Move(moveInput * currentSpeed * Time.deltaTime);
-            //// Move thường
-            //controller.Move(moveInput * moveSpeed * Time.deltaTime);
+
+            // --- Footstep sound ---
+            if (isGrounded && moveInput.magnitude > 0.1f && !isDashing)
+            {
+                footstepTimer -= Time.deltaTime;
+
+                // chỉ phát khi đã đi qua khoảng thời gian và player đang thật sự di chuyển
+                if (footstepTimer <= 0f && controller.velocity.magnitude > 0.5f)
+                {
+                    PlayFootstep(isSprinting);
+
+                    // reset thời gian giữa 2 bước (ngắn hơn khi chạy)
+                    footstepTimer = isSprinting ? footstepInterval * 0.6f : footstepInterval;
+                }
+            }
+            else
+            {
+                // reset timer khi dừng lại để tránh bị lặp lúc mới di chuyển
+                footstepTimer = 0f;
+            }
         }
 
 
@@ -555,5 +578,15 @@ public class PlayerMovement : MonoBehaviour
         {
             audioSource.PlayOneShot(clip);
         }
+    }
+    void PlayFootstep(bool isSprinting)
+    {
+        if (audioSource == null) return;
+
+        AudioClip[] clips = isSprinting ? sprintClips : footstepClips;
+        if (clips == null || clips.Length == 0) return;
+
+        int index = Random.Range(0, clips.Length);
+        audioSource.PlayOneShot(clips[index]);
     }
 }

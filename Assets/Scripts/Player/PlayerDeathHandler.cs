@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class PlayerDeathHandler : MonoBehaviour
 {
@@ -128,5 +129,14 @@ public class PlayerDeathHandler : MonoBehaviour
             colors.normalColor = (b == button) ? new Color(1f, 0.85f, 0.3f) : Color.gray;
             b.colors = colors;
         }
+    }
+
+    public void ReturnToMenu()
+    {
+        Time.timeScale = 1f; // khôi phục thời gian
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        SceneManager.LoadScene("MenuScene"); 
     }
 }
