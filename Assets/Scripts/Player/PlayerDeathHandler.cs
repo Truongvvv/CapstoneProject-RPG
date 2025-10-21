@@ -133,10 +133,12 @@ public class PlayerDeathHandler : MonoBehaviour
 
     public void ReturnToMenu()
     {
-        Time.timeScale = 1f; // khôi phục thời gian
+        Time.timeScale = 1f;
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        SceneManager.LoadScene("MenuScene"); 
+        // Load scene menu chính
+        SceneManager.LoadScene("MenuScene");
     }
 }
