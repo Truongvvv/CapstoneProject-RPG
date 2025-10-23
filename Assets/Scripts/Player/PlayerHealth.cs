@@ -66,7 +66,10 @@ public class PlayerHealth : MonoBehaviour
     private void UpdateHealthUI()
     {
         if (healthSlider != null)
-            healthSlider.value = currentHealth / maxHealth;
+        {
+            healthSlider.maxValue = maxHealth;      
+            healthSlider.value = currentHealth;
+        }
 
         if (healthText != null)
             healthText.text = $"{Mathf.RoundToInt(currentHealth)} / {Mathf.RoundToInt(maxHealth)}";
