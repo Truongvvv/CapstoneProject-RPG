@@ -7,6 +7,7 @@ using TMPro;
 using Cysharp.Threading.Tasks;
 using EditorAttributes;
 using DG.Tweening;
+using GameConfig;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
@@ -19,7 +20,9 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private GameObject _resultUI;
     [SerializeField] private Slider _healthSlider;
     [SerializeField] private TextMeshProUGUI _healthText;
+
     [SerializeField] private Slider _manaSlider;
+
     //[SerializeField] private Button _questButton;
     [SerializeField] private GameObject _questPanel;
 
@@ -52,6 +55,15 @@ public class PlayerUI : MonoBehaviour
 
     [SerializeField] private float _healthPlus;
     [SerializeField] private float _manaPlus;
+
+    [Header("Pause UI")] [SerializeField] private GameObject _pausePanel;
+    [SerializeField] private Button _resumeButton;
+    [SerializeField] private Button _backMenuButton;
+    [SerializeField] private Toggle _muteToggle;
+    [SerializeField] private Slider _musicSlider;
+    [SerializeField] private Slider _sfxSlider;
+
+    private float _originalTimeScale = 1f;
 
     private int _enemyDefeated;
     private int _expGain;
@@ -104,6 +116,13 @@ public class PlayerUI : MonoBehaviour
         _victoryUI.SetActive(false);
 
         UpdateSkillUI();
+
+        _muteToggle.isOn = PlayerPrefs.GetInt(SettingKey.MuteAll, 0) == 1;
+        _musicSlider.value = PlayerPrefs.GetFloat(SettingKey.MusicVolume, 0.7f);
+        _sfxSlider.value = PlayerPrefs.GetFloat(SettingKey.SfxVolume, 0.8f);
+
+        InitEventButton();
+        InitPauseButtons();
     }
 
     private void OnEnable()
@@ -111,6 +130,7 @@ public class PlayerUI : MonoBehaviour
         PlayerQuestManager.OnWinGame += GameCompleted;
         PlayerHealth.OnPlayerDeath += GameDefeated;
         PlayerHealth.UpdateHealth += UpdateHealth;
+        PlayerMovement.OnPauseGame += PauseGame;
     }
 
     private void OnDisable()
@@ -118,6 +138,7 @@ public class PlayerUI : MonoBehaviour
         PlayerQuestManager.OnWinGame -= GameCompleted;
         PlayerHealth.OnPlayerDeath -= GameDefeated;
         PlayerHealth.UpdateHealth -= UpdateHealth;
+        PlayerMovement.OnPauseGame -= PauseGame;
     }
 
     private void Update()
@@ -163,8 +184,32 @@ public class PlayerUI : MonoBehaviour
         //_questButton.onClick.AddListener(OnQuestButtonPressed);
         _startANewGameButton.onClick.AddListener(OnStartANewGameButtonPressed);
         _returnHomeButton.onClick.AddListener(OnReturnHomeButtonPressed);
-        _respawnButton.onClick.AddListener(Respawn);
+        // _respawnButton.onClick.AddListener(Respawn);
         _homeButton.onClick.AddListener(OnReturnHomeButtonPressed);
+    }
+
+    private void InitPauseButtons()
+    {
+        if (_resumeButton) _resumeButton.onClick.AddListener(OnResumePressed);
+        if (_backMenuButton) _backMenuButton.onClick.AddListener(OnBackHomePressed);
+
+        if (_muteToggle)
+        {
+            _muteToggle.onValueChanged.AddListener(OnMuteChanged);
+            _muteToggle.isOn = PlayerPrefs.GetInt(SettingKey.MuteAll, 0) == 1;
+        }
+
+        if (_musicSlider)
+        {
+            _musicSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
+            _musicSlider.value = PlayerPrefs.GetFloat(SettingKey.MusicVolume, 0.7f);
+        }
+
+        if (_sfxSlider)
+        {
+            _sfxSlider.onValueChanged.AddListener(OnSfxVolumeChanged);
+            _sfxSlider.value = PlayerPrefs.GetFloat(SettingKey.SfxVolume, 0.8f);
+        }
     }
 
     public void OnQuestButtonPressed()
@@ -368,14 +413,61 @@ public class PlayerUI : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    private void Respawn()
-    {
-        
-    }
-
     public void UpdateHealth(float currentHealth, float maxHealth)
     {
         _healthSlider.value = currentHealth;
         _healthText.text = currentHealth + "/" + maxHealth;
+    }
+
+    private void PauseGame()
+    {
+        _originalTimeScale = Time.timeScale;
+        Time.timeScale = 0f;
+        _pausePanel?.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    private void ResumeGame()
+    {
+        Time.timeScale = _originalTimeScale;
+        PlayerMovement.IsPaused = false;
+        _pausePanel?.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    private void OnResumePressed()
+    {
+        ResumeGame();
+    }
+
+    private void OnBackHomePressed()
+    {
+        DataManager.UpdatePosition(GameObject.FindWithTag("Player").transform.position);
+        DataManager.SaveGame();
+
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(1);
+    }
+
+    private void OnMuteChanged(bool isOn)
+    {
+        PlayerPrefs.SetInt(SettingKey.MuteAll, isOn ? 1 : 0);
+        PlayerPrefs.Save();
+        AudioListener.volume = isOn ? 0 : 1;
+    }
+
+    private void OnMusicVolumeChanged(float value)
+    {
+        PlayerPrefs.SetFloat(SettingKey.MusicVolume, value);
+        PlayerPrefs.Save();
+        AudioListener.volume = _muteToggle != null && _muteToggle.isOn ? 0 : value;
+    }
+
+    private void OnSfxVolumeChanged(float value)
+    {
+        PlayerPrefs.SetFloat(SettingKey.SfxVolume, value);
+        PlayerPrefs.Save();
     }
 }

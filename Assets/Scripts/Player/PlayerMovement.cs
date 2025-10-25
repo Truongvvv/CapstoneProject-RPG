@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
+using Random = UnityEngine.Random;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -53,6 +55,8 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController controller;
     private Animator animator;
 
+    public static Action OnPauseGame;
+
     private Vector3 velocity;
     private bool isGrounded;
 
@@ -103,6 +107,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip skillVSFX;
 
     [SerializeField] private PlayerUI _playerUI;
+    public static bool IsPaused = false;
 
     void Start()
     {
@@ -124,6 +129,8 @@ public class PlayerMovement : MonoBehaviour
         if (pos != Vector3.zero)
             transform.position = pos;
 
+        IsPaused = false;
+        
         _playerUI?.SetUpHealth(currentHP, maxHP);
         _playerUI?.UpdateHealth(currentHP, maxHP);
     }
@@ -142,6 +149,15 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (IsPaused)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            IsPaused = true;
+            OnPauseGame?.Invoke();
+        }
+
         if (Input.GetMouseButtonDown(0)) // Chuột trái
         {
             Shoot();
