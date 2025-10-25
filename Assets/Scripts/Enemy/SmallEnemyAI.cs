@@ -114,7 +114,6 @@ public class SmallEnemyAI : MonoBehaviour
                 transform.LookAt(player);
                 animator.SetBool("isRunning", false);
                 animator.SetBool("isAttacking", true);
-                Debug.Log("Attack Trigger Set");
                 animator.SetBool("isPatrolling", false);
 
                 attackTimer += Time.deltaTime;

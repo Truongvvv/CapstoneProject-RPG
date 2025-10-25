@@ -21116,60 +21116,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2060559800035170622, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2060559800035170622, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2060559800035170622, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 2060559800035170622, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2491532060701992686, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
-      propertyPath: m_text
-      value: Statistics Board
-      objectReference: {fileID: 0}
-    - target: {fileID: 3235341447258356066, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
-      propertyPath: m_text
-      value: "\n\n\n\n\n\n\n<size=90><b>ETERNAL REALMS: SHADOWFALL</b></size>\r\n\r\n<size=45>A
-        tale of light and shadow.\r\nWhere courage meets destiny.</size>\r\n\r\n<size=60><b>DEVELOPED
-        BY: LIEU QUI CHUONG\n\t\t\t\tNGUYEN  PHI TRUONG</b></size>\n\n\n\n\n\r\n---------------------------------\r\n\n\n\n\n\n\n\n<size=45>\r\n<b>Lead
-        Designer:</b> Lieu Qui Chuong\r\n<b>Programming:</b> Nguyen Phi Truong\r\n<b>Art
-        Director:</b> Internet\r\n<b>Concept Artists:</b> Internet\r\n<b>3D Modelling
-        & Texturing:</b> Internet\r\n<b>Animation:</b> Nguyen Phi Truong\r\n<b>UI
-        / UX Design:</b> Lieu Qui Chuong\r\n<b>Sound & Music:</b> Internet\r\n</size>\r\n\r\n<size=40><b>SPECIAL
-        THANKS</b></size>\r\n<size=30>\r\n - To all teachers at VTC Academy.\r\n
-        - To early playtesters & supporters.\r\n - To the RPG dev community.\r\n
-        - To family & friends for their support.\r\n</size>\r\n\r\n<size=40><b>TOOLS
-        & PIPELINE</b></size>\r\n<size=30>\r\n - Unity Engine\r\n - Blender, Substance
-        Painter\r\n - Visual Studio / JetBrains Rider\r\n - Git for version control\r\n</size>\r\n\n\n\n\n\n\n\r\n<size=45><i>\u201CWhere
-        shadows fall, light prevails.\u201D</i></size>\r\n\r\n<size=60><b>Thank you
-        for playing!</b></size>\r\n"
+      value: -420.165
       objectReference: {fileID: 0}
     - target: {fileID: 4287112932798626930, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4287112932798626930, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4287112932798626930, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 4287112932798626930, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4324860998246622836, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      value: -125
       objectReference: {fileID: 0}
     - target: {fileID: 4381055243978809384, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -21259,54 +21234,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6164789484870375753, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -1030
+    - target: {fileID: 6695147799722826148, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7088471074306672861, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7088471074306672861, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7088471074306672861, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7088471074306672861, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8171773302437889727, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8171773302437889727, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: -254.2025
       objectReference: {fileID: 0}
     - target: {fileID: 8171773302437889727, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1131731511}
-    - target: {fileID: 8171773302437889727, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8171773302437889727, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ReturnToMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 8171773302437889727, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: PlayerDeathHandler, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 8171773302437889727, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 8917551101399383320, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

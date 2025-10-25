@@ -45,9 +45,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("VFX Buff Shooting")] public GameObject buffedProjectileVFXPrefab; // Prefab đạn khi buff
     public GameObject buffedHitEffectPrefab; // Prefab nổ khi buff
 
-    [Header("Âm thanh di chuyển")]
-    public AudioClip[] footstepClips;    // danh sách âm bước chân khi đi thường
-    public AudioClip[] sprintClips;      // danh sách âm khi chạy nhanh
+    [Header("Âm thanh di chuyển")] public AudioClip[] footstepClips; // danh sách âm bước chân khi đi thường
+    public AudioClip[] sprintClips; // danh sách âm khi chạy nhanh
     public float footstepInterval = 0.5f; // thời gian giữa 2 bước (s)
     private float footstepTimer = 0f;
 
@@ -108,11 +107,25 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        animator = modelTransform.GetComponent<Animator>(); // Animator nằm trong model
+        animator = modelTransform.GetComponent<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
 
-        currentHP = maxHP;
-        _playerUI.SetUpHealth(currentHP, maxHP);
+        var data = DataManager.CurrentData ?? new PlayerData();
+
+        level = data.playerLevel;
+        currentExp = data.playerExp;
+        expToNextLevel = 100 + (level - 1) * 50;
+        maxHP = data.playerMaxHP;
+        currentHP = data.playerCurrentHP;
+        gunDamage = data.playerDamage;
+        moveSpeed = data.moveSpeed;
+
+        Vector3 pos = new Vector3(data.positionX, data.positionY, data.positionZ);
+        if (pos != Vector3.zero)
+            transform.position = pos;
+
+        _playerUI?.SetUpHealth(currentHP, maxHP);
+        _playerUI?.UpdateHealth(currentHP, maxHP);
     }
 
     void Awake()
@@ -266,9 +279,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if(_playerUI) _playerUI.OnQuestButtonPressed();
+            if (_playerUI) _playerUI.OnQuestButtonPressed();
         }
-        
+
         // Giảm cooldown
         buffFCooldownTimer -= Time.deltaTime;
         skillVCooldownTimer -= Time.deltaTime;
@@ -579,6 +592,7 @@ public class PlayerMovement : MonoBehaviour
             audioSource.PlayOneShot(clip);
         }
     }
+
     void PlayFootstep(bool isSprinting)
     {
         if (audioSource == null) return;
@@ -588,5 +602,55 @@ public class PlayerMovement : MonoBehaviour
 
         int index = Random.Range(0, clips.Length);
         audioSource.PlayOneShot(clips[index]);
+    }
+
+    private void SavePlayerData()
+    {
+        DataManager.UpdateHealth(currentHP, maxHP);
+        DataManager.UpdateExp(currentExp, level);
+        DataManager.UpdatePosition(transform.position);
+        DataManager.CurrentData.playerDamage = gunDamage;
+        DataManager.CurrentData.moveSpeed = moveSpeed;
+    }
+
+    private void LoadPlayerDataToScene()
+    {
+        var data = DataManager.CurrentData;
+
+        level = data.playerLevel;
+        currentExp = data.playerExp;
+        maxHP = data.playerMaxHP;
+        currentHP = data.playerCurrentHP;
+        gunDamage = data.playerDamage;
+        moveSpeed = data.moveSpeed;
+
+        Vector3 pos = new Vector3(data.positionX, data.positionY, data.positionZ);
+        transform.position = pos;
+
+        _playerUI.UpdateHealth(currentHP, maxHP);
+    }
+
+    private void OnApplicationQuit()
+    {
+        AutoSave("Thoát game");
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+            AutoSave("Tạm dừng game (pause)");
+    }
+
+    private void OnDestroy()
+    {
+        if (gameObject.scene.isLoaded)
+            AutoSave("Rời scene gameplay");
+    }
+
+    private void AutoSave(string reason)
+    {
+        SavePlayerData();
+        DataManager.SaveGame();
+        Debug.Log($"💾 [AutoSave] Game đã lưu ({reason})");
     }
 }

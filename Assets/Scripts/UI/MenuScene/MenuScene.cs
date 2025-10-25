@@ -1,29 +1,22 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Cysharp.Threading.Tasks;
-//using EditorAttributes;
-using GameConfig;
 using UnityEngine.SceneManagement;
 
 public class MenuScene : MonoBehaviour
 {
     [Header("UI References")]
-    //[Required]
-    [SerializeField]
-    private Canvas _canvas;
+    [SerializeField] private Canvas _canvas;
 
-    [Header("Buttons")] [Space(5)] [SerializeField]
-    private Button _continueButton;
-
+    [Header("Buttons")]
+    [SerializeField] private Button _continueButton;
     [SerializeField] private Button _newGameButton;
     [SerializeField] private Button _settingButton;
     [SerializeField] private Button _helpButton;
     [SerializeField] private Button _exitButton;
 
-    [Header("Dialogs")] [Space(5)] [SerializeField]
-    private GameObject _newGameDialog;
-
+    [Header("Dialogs")]
+    [SerializeField] private GameObject _newGameDialog;
     [SerializeField] private GameObject _settingDialog;
     [SerializeField] private GameObject _helpDialog;
 
@@ -36,6 +29,9 @@ public class MenuScene : MonoBehaviour
         _newGameDialog.gameObject.SetActive(false);
         _settingDialog.gameObject.SetActive(false);
         _helpDialog.gameObject.SetActive(false);
+
+        if (!System.IO.File.Exists(Application.persistentDataPath + "/save.json"))
+            _continueButton.interactable = false;
     }
 
     private void InitButtonEvents()
@@ -47,13 +43,13 @@ public class MenuScene : MonoBehaviour
         _exitButton.onClick.AddListener(OnExitButtonPressed);
     }
 
-    #region Onclick Events
+    #region OnClick Events
 
     private void OnExitButtonPressed()
     {
         PlaySound?.Invoke(AudioType.Click_01);
 #if UNITY_EDITOR
-        Debug.Log("Exit");
+        Debug.Log("Exit Game");
 #else
         Application.Quit();
 #endif
@@ -74,13 +70,23 @@ public class MenuScene : MonoBehaviour
     private void OnNewGameButtonPressed()
     {
         PlaySound?.Invoke(AudioType.Click_01);
-        _newGameDialog.SetActive(true);
+
+        DataManager.DeleteSave();
+        DataManager.CurrentData = new PlayerData();
+
+        SceneManager.LoadScene(2);
     }
 
     private void OnContinueGameButtonPressed()
     {
         PlaySound?.Invoke(AudioType.Click_01);
-        SceneManager.LoadScene(2);
+
+        DataManager.LoadGame();
+
+        if (DataManager.CurrentData != null)
+            SceneManager.LoadScene(2);
+        else
+            Debug.LogWarning("⚠ Không có file save hợp lệ!");
     }
 
     #endregion
