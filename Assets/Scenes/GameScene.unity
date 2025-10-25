@@ -21130,6 +21130,27 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2491532060701992686, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
+      propertyPath: m_text
+      value: Statistics Board
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235341447258356066, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
+      propertyPath: m_text
+      value: "\n\n\n\n\n\n\n<size=90><b>ETERNAL REALMS: SHADOWFALL</b></size>\r\n\r\n<size=45>A
+        tale of light and shadow.\r\nWhere courage meets destiny.</size>\r\n\r\n<size=60><b>DEVELOPED
+        BY: LIEU QUI CHUONG\n\t\t\t\tNGUYEN  PHI TRUONG</b></size>\n\n\n\n\n\r\n---------------------------------\r\n\n\n\n\n\n\n\n<size=45>\r\n<b>Lead
+        Designer:</b> Lieu Qui Chuong\r\n<b>Programming:</b> Nguyen Phi Truong\r\n<b>Art
+        Director:</b> Internet\r\n<b>Concept Artists:</b> Internet\r\n<b>3D Modelling
+        & Texturing:</b> Internet\r\n<b>Animation:</b> Nguyen Phi Truong\r\n<b>UI
+        / UX Design:</b> Lieu Qui Chuong\r\n<b>Sound & Music:</b> Internet\r\n</size>\r\n\r\n<size=40><b>SPECIAL
+        THANKS</b></size>\r\n<size=30>\r\n - To all teachers at VTC Academy.\r\n
+        - To early playtesters & supporters.\r\n - To the RPG dev community.\r\n
+        - To family & friends for their support.\r\n</size>\r\n\r\n<size=40><b>TOOLS
+        & PIPELINE</b></size>\r\n<size=30>\r\n - Unity Engine\r\n - Blender, Substance
+        Painter\r\n - Visual Studio / JetBrains Rider\r\n - Git for version control\r\n</size>\r\n\n\n\n\n\n\n\r\n<size=45><i>\u201CWhere
+        shadows fall, light prevails.\u201D</i></size>\r\n\r\n<size=60><b>Thank you
+        for playing!</b></size>\r\n"
+      objectReference: {fileID: 0}
     - target: {fileID: 4287112932798626930, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -21144,6 +21165,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4287112932798626930, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324860998246622836, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4381055243978809384, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
@@ -21233,6 +21258,10 @@ PrefabInstance:
     - target: {fileID: 6141574824922861978, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6164789484870375753, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -1030
       objectReference: {fileID: 0}
     - target: {fileID: 7088471074306672861, guid: c3b46e10b2a1600429f169051b891d1e, type: 3}
       propertyPath: m_AnchorMax.y

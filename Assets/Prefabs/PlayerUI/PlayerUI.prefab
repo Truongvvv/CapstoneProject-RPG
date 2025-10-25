@@ -157,12 +157,11 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\n\n\n\n\n\n\n<size=90><b>ETERNAL REALMS: SHADOWFALL</b></size>\r\n\r\n<size=45>A
     tale of light and shadow.\r\nWhere courage meets destiny.</size>\r\n\r\n<size=60><b>DEVELOPED
-    BY: LI\xCAU QUI CHUONG\n\t\t\t\tNGUY\u1EC4N  PHI TR\u01AF\u1EDCNG</b></size>\n\n\n\n\n\r\n---------------------------------\r\n\n\n\n\n\n\n\n<size=45>\r\n<b>Lead
-    Designer:</b> Li\xEAu Qui Ch\u01B0\u01A1ng\r\n<b>Programming:</b> Nguy\u1EC5n
-    Phi Tr\u01B0\u1EDDng\r\n<b>Art Director:</b> [T\xEAn]\r\n<b>Concept Artists:</b>
-    Internet\r\n<b>3D Modelling & Texturing:</b> [Danh s\xE1ch]\r\n<b>Animation:</b>
-    Nguy\u1EC5n Phi Tr\u01B0\u1EDDng\r\n<b>UI / UX Design:</b> Li\xEAu Qui Ch\u01B0\u01A1ng\r\n<b>Sound
-    & Music:</b> Internet\r\n<b>QA & Testing:</b> [Danh s\xE1ch testers]\r\n</size>\r\n\r\n<size=40><b>SPECIAL
+    BY: LIEU QUI CHUONG\n\t\t\t\tNGUYEN  PHI TRUONG</b></size>\n\n\n\n\n\r\n---------------------------------\r\n\n\n\n\n\n\n\n<size=45>\r\n<b>Lead
+    Designer:</b> Lieu Qui Chuong\r\n<b>Programming:</b> Nguyen Phi Truong\r\n<b>Art
+    Director:</b> Internet\r\n<b>Concept Artists:</b> Internet\r\n<b>3D Modelling
+    & Texturing:</b> Internet\r\n<b>Animation:</b> Nguyen Phi Truong\r\n<b>UI / UX
+    Design:</b> Lieu Qui Chuong\r\n<b>Sound & Music:</b> Internet\r\n</size>\r\n\r\n<size=40><b>SPECIAL
     THANKS</b></size>\r\n<size=30>\r\n - To all teachers at VTC Academy.\r\n - To
     early playtesters & supporters.\r\n - To the RPG dev community.\r\n - To family
     & friends for their support.\r\n</size>\r\n\r\n<size=40><b>TOOLS & PIPELINE</b></size>\r\n<size=30>\r\n
@@ -745,7 +744,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -886.195}
+  m_SizeDelta: {x: 0, y: -1030}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &478140206212607229
 MonoBehaviour:
@@ -3796,7 +3795,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6132084161339963946}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PlayerDeathHandler, Assembly-CSharp
+        m_MethodName: ReturnToMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4324860998246622836
 GameObject:
   m_ObjectHideFlags: 0
@@ -4129,7 +4140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "B\u1EA3ng Th\u1ED1ng K\xEA"
+  m_text: Statistics Board
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
