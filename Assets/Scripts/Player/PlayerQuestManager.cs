@@ -52,6 +52,9 @@ public class PlayerQuestManager : MonoBehaviour
                 currentQuest.questName,
                 $"{currentQuest.description} (0/{currentQuest.requiredKills})"
             );
+
+            DataManager.UpdateQuestProgressByIndex(currentQuestIndex, 0);
+            DataManager.SaveGame();
         }
         else
         {
@@ -72,6 +75,10 @@ public class PlayerQuestManager : MonoBehaviour
             if (enemyTag == currentQuest.enemyTag)
             {
                 currentQuest.currentKills++;
+                
+                DataManager.UpdateQuestProgressByIndex(currentQuestIndex, currentQuest.currentKills);
+                DataManager.SaveGame();
+
                 QuestTracker.Instance.UpdateTracker(
                     currentQuest.questName,
                     $"{currentQuest.description} ({currentQuest.currentKills}/{currentQuest.requiredKills})"
@@ -88,6 +95,10 @@ public class PlayerQuestManager : MonoBehaviour
     void CompleteQuest()
     {
         currentQuest.isCompleted = true;
+        
+        DataManager.CompleteQuestByIndex(currentQuestIndex);
+        DataManager.SaveGame();
+
         QuestTracker.Instance.UpdateTracker(currentQuest.questName, "Completed");
         Debug.Log("Complete the mission: " + currentQuest.questName);
     }
@@ -128,6 +139,10 @@ public class PlayerQuestManager : MonoBehaviour
     public void CollectCrystal(string crystalID)
     {
         crystalsCollected++;
+        
+        DataManager.UpdateKeyQuestProgress(crystalsCollected, crystalsRequired, keyQuestCompleted);
+        DataManager.SaveGame();
+
         UpdateQuestUI();
 
         if (crystalsCollected >= crystalsRequired)
@@ -136,5 +151,34 @@ public class PlayerQuestManager : MonoBehaviour
             keyQuestCompleted = true;
             OnWinGame?.Invoke();
         }
+    }
+    
+    public void LoadQuestFromData(List<Quest> questList)
+    {
+        var data = DataManager.CurrentData;
+
+        crystalsCollected = data.crystalsCollected;
+        keyQuestCompleted = data.keyQuestCompleted;
+        UpdateQuestUI();
+
+        if (data.activeQuestIndex < 0 || data.activeQuestIndex >= questList.Count)
+        {
+            Debug.Log("[LOAD QUEST] Không có nhiệm vụ đang làm.");
+            return;
+        }
+
+        currentQuestIndex = data.activeQuestIndex;
+        currentQuest = questList[currentQuestIndex];
+        currentQuest.isAccepted = true;
+        currentQuest.currentKills = data.currentQuestProgress;
+        currentQuest.isCompleted = data.completedQuests.Contains(currentQuestIndex.ToString());
+
+        string progressText = currentQuest.isCompleted
+            ? "Completed"
+            : $"{currentQuest.description} ({currentQuest.currentKills}/{currentQuest.requiredKills})";
+
+        QuestTracker.Instance.UpdateTracker(currentQuest.questName, progressText);
+
+        Debug.Log($"[LOAD QUEST] {currentQuest.questName} ({currentQuest.currentKills}/{currentQuest.requiredKills})");
     }
 }

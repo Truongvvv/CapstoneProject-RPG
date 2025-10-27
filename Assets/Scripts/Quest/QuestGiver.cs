@@ -25,6 +25,11 @@ public class QuestGiver : MonoBehaviour
         questUI.SetActive(false);
         HighlightButton();
         UpdateQuestUI(); // Cập nhật lần đầu
+        
+        if (PlayerQuestManager.Instance != null)
+        {
+            PlayerQuestManager.Instance.LoadQuestFromData(quests);
+        }
     }
 
     void Update()

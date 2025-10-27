@@ -155,6 +155,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             IsPaused = true;
+            SavePlayerData();
             OnPauseGame?.Invoke();
         }
 
